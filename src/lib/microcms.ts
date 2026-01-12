@@ -1,8 +1,8 @@
 import { createClient } from 'microcms-js-sdk';
 
 export const client = createClient({
-    serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN || "",
-    apiKey: process.env.MICROCMS_API_KEY || "",
+    serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN || "service-domain-placeholder",
+    apiKey: process.env.MICROCMS_API_KEY || "api-key-placeholder",
 });
 
 // ブログ一覧を取得
