@@ -1,15 +1,8 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
 
 type Props = {
     mode?: 'simulation' | 'line' | 'list' | string[] | undefined;
 };
-
-// 色変数のマッピング（Tailwind configに基づく）
-const COLORS = {
-    // primary: #0A192F (Navy)
-    // accent: #D4AF37 (Gold)
-}
 
 const LineButton = () => (
     <a

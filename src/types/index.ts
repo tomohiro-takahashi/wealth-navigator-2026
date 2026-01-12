@@ -1,4 +1,4 @@
-import type { MicroCMSDate, MicroCMSImage } from "microcms-js-sdk";
+import type { MicroCMSImage } from "microcms-js-sdk";
 
 export type CTAMode = 'line' | 'simulation' | 'request';
 

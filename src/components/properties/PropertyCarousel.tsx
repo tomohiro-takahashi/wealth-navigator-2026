@@ -77,7 +77,7 @@ export function PropertyCarousel({ properties }: PropertyCarouselProps) {
                 className="w-full"
             >
                 <CarouselContent className="-ml-4">
-                    {displayProperties.map((prop, index) => (
+                    {displayProperties.map((prop) => (
                         <CarouselItem key={prop.id} className="pl-4 md:basis-1/2 lg:basis-1/3">
                             <div className="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 group h-full cursor-pointer relative">
                                 {/* Image Area */}

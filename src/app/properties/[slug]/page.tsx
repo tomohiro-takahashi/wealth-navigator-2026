@@ -1,7 +1,6 @@
 import { getDetail } from '@/lib/microcms';
 import { notFound } from 'next/navigation';
 import { Property } from '@/types';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Metadata } from 'next';
 
