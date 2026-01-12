@@ -3,8 +3,7 @@ import { cn } from "@/lib/utils"
 
 // Radix UIのSelectはセットアップが少し複雑なので、
 // 今回はデザインを合わせたネイティブSelectラッパーで簡易実装する
-export interface SelectProps
-    extends React.SelectHTMLAttributes<HTMLSelectElement> { }
+export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     ({ className, children, ...props }, ref) => {

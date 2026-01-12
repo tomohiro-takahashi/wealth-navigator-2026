@@ -14,7 +14,7 @@ export const client = createClient({
 });
 
 // ブログ一覧を取得
-export const getList = async (endpoint: string = "articles", queries?: any) => {
+export const getList = async (endpoint: string = "articles", queries?: Record<string, unknown>) => {
     try {
         const listData = await client.getList({
             endpoint,
@@ -31,7 +31,7 @@ export const getList = async (endpoint: string = "articles", queries?: any) => {
 export const getDetail = async (
     contentId: string,
     endpoint: string = "articles",
-    queries?: any
+    queries?: Record<string, unknown>
 ) => {
     const detailData = await client.getListDetail({
         endpoint,

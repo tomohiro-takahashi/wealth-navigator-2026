@@ -32,7 +32,7 @@ export function PropertyCarousel({ properties }: PropertyCarouselProps) {
             installment_48: true,
             infrastructure_dist: "地下鉄BGC駅から徒歩3分",
             status_badge: ["利回り特選", "TOD物件"],
-        } as any,
+        } as unknown as Property,
         {
             id: "demo-london",
             createdAt: "",
@@ -48,7 +48,7 @@ export function PropertyCarousel({ properties }: PropertyCarouselProps) {
             installment_48: false,
             infrastructure_dist: "ナイツブリッジ駅直結",
             status_badge: ["非公開", "資産性重視"],
-        } as any,
+        } as unknown as Property,
         {
             id: "demo-dubai",
             createdAt: "",
@@ -64,7 +64,7 @@ export function PropertyCarousel({ properties }: PropertyCarouselProps) {
             installment_48: true,
             infrastructure_dist: "ドバイモール直結",
             status_badge: ["先行募集", "税制優遇"],
-        } as any,
+        } as unknown as Property,
     ];
 
     return (

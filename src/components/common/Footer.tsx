@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export const Footer = () => {
     return (
         <footer className="bg-primary text-white pt-16 pb-8">
@@ -13,17 +15,17 @@ export const Footer = () => {
                     <div>
                         <h3 className="font-serif text-accent mb-4">CONTENTS</h3>
                         <ul className="space-y-2 text-sm text-gray-300">
-                            <li><a href="/articles" className="hover:text-white transition-colors">新着記事</a></li>
-                            <li><a href="/properties" className="hover:text-white transition-colors">厳選物件</a></li>
-                            <li><a href="/columns" className="hover:text-white transition-colors">専門家コラム</a></li>
+                            <li><Link href="/articles" className="hover:text-white transition-colors">新着記事</Link></li>
+                            <li><Link href="/properties" className="hover:text-white transition-colors">厳選物件</Link></li>
+                            <li><Link href="/columns" className="hover:text-white transition-colors">専門家コラム</Link></li>
                         </ul>
                     </div>
                     <div>
                         <h3 className="font-serif text-accent mb-4">LEGAL</h3>
                         <ul className="space-y-2 text-sm text-gray-300">
-                            <li><a href="/privacy" className="hover:text-white transition-colors">プライバシーポリシー</a></li>
-                            <li><a href="/terms" className="hover:text-white transition-colors">利用規約</a></li>
-                            <li><a href="/company" className="hover:text-white transition-colors">運営会社</a></li>
+                            <li><Link href="/privacy" className="hover:text-white transition-colors">プライバシーポリシー</Link></li>
+                            <li><Link href="/terms" className="hover:text-white transition-colors">利用規約</Link></li>
+                            <li><Link href="/company" className="hover:text-white transition-colors">運営会社</Link></li>
                         </ul>
                     </div>
                 </div>
