@@ -1,0 +1,32 @@
+import * as React from "react"
+import { cn } from "@/lib/utils"
+
+// Radix UIのSelectはセットアップが少し複雑なので、
+// 今回はデザインを合わせたネイティブSelectラッパーで簡易実装する
+export interface SelectProps
+    extends React.SelectHTMLAttributes<HTMLSelectElement> { }
+
+const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
+    ({ className, children, ...props }, ref) => {
+        return (
+            <div className="relative">
+                <select
+                    className={cn(
+                        "flex h-12 w-full appearance-none rounded-sm border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+                        className
+                    )}
+                    ref={ref}
+                    {...props}
+                >
+                    {children}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                </div>
+            </div>
+        )
+    }
+)
+Select.displayName = "Select"
+
+export { Select }
