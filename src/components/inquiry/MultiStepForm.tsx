@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { StepBasicInfo } from "./StepBasicInfo";
-import { StepAssetProfile } from "./StepAssetProfile";
-import { StepMessage } from "./StepMessage";
+import { StepPurpose } from "./StepPurpose";
+import { StepIncome } from "./StepIncome";
+import { StepBudget } from "./StepBudget";
+import { StepContact } from "./StepContact";
 import { FormData, INITIAL_DATA } from "./types";
 
 export function MultiStepForm() {
@@ -21,9 +22,10 @@ export function MultiStepForm() {
 
     // ステップ管理
     const steps = [
-        <StepBasicInfo key="step1" data={data} updateFields={updateFields} />,
-        <StepAssetProfile key="step2" data={data} updateFields={updateFields} />,
-        <StepMessage key="step3" data={data} updateFields={updateFields} />,
+        <StepPurpose key="step1" data={data} updateFields={updateFields} />,
+        <StepIncome key="step2" data={data} updateFields={updateFields} />,
+        <StepBudget key="step3" data={data} updateFields={updateFields} />,
+        <StepContact key="step4" data={data} updateFields={updateFields} />,
     ];
 
     const nextStep = () => {
@@ -84,9 +86,9 @@ export function MultiStepForm() {
     }
 
     return (
-        <div className="max-w-xl mx-auto bg-gray-50/50 p-8 rounded-lg border border-gray-100 shadow-sm relative overflow-hidden">
+        <div className="max-w-xl mx-auto bg-white/80 backdrop-blur-sm p-8 rounded-lg border border-gray-100 shadow-xl relative overflow-hidden">
             {/* Step Indicator */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-gray-200">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gray-100">
                 <div
                     className="h-full bg-accent transition-all duration-500 ease-out"
                     style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
@@ -95,7 +97,12 @@ export function MultiStepForm() {
 
             <div className="mb-8 pt-4 flex justify-between items-center text-xs font-bold text-muted-foreground tracking-widest uppercase">
                 <span>Step {currentStep + 1} of {steps.length}</span>
-                <span>{currentStep === 0 ? "Basic Info" : currentStep === 1 ? "Profile" : "Details"}</span>
+                <span>
+                    {currentStep === 0 && "PURPOSE"}
+                    {currentStep === 1 && "INCOME"}
+                    {currentStep === 2 && "BUDGET"}
+                    {currentStep === 3 && "CONTACT"}
+                </span>
             </div>
 
             <form onSubmit={onSubmit}>
@@ -106,14 +113,15 @@ export function MultiStepForm() {
                         animate={{ x: 0, opacity: 1 }}
                         exit={{ x: -10, opacity: 0 }}
                         transition={{ duration: 0.2 }}
+                        className="min-h-[300px]"
                     >
                         {steps[currentStep]}
                     </motion.div>
                 </AnimatePresence>
 
-                <div className="mt-10 flex justify-between">
+                <div className="mt-12 flex justify-between items-center">
                     {currentStep > 0 ? (
-                        <Button type="button" variant="outline" onClick={prevStep}>
+                        <Button type="button" variant="ghost" onClick={prevStep} className="text-gray-400 hover:text-gray-600">
                             Back
                         </Button>
                     ) : (
@@ -122,10 +130,10 @@ export function MultiStepForm() {
 
                     <Button
                         type="submit"
-                        className="btn-primary min-w-[120px]"
+                        className="btn-accent min-w-[140px] text-lg py-6"
                         disabled={isSubmitting}
                     >
-                        {isSubmitting ? "Sending..." : currentStep === steps.length - 1 ? "Submit" : "Next"}
+                        {isSubmitting ? "Sending..." : currentStep === steps.length - 1 ? "Submit" : "Next Step"}
                     </Button>
                 </div>
             </form>

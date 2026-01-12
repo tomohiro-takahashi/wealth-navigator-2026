@@ -39,6 +39,25 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-sans);
+  font-size: 16px;
+  /* Base size for mobile luxury feel */
+  line-height: 1.8;
+  /* Spacious line height */
+  -webkit-font-smoothing: antialiased;
+}
+
+h2 {
+  font-size: 22px;
+  /* Mobile h2 size */
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  h2 {
+    font-size: 28px;
+    /* Desktop h2 size */
+  }
 }
 
 @utility btn-primary {
