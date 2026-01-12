@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next-on-pages",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "deploy": "wrangler pages deploy",
+    "pages:deploy": "wrangler pages deploy",
     "start": "next start",
     "lint": "eslint"
   },
