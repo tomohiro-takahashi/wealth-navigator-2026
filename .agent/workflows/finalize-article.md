@@ -62,7 +62,18 @@ This workflow takes a raw markdown article, saves it, generates matching images,
    - Run `git push origin main`.
    - This triggers Vercel deployment, making the images accessible in production (resolving the 401 issue).
 
-# Step 6: Completion
+# Step 6: Full Video Production
+1. **Generate Script & Prompts (Gemini)**:
+   - Run `node scripts/generate_video_script.js content/articles/YYYY-MM-DD-[theme].md`.
+   - This saves:
+     - Script: `content/scripts/[filename-slug].md`
+     - Prompts: `content/prompts/[filename-slug]_prompts.md`
+2. **Auto-Generate Video (Python)**:
+   - Run `python3 scripts/auto_video_maker.py [filename-slug]`.
+   - This reads the script and images, and outputs:
+     - Video: `public/videos/[filename-slug].mp4`
+
+# Step 7: Completion
 1. Notify variables:
    - `[MicroCMS Preview URL]`
 2. Send final confirmation message to the user: "Article finalized, uploaded to MicroCMS, and images pushed to Production."

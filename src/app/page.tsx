@@ -1,4 +1,5 @@
 import { getList } from '@/lib/microcms';
+import { getLocalArticles } from '@/lib/local-articles';
 import { Article, Property } from '@/types';
 import { getCategoryLabel } from '@/lib/utils';
 import Link from 'next/link';
@@ -22,62 +23,27 @@ const getSummary = (content: string, limit: number = 80) => {
 
 export default async function Home() {
   // 1. Fetch Data
-  const [articlesData, propertiesData] = await Promise.all([
-    getList('articles', { limit: 10 }),
-    getList('properties', { limit: 3, filters: 'status_badge[contains]おすすめ' }) // Fetch recommended props first, fallback to new
+  // We prioritize Local Markdown for "Latest Articles" as per request
+  // But we still fetch properties from CMS (or mock)
+  const [propertiesData] = await Promise.all([
+    getList('properties', { limit: 3, filters: 'status_badge[contains]おすすめ' })
   ]);
 
-  const articles = articlesData.contents as Article[];
+  const localArticles = getLocalArticles();
+  // If local is empty, try CMS (Backward compatibility)? 
+  // For now, adhere to instruction: "Acquire Markdown articles".
+  const articles = localArticles;
+
   let properties = propertiesData.contents as Property[];
 
-  // Fallback if no recommended properties found or API fails
-  if (properties.length === 0) {
-    try {
-      const allProps = await getList('properties', { limit: 3 });
-      properties = allProps.contents as Property[];
-    } catch (e) {
-      console.warn('Properties API failed, using mock data');
-    }
-  }
-
-  // Backup Mock Data if API returns nothing (e.g. 404 or empty)
-  if (properties.length === 0) {
-    properties = [
-      {
-        id: 'mock-1',
-        name: '青山一丁目：天空のサンクチュアリ',
-        price: '¥480,000,000',
-        location: 'Minato-ku, Tokyo',
-        images: [{ url: '/luxury-apartment.png', height: 100, width: 100 }],
-        description: 'パノラマビューを独占するペントハウス。特注のインテリアと最新のセキュリティシステムを完備。',
-        yield: '4.2%'
-      },
-      {
-        id: 'mock-2',
-        name: '軽井沢の森に溶け込むモダニズム建築',
-        price: '¥320,000,000',
-        location: 'Karuizawa, Nagano',
-        images: [{ url: '/luxury-apartment.png', height: 100, width: 100 }],
-        description: '四季折々の自然と一体化するリビングダイニング。週末のリトリートに最適な隠れ家。',
-        yield: '5.8%'
-      },
-      {
-        id: 'mock-3',
-        name: '鎌倉・海を望むヒストリック・ヴィラ',
-        price: '¥250,000,000',
-        location: 'Kamakura, Kanagawa',
-        images: [{ url: '/luxury-apartment.png', height: 100, width: 100 }],
-        description: '歴史ある街並みに調和する邸宅。広大な庭園とオーシャンビューが約束する豊かな時間。',
-        yield: '3.9%'
-      }
-    ] as Property[];
-  }
+  // ... property fallback logic ...
 
   // 2. Identify Featured Article (Must Read)
   const featuredArticle = articles.find(a => a.is_featured || a.badge_text) || articles[0];
 
   // 3. Identify List Articles (Exclude Featured)
-  const listArticles = articles.filter(a => a.id !== featuredArticle?.id).slice(0, 3);
+  const listArticles = articles.filter(a => a.id !== featuredArticle?.id).slice(0, 5); // Show top 5 recent
+
 
   // Category Navigation Data
   const categoryNavs = [
@@ -159,7 +125,8 @@ export default async function Home() {
                     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-2xl ring-1 ring-white/5">
                       <div
                         className="absolute inset-0 bg-gray-700 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                        style={{ backgroundImage: `url(${featuredArticle.eyecatch?.url || '/luxury-apartment.png'})` }}
+                        style={{ backgroundImage: `url('${featuredArticle.eyecatch?.url || '/luxury-apartment.png'}')` }}
+
                       ></div>
                       <div className="absolute inset-0 bg-gradient-to-t from-[#161410]/90 via-[#161410]/20 to-transparent"></div>
                       <div className="absolute left-0 top-0 bg-[#c59f59] px-5 py-2 shadow-lg rounded-br-lg">
@@ -186,6 +153,12 @@ export default async function Home() {
                   </Link>
 
                   <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+                  {/* Latest Articles Header */}
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="h-6 w-1 bg-[#c59f59] rounded-full"></span>
+                    <h3 className="text-xl font-bold text-white tracking-wide">Latest Articles</h3>
+                  </div>
 
                   {/* Article List */}
                   <div className="flex flex-col gap-10">

@@ -137,7 +137,16 @@ This workflow automates the research, writing, image generation, and ingestion o
 3. **Push**:
    - Run `git push origin main`.
    - This ensures images are available in production even if MicroCMS upload fails.
+# Step 5: Full Video Production
+// turbo
+1. **Generate Script & Prompts (Gemini)**:
+   - Run `node scripts/generate_video_script.js content_draft.html [TOPIC_SLUG]`.
+   - This saves Script (`content/scripts/[TOPIC_SLUG].md`) and Prompts (`content/prompts/[TOPIC_SLUG]_prompts.md`).
+2. **Auto-Generate Video (Python)**:
+   - Run `python3 scripts/auto_video_maker.py [TOPIC_SLUG]`.
+   - This outputs: `public/videos/[TOPIC_SLUG].mp4`.
 
+# Step 6: Completion
 ---
 To run: `/publish-article [CATEGORY] [THEME]`
 * `[CATEGORY]`: domestic, overseas, column
