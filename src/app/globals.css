@@ -1,38 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&family=Playfair+Display:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
 @theme {
   --color-background: #F8F9FA;
-  --color-foreground: #333333;
+  /* Marble */
+  --color-foreground: #1A1A1B;
+  /* Charcoal */
 
-  --color-primary: #0A192F;
-  --color-primary-light: #172A46;
+  --color-primary: #1A1A1B;
+  /* Charcoal */
+  --color-primary-light: #2C2C2E;
 
-  --color-accent: #D4AF37;
-  --color-accent-light: #F4CF57;
-  --color-accent-dark: #AA8C2C;
+  --color-accent: #C5A059;
+  /* Gold */
+  --color-accent-light: #D4AF37;
+  --color-accent-dark: #A08035;
 
   --color-muted: #8892B0;
-  --color-muted-light: #CCD6F6;
+  --color-muted-light: #E0E0E0;
 
-  --font-serif: "Noto Serif JP", serif;
+  --font-serif: var(--font-shippori-mincho), "Times New Roman", serif;
+  --font-sans: var(--font-noto-sans), "Helvetica Neue", Arial, sans-serif;
   --font-display: "Playfair Display", serif;
-  --font-sans: "Inter", sans-serif;
 
-  --background-image-subtle-pattern: url('/subtle-pattern.png');
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.5s ease-out;
 }
 
-/* 
-  Next.js 15+ & Tailwind v4 環境でのカスタムクラス定義 
-  @layer components などはv4でも使えるが、テーマ変数は @theme ブロックで定義するのが推奨される。
-  以前の styles は一旦コメントアウトまたは削除し、変数を参照するように修正する必要があるが、
-  ここでは v3 互換モードではなく v4 ネイティブな書き方に寄せる。
-*/
-
+/* Base Styles */
 :root {
   --background: #F8F9FA;
-  --foreground: #333333;
+  --foreground: #1A1A1B;
 }
 
 body {
@@ -40,10 +40,23 @@ body {
   background: var(--background);
   font-family: var(--font-sans);
   font-size: 16px;
-  /* Base size for mobile luxury feel */
-  line-height: 1.8;
-  /* Spacious line height */
+  line-height: 2.0;
+  /* Wide line height for luxury feel */
+  letter-spacing: 0.05em;
+  /* Slight letter spacing */
   -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  /* More tracking for headings */
 }
 
 h2 {

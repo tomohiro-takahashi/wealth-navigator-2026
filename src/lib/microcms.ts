@@ -32,3 +32,23 @@ export const getDetail = async (
     });
     return detailData;
 };
+
+// スラッグから記事詳細を取得
+export const getDetailBySlug = async (
+    slug: string,
+    endpoint: string = "articles"
+) => {
+    try {
+        const listData = await client.getList({
+            endpoint,
+            queries: { filters: `slug[equals]${slug}`, limit: 1 },
+        });
+        if (listData.contents.length === 0) {
+            return null;
+        }
+        return listData.contents[0];
+    } catch (error) {
+        console.error("MicroCMS getDetailBySlug error:", error);
+        return null; // notFound() needs to be handled by caller
+    }
+};

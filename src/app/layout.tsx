@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Noto_Sans_JP, Shippori_Mincho } from "next/font/google"; // Removed Geist as per new design
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const notoSansJP = Noto_Sans_JP({
+  variable: "--font-noto-sans",
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const shipporiMincho = Shippori_Mincho({
+  variable: "--font-shippori-mincho", // Correct variable name for serif
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {
@@ -19,6 +21,7 @@ export const metadata: Metadata = {
 
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
+import { BottomNav } from "@/components/common/BottomNav";
 
 export default function RootLayout({
   children,
@@ -28,13 +31,15 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 pt-16 flex flex-col min-h-screen`}
+        className={`${notoSansJP.variable} ${shipporiMincho.variable} antialiased bg-[#F8F9FA] text-[#1A1A1B] pt-0 flex flex-col min-h-screen font-sans`}
       >
+        {/* pt-0 because Hero often goes under header or handles its own spacing. Resetting default top padding. */}
         <Header />
-        <main className="flex-grow">
+        <main className="flex-grow pb-16 md:pb-0">
           {children}
         </main>
         <Footer />
+        <BottomNav />
       </body>
     </html>
   );

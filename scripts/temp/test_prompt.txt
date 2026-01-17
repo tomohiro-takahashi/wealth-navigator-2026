@@ -1,0 +1,1 @@
+Hello Claude. This is a connection test. Please reply with "Connection Successful" and a brief quote.

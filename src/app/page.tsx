@@ -1,162 +1,329 @@
 import { getList } from '@/lib/microcms';
 import { Article, Property } from '@/types';
-import { ArticleCard } from '@/components/articles/ArticleCard';
-import { PropertyCarousel } from '@/components/properties/PropertyCarousel';
+import { getCategoryLabel } from '@/lib/utils';
 import Link from 'next/link';
 
-// 再検証時間: 60秒
-export const runtime = "edge";
+// ISR Configuration
 export const revalidate = 60;
 
+// Helper to calculate read time
+const calculateReadTime = (content: string) => {
+  const text = content.replace(/<[^>]+>/g, '');
+  const charCount = text.length;
+  // Assuming 400 characters per minute reading speed
+  return Math.ceil(charCount / 400) + '分で読めます';
+};
+
+// Helper to strip HTML and truncate
+const getSummary = (content: string, limit: number = 80) => {
+  const text = content.replace(/<[^>]+>/g, '');
+  return text.length > limit ? text.substring(0, limit) + '...' : text;
+};
+
 export default async function Home() {
-  // 記事全件取得（フィルタリングはフロントで行う簡易実装）
-  // 本番運用ではカテゴリIDごとのクエリに分けるか、microCMSのフィルタ機能を使うのが望ましい
-  const articleData = await getList('articles', { limit: 100 });
-  const articles = articleData.contents as Article[];
+  // 1. Fetch Data
+  const [articlesData, propertiesData] = await Promise.all([
+    getList('articles', { limit: 10 }),
+    getList('properties', { limit: 3, filters: 'status_badge[contains]おすすめ' }) // Fetch recommended props first, fallback to new
+  ]);
 
-  // 物件データ取得
-  const propertyData = await getList('properties', { limit: 10 });
-  const properties = propertyData.contents as Property[];
+  const articles = articlesData.contents as Article[];
+  let properties = propertiesData.contents as Property[];
 
-  // カテゴリ分けロジック (カテゴリIDが含まれるかで判定)
-  const domesticArticles = articles.filter(a =>
-    a.category?.includes('domestic')
-  );
-  const overseasArticles = articles.filter(a =>
-    a.category?.includes('overseas')
-  );
-  const columnArticles = articles.filter(a =>
-    a.category?.includes('column')
-  );
+  // Fallback if no recommended properties found or API fails
+  if (properties.length === 0) {
+    try {
+      const allProps = await getList('properties', { limit: 3 });
+      properties = allProps.contents as Property[];
+    } catch (e) {
+      console.warn('Properties API failed, using mock data');
+    }
+  }
+
+  // Backup Mock Data if API returns nothing (e.g. 404 or empty)
+  if (properties.length === 0) {
+    properties = [
+      {
+        id: 'mock-1',
+        name: '青山一丁目：天空のサンクチュアリ',
+        price: '¥480,000,000',
+        location: 'Minato-ku, Tokyo',
+        images: [{ url: '/luxury-apartment.png', height: 100, width: 100 }],
+        description: 'パノラマビューを独占するペントハウス。特注のインテリアと最新のセキュリティシステムを完備。',
+        yield: '4.2%'
+      },
+      {
+        id: 'mock-2',
+        name: '軽井沢の森に溶け込むモダニズム建築',
+        price: '¥320,000,000',
+        location: 'Karuizawa, Nagano',
+        images: [{ url: '/luxury-apartment.png', height: 100, width: 100 }],
+        description: '四季折々の自然と一体化するリビングダイニング。週末のリトリートに最適な隠れ家。',
+        yield: '5.8%'
+      },
+      {
+        id: 'mock-3',
+        name: '鎌倉・海を望むヒストリック・ヴィラ',
+        price: '¥250,000,000',
+        location: 'Kamakura, Kanagawa',
+        images: [{ url: '/luxury-apartment.png', height: 100, width: 100 }],
+        description: '歴史ある街並みに調和する邸宅。広大な庭園とオーシャンビューが約束する豊かな時間。',
+        yield: '3.9%'
+      }
+    ] as Property[];
+  }
+
+  // 2. Identify Featured Article (Must Read)
+  const featuredArticle = articles.find(a => a.is_featured || a.badge_text) || articles[0];
+
+  // 3. Identify List Articles (Exclude Featured)
+  const listArticles = articles.filter(a => a.id !== featuredArticle?.id).slice(0, 3);
+
+  // Category Navigation Data
+  const categoryNavs = [
+    { label: '国内不動産投資', id: 'domestic', icon: 'apartment' },
+    { label: '海外不動産投資', id: 'overseas', icon: 'public' },
+    { label: '資産形成コラム', id: 'column', icon: 'account_balance' },
+  ];
 
   return (
-    <div className="pb-24">
-      {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center justify-center bg-primary overflow-hidden">
-        {/* 背景装飾（本来は画像などが望ましい） */}
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/80 to-primary z-10"></div>
-        <div className="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center"></div>
+    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-[#161410] font-sans">
 
-        <div className="relative z-20 text-center text-white px-4 max-w-4xl mx-auto">
-          <p className="text-accent tracking-[0.2em] font-medium mb-6 animate-fade-in-up">
-            WEALTH NAVIGATOR
-          </p>
-          <h1 className="text-4xl md:text-6xl font-display font-bold leading-tight mb-8 animate-fade-in-up delay-100">
-            真の豊かさを、<br className="md:hidden" />その手に。
-          </h1>
-          <p className="text-gray-300 text-lg md:text-xl font-serif leading-relaxed max-w-2xl mx-auto mb-10 animate-fade-in-up delay-200">
-            グローバルな視点と確かな知見で、<br />
-            あなたの資産形成を次なるステージへ導きます。
-          </p>
-          <div className="animate-fade-in-up delay-300">
-            <Link href="#contact" className="btn-accent inline-block text-sm tracking-widest">
-              無料相談を申し込む
-            </Link>
+      {/* =======================================================================
+          DARK ZONE: Header, Hero, Articles
+      ======================================================================== */}
+      <div className="text-[#f2f0ed]">
+
+        {/* Header & Hero Section */}
+        <header className="relative bg-[#161410] text-white">
+          <div className="sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-[#161410]/95 px-5 border-b border-white/5 backdrop-blur-sm">
+            <button className="flex h-12 w-12 items-center justify-center rounded-full text-[#c59f59] transition-colors hover:text-white active:bg-white/5">
+              <span className="material-symbols-outlined text-[32px]">menu</span>
+            </button>
+            <h1 className="flex-1 text-center text-lg font-bold tracking-wide text-white/90">
+              Wealth Navigator
+            </h1>
+            <button className="flex h-12 w-12 items-center justify-center rounded-full text-[#c59f59] transition-colors hover:text-white active:bg-white/5">
+              <span className="material-symbols-outlined text-[28px]">search</span>
+            </button>
           </div>
-        </div>
-      </section>
 
-      {/* Featured Properties Slider */}
-      <section className="py-16 bg-gray-50 border-b border-gray-200">
-        <div className="container mx-auto px-4 mb-10 text-center">
-          <span className="text-accent text-sm tracking-widest font-bold block mb-2 animate-fade-in-up">PREMIUM SELECTION</span>
-          <h2 className="text-3xl font-display font-bold text-primary animate-fade-in-up delay-100">
-            厳選された海外プライム物件
-          </h2>
-        </div>
-        <PropertyCarousel properties={properties} />
-      </section>
+          {/* Key Visual Area */}
+          <div className="relative flex w-full flex-col items-center justify-center px-6 pt-20 pb-40">
+            {/* Background Effect */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#4a4235] via-[#161410] to-[#161410] opacity-60 pointer-events-none"></div>
 
-      {/* Asset Columns Section */}
-      {columnArticles.length > 0 && (
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-              <div>
-                <span className="text-accent text-sm tracking-widest font-bold block mb-2">INTELLIGENCE</span>
-                <h2 className="text-3xl font-display font-bold text-primary">資産コラム</h2>
+            <div className="relative z-10 flex flex-col items-center text-center gap-12 w-full max-w-2xl mx-auto">
+              <div className="space-y-8">
+                <h2 className="text-5xl md:text-7xl font-medium leading-[1.2] tracking-wide text-white drop-shadow-2xl font-serif">
+                  一流を、<br />再定義する。
+                </h2>
+                <p className="text-lg font-light leading-relaxed tracking-wide text-gray-300 font-serif">
+                  現代のビジョナリーへ贈る、<br />至高のインサイト。
+                </p>
               </div>
-              <Link href="/articles" className="text-sm text-primary border-b border-primary pb-0.5 hover:text-accent hover:border-accent transition-colors mt-4 md:mt-0">
-                View All Articles &rarr;
+
+              <Link href="/diagnosis" className="group relative flex h-16 w-full md:w-auto md:min-w-[320px] items-center justify-center gap-3 rounded-md bg-gradient-to-r from-[#c59f59] to-[#b88f45] px-8 text-lg font-bold text-[#161410] transition-all hover:brightness-110 active:scale-[0.98] shadow-[0_0_25px_rgba(197,159,89,0.3)]">
+                <span>資産ポートフォリオを診断する</span>
+                <span className="material-symbols-outlined text-2xl transition-transform group-hover:translate-x-1">arrow_forward</span>
+                <div className="absolute inset-0 rounded-md ring-1 ring-inset ring-white/20 pointer-events-none"></div>
               </Link>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {columnArticles.slice(0, 3).map((article) => (
-                <ArticleCard key={article.id} article={article} />
-              ))}
-            </div>
           </div>
-        </section>
-      )}
+        </header>
 
-      {/* Domestic Properties Section */}
-      {domesticArticles.length > 0 && (
-        <section className="py-20 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-              <div>
-                <span className="text-accent text-sm tracking-widest font-bold block mb-2">DOMESTIC</span>
-                <h2 className="text-3xl font-display font-bold text-primary">国内不動産</h2>
+        {/* Main Content Wrapper (Overlapping Card Style) */}
+        <main className="rounded-t-[2.5rem] bg-[#23201b] relative z-20 shadow-[0_-16px_40px_rgba(0,0,0,0.6)] border-t border-white/5 overflow-hidden -mt-12">
+          <div className="bg-[#23201b] px-6 pt-12 pb-16">
+            <div className="w-full max-w-md mx-auto">
+
+              {/* Navigation Menu (Domestic/Overseas/Column) */}
+              <div className="flex flex-col gap-4 mb-14">
+                {categoryNavs.map((nav) => (
+                  <Link key={nav.id} href={`/articles?category=${nav.id}`} className="flex w-full items-center justify-between rounded-lg bg-[#2c2822] border border-white/5 px-6 py-5 shadow-sm transition-all hover:bg-white/5 hover:border-[#c59f59]/50 group active:scale-[0.99]">
+                    <div className="flex items-center gap-4">
+                      <span className="material-symbols-outlined text-[#c59f59] text-[28px]">
+                        {nav.icon}
+                      </span>
+                      <span className="text-[19px] font-bold tracking-wide text-[#f2f0ed]">{nav.label}</span>
+                    </div>
+                    <span className="material-symbols-outlined text-white/20 group-hover:text-[#c59f59] transition-colors">chevron_right</span>
+                  </Link>
+                ))}
               </div>
-              <Link href="/properties" className="text-sm text-primary border-b border-primary pb-0.5 hover:text-accent hover:border-accent transition-colors mt-4 md:mt-0">
-                View All Properties &rarr;
-              </Link>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {domesticArticles.slice(0, 6).map((article) => (
-                <ArticleCard key={article.id} article={article} />
+              {/* Featured Article (Must Read) */}
+              {featuredArticle && (
+                <div className="flex flex-col gap-12">
+                  <Link href={`/articles/${featuredArticle.slug}`} className="group relative flex flex-col gap-6 cursor-pointer">
+                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg shadow-2xl ring-1 ring-white/5">
+                      <div
+                        className="absolute inset-0 bg-gray-700 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        style={{ backgroundImage: `url(${featuredArticle.eyecatch?.url || '/luxury-apartment.png'})` }}
+                      ></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#161410]/90 via-[#161410]/20 to-transparent"></div>
+                      <div className="absolute left-0 top-0 bg-[#c59f59] px-5 py-2 shadow-lg rounded-br-lg">
+                        <span className="text-sm font-bold text-[#161410] tracking-[0.2em]">{featuredArticle.badge_text || '必読'}</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-center gap-3 text-[15px] font-medium text-[#dcc18b]">
+                        <span className="font-bold border-b border-[#c59f59]/30 pb-0.5">
+                          {featuredArticle.category && featuredArticle.category.length > 0
+                            ? getCategoryLabel(featuredArticle.category[0])
+                            : 'Featured'}
+                        </span>
+                        <span className="size-1 rounded-full bg-[#c59f59]/50"></span>
+                        <span>{calculateReadTime(featuredArticle.content)}</span>
+                      </div>
+                      <h3 className="font-serif text-[28px] font-bold leading-[1.4] tracking-tight text-white group-hover:text-[#dcc18b] transition-colors">
+                        {featuredArticle.title}
+                      </h3>
+                      <p className="line-clamp-3 text-[17px] leading-[1.8] text-gray-400">
+                        {getSummary(featuredArticle.content)}
+                      </p>
+                    </div>
+                  </Link>
+
+                  <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+                  {/* Article List */}
+                  <div className="flex flex-col gap-10">
+                    {listArticles.map((article) => (
+                      <Link key={article.id} href={`/articles/${article.slug}`} className="group flex flex-col gap-4 cursor-pointer">
+                        <div className="flex gap-5 items-start">
+                          <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-lg bg-[#2c2822] shadow-lg ring-1 ring-white/5">
+                            <div
+                              className="h-full w-full bg-gray-700 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                              style={{ backgroundImage: `url(${article.eyecatch?.url || '/luxury-apartment.png'})` }}
+                            ></div>
+                          </div>
+                          <div className="flex flex-col justify-center min-h-[112px] py-1">
+                            <span className="text-sm font-bold text-[#dcc18b] mb-2">
+                              {article.category && article.category.length > 0
+                                ? getCategoryLabel(article.category[0])
+                                : 'Update'}
+                            </span>
+                            <h4 className="line-clamp-3 text-[19px] font-bold leading-[1.5] text-[#f2f0ed] group-hover:text-[#dcc18b] transition-colors font-serif">
+                              {article.title}
+                            </h4>
+                          </div>
+                        </div>
+                        <div className="h-px w-full bg-white/5 last:hidden"></div>
+                      </Link>
+                    ))}
+                  </div>
+
+                  <Link href="/articles" className="mt-4 w-full text-center rounded-md border border-white/10 bg-white/5 py-5 text-[17px] font-bold text-gray-300 transition-colors hover:border-[#c59f59] hover:text-[#c59f59] hover:bg-white/10">
+                    記事一覧を見る
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
+        </main>
+      </div>
+
+      {/* =======================================================================
+          LIGHT ZONE: Premium Selection, Philosophy, Footer
+      ======================================================================== */}
+      <div className="bg-[#F8F9FA] text-gray-900 relative z-20">
+
+        {/* Premium Selection */}
+        <section className="px-6 py-20">
+          <div className="w-full max-w-md mx-auto">
+            <div className="flex flex-col items-center mb-12">
+              <span className="text-[#c59f59] font-bold tracking-widest text-xs uppercase mb-3">Premium Selection</span>
+              <h2 className="font-serif text-4xl font-bold text-gray-900 text-center">厳選された邸宅</h2>
+              <div className="h-1 w-12 bg-[#c59f59] mt-6"></div>
+            </div>
+            <div className="flex flex-col gap-14">
+              {properties.map((prop) => (
+                <Link key={prop.id} href={`/properties/${prop.id}`} className="group cursor-pointer">
+                  <div className="relative w-full aspect-[3/2] overflow-hidden rounded-md shadow-lg mb-5 ring-1 ring-black/5">
+                    <div
+                      className="absolute inset-0 bg-gray-200 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                      style={{ backgroundImage: `url(${prop.images?.[0]?.url || '/luxury-apartment.png'})` }}
+                    ></div>
+
+                    {/* 利回りバッジ */}
+                    {prop.yield && (
+                      <div className="absolute bottom-4 right-4 bg-[#161410]/90 backdrop-blur-sm text-[#c59f59] px-3 py-1.5 rounded-sm border border-[#c59f59]/30 shadow-lg">
+                        <span className="text-[10px] font-medium tracking-wider uppercase block text-center leading-none mb-0.5 text-gray-400">Yield</span>
+                        <span className="text-lg font-bold font-display">{prop.yield}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-baseline justify-between border-b border-gray-200 pb-2">
+                      <span className="text-xs font-bold text-[#c59f59] tracking-widest uppercase">{prop.location}</span>
+                      <span className="font-bold text-lg text-gray-800">{prop.price}</span>
+                    </div>
+                    <h3 className="font-serif text-2xl font-bold text-gray-900 leading-snug group-hover:text-[#c59f59] transition-colors pt-1">
+                      {prop.name}
+                    </h3>
+                    <p className="text-[16px] leading-relaxed text-gray-600 line-clamp-2">
+                      {getSummary(prop.description || '', 60)}
+                    </p>
+                  </div>
+                </Link>
               ))}
             </div>
-          </div>
-        </section>
-      )}
 
-      {/* Overseas Properties Section */}
-      {overseasArticles.length > 0 && (
-        <section className="py-20 bg-primary text-white">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-12">
-              <div>
-                <span className="text-accent text-sm tracking-widest font-bold block mb-2">OVERSEAS</span>
-                <h2 className="text-3xl font-display font-bold text-white">海外不動産</h2>
-              </div>
-              <Link href="/properties" className="text-sm text-gray-300 border-b border-gray-500 pb-0.5 hover:text-white hover:border-white transition-colors mt-4 md:mt-0">
-                View All Properties &rarr;
-              </Link>
-            </div>
-
-            {/* ダークテーマ用のカードスタイル調整が必要だが、一旦共通カードを使用 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {overseasArticles.slice(0, 3).map((article) => (
-                <ArticleCard key={article.id} article={article} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* CTA Section */}
-      <section id="contact" className="py-24 bg-white">
-        <div className="container mx-auto px-4 text-center max-w-3xl">
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-primary mb-6">
-            資産形成のプロフェッショナルと共に。
-          </h2>
-          <p className="text-gray-600 font-serif leading-relaxed mb-10">
-            30年の経験を持つコンサルタントが、あなたの資産状況に合わせた最適なポートフォリオをご提案します。<br />
-            まずは無料のシミュレーションから始めてみませんか？
-          </p>
-          <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6">
-            <Link href="/simulation" className="btn-accent text-lg px-8 py-4 shadow-lg">
-              無料シミュレーション依頼
-            </Link>
-            <Link href="https://line.me/" className="inline-flex items-center justify-center bg-[#06C755] text-white px-8 py-4 rounded-sm font-bold shadow-lg hover:bg-[#05b34c] transition-colors">
-              LINEで気軽に相談
+            <Link href="/properties" className="mt-14 block w-full text-center rounded-md border border-gray-300 bg-white py-5 text-[17px] font-bold text-gray-900 transition-colors hover:border-[#c59f59] hover:text-[#c59f59] shadow-sm hover:shadow-md">
+              すべての物件を見る
             </Link>
           </div>
-        </div>
-      </section>
+        </section>
+
+        {/* Philosophy Section */}
+        <section className="px-6 pt-10 pb-20 bg-[#F8F9FA]">
+          <div className="w-full max-w-md mx-auto text-center space-y-6">
+            <span className="text-[#c59f59] text-sm font-bold tracking-widest uppercase">Our Philosophy</span>
+            <h3 className="font-serif text-2xl font-bold text-gray-900">
+              真の豊かさとは、<br />選択肢を持つこと。
+            </h3>
+            <p className="text-gray-600 leading-relaxed text-sm">
+              私たちは、単なる情報提供者ではありません。<br />
+              あなたの資産と人生の可能性を最大化する、<br />
+              影の参謀です。
+            </p>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="bg-[#F8F9FA] border-t border-gray-200 px-6 pt-12 pb-32">
+          <div className="w-full max-w-md mx-auto text-center">
+            <h4 className="font-bold text-gray-800 mb-6 tracking-wide text-lg">Wealth Navigator</h4>
+            <div className="flex justify-center gap-6 mb-8 flex-wrap">
+              <a className="text-sm font-medium text-gray-500 hover:text-[#c59f59] transition-colors" href="#">運営会社</a>
+              <a className="text-sm font-medium text-gray-500 hover:text-[#c59f59] transition-colors" href="#">お問い合わせ</a>
+              <a className="text-sm font-medium text-gray-500 hover:text-[#c59f59] transition-colors" href="#">プライバシー</a>
+            </div>
+            <p className="text-xs text-gray-400 font-light tracking-wide">© 2026 Wealth Navigator. All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+
+      {/* Bottom Nav */}
+      <nav className="fixed bottom-0 left-0 z-50 flex h-[88px] w-full items-start justify-around border-t border-white/10 bg-[#161410]/95 px-2 pt-3 backdrop-blur-md pb-8 shadow-[0_-5px_20px_rgba(0,0,0,0.3)]">
+        <Link href="/" className="flex flex-col items-center gap-1.5 p-2 text-[#c59f59]">
+          <span className="material-symbols-outlined text-[28px]">home</span>
+          <span className="text-[11px] font-medium tracking-wide">ホーム</span>
+        </Link>
+        <Link href="/articles" className="flex flex-col items-center gap-1.5 p-2 text-gray-500 hover:text-white transition-colors">
+          <span className="material-symbols-outlined text-[28px]">trending_up</span>
+          <span className="text-[11px] font-medium tracking-wide">投資</span>
+        </Link>
+        <Link href="/concierge" className="flex flex-col items-center gap-1.5 p-2 text-gray-500 hover:text-white transition-colors">
+          <span className="material-symbols-outlined text-[28px]">diamond</span>
+          <span className="text-[11px] font-medium tracking-wide">コンシェルジュ</span>
+        </Link>
+        <Link href="/mypage" className="flex flex-col items-center gap-1.5 p-2 text-gray-500 hover:text-white transition-colors">
+          <span className="material-symbols-outlined text-[28px]">person</span>
+          <span className="text-[11px] font-medium tracking-wide">マイページ</span>
+        </Link>
+      </nav>
     </div>
   );
 }

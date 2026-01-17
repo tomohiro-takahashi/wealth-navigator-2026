@@ -9,6 +9,7 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Property } from "@/types";
+import Image from "next/image";
 
 type PropertyCarouselProps = {
     properties: Property[];
@@ -82,10 +83,12 @@ export function PropertyCarousel({ properties }: PropertyCarouselProps) {
                             <div className="bg-white rounded-lg overflow-hidden shadow-lg border border-gray-100 group h-full cursor-pointer relative">
                                 {/* Image Area */}
                                 <div className="relative aspect-[4/3] overflow-hidden">
-                                    <img
+                                    <Image
                                         src={prop.images?.[0]?.url || "/luxury-apartment.png"}
                                         alt={prop.name}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
                                     />
                                     {/* Location Badge */}
                                     <div className="absolute top-4 left-4">

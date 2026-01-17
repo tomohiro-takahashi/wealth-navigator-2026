@@ -109,8 +109,7 @@ async function main() {
                 try {
                     const imageUrl = await uploadImage(imagePath);
 
-                    // Replace placeholder in content (regex to handle quotes/variations if needed, but strict is fine for now)
-                    // We assume content has src="IMAGE_ID_1"
+                    // Replace placeholder in content
                     if (content.includes(imageIdPlaceholder)) {
                         content = content.replace(new RegExp(imageIdPlaceholder, 'g'), imageUrl);
                         console.log(`[REPLACED] ${imageIdPlaceholder} -> ${imageUrl}`);
@@ -119,7 +118,18 @@ async function main() {
                     }
 
                 } catch (error) {
-                    console.error(`[ERROR] Image upload failed for ${imagePath}:`, error.message);
+                    console.warn(`[WARN] Image upload failed for ${imagePath}: ${error.message}`);
+                    console.warn(`[WARN] Using local path fallback. Ensure images are deployed to production.`);
+
+                    // Fallback: Use the local path relative to public/
+                    // Assuming imagePath is something like "public/images/tmp/foo.png"
+                    // We need "/images/tmp/foo.png" for the src
+                    const publicRelPath = imagePath.replace('public/', '/');
+
+                    if (content.includes(imageIdPlaceholder)) {
+                        content = content.replace(new RegExp(imageIdPlaceholder, 'g'), publicRelPath);
+                        console.log(`[FALLBACK] ${imageIdPlaceholder} -> ${publicRelPath}`);
+                    }
                 }
             }
         }

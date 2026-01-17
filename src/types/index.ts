@@ -34,6 +34,8 @@ export type Article = {
     author?: string;       // 執筆者
     cta_mode?: 'simulation' | 'line' | 'list'; // listに変更
     math_enabled?: boolean; // 数式有効化
+    is_featured?: boolean; // 注目記事フラグ
+    badge_text?: string;   // バッジテキスト (例: MUST READ)
 };
 
 export type Property = {
@@ -55,4 +57,5 @@ export type Property = {
     installment_48?: boolean;   // 48ヶ月分割払いの可否
     infrastructure_dist?: string; // インフラ進捗距離 (例: "地下鉄Ortigas南駅から徒歩5分")
     status_badge?: string[];    // ステータスバッジ ("非公開", "先行募集", "利回り特選" など)
+    yield?: string;             // 利回り (例: "4.2%")
 };
