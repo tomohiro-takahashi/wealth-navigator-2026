@@ -146,6 +146,12 @@ This workflow automates the research, writing, image generation, and ingestion o
    - Run `python3 scripts/auto_video_maker.py [TOPIC_SLUG]`.
    - This outputs: `public/videos/[TOPIC_SLUG].mp4`.
 
+# Step 6: Google Drive Backup
+// turbo
+1. **Upload Assets**:
+   - Run `python3 scripts/upload_to_drive.py [TOPIC_SLUG]`.
+   - This creates a folder `YYYY-MM-DD_[slug]` in Drive and uploads Video, Prompts, and Images.
+
 # Step 6: Completion
 ---
 To run: `/publish-article [CATEGORY] [THEME]`

@@ -73,6 +73,11 @@ This workflow takes a raw markdown article, saves it, generates matching images,
    - This reads the script and images, and outputs:
      - Video: `public/videos/[filename-slug].mp4`
 
+# Step 7: Google Drive Backup
+1. **Upload Assets**:
+   - Run `python3 scripts/upload_to_drive.py [filename-slug]`.
+   - This creates a folder `YYYY-MM-DD_[slug]` in Drive and uploads Video, Prompts, and Images.
+
 # Step 7: Completion
 1. Notify variables:
    - `[MicroCMS Preview URL]`
