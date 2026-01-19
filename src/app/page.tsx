@@ -1,5 +1,5 @@
 import { getList } from '@/lib/microcms';
-import { getLocalArticles } from '@/lib/local-articles';
+
 import { Article, Property } from '@/types';
 import { getCategoryLabel } from '@/lib/utils';
 import Link from 'next/link';
@@ -29,7 +29,7 @@ export default async function Home() {
     getList('articles', { limit: 10 }), // Fetch latest 10 articles
   ]);
 
-  let properties = propertiesData.contents as Property[];
+  const properties = propertiesData.contents as Property[];
 
   // Map MicroCMS articles to Article type, adding image fallback
   // Since we skipped MicroCMS image upload, we construct the path from the slug.
