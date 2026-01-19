@@ -93,15 +93,14 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
             {/* Dark Hero Section */}
             <div className="relative h-[60vh] w-full overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-b from-primary/60 via-primary/40 to-primary z-10" />
-                {article.eyecatch?.url && (
-                    <Image
-                        src={article.eyecatch.url}
-                        alt={article.title}
-                        fill
-                        className="object-cover"
-                        priority
-                    />
-                )}
+                <div className="absolute inset-0 bg-gradient-to-b from-primary/60 via-primary/40 to-primary z-10" />
+                <Image
+                    src={article.eyecatch?.url || `/images/articles/${article.slug}/01.webp`}
+                    alt={article.title}
+                    fill
+                    className="object-cover"
+                    priority
+                />
                 <div className="absolute bottom-0 left-0 w-full max-w-4xl mx-auto px-4 pb-12 z-20">
                     <div className="flex gap-3 mb-6">
                         {article.category?.map((cat) => (
