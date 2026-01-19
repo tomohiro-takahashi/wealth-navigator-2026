@@ -88,7 +88,10 @@ export default async function Home() {
 
             <div className="relative z-10 flex flex-col items-center text-center gap-12 w-full max-w-2xl mx-auto">
               <div className="space-y-8">
-                <h2 className="text-[40px] md:text-[44px] font-medium leading-[1.2] tracking-wide text-white drop-shadow-2xl font-serif">
+                <h2
+                  className="text-[40px] md:text-[44px] font-medium leading-[1.2] tracking-wide text-white drop-shadow-2xl font-serif"
+                  style={{ fontSize: '40px' }} // Fallback/Force for immediate verification
+                >
                   一流を、<br />再定義する。
                 </h2>
                 <p className="text-lg font-light leading-relaxed tracking-wide text-gray-300 font-serif">
