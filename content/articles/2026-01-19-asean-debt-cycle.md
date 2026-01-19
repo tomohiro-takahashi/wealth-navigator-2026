@@ -1,7 +1,7 @@
 ---
 title: レイ・ダリオの警告。米国・日本が沈む中、なぜ東南アジアだけが「聖域」なのか
 excerpt: 米国の政府債務は35兆ドルを超え、日本は260%。レイ・ダリオの「ビッグ・サイクル」が告げる先進国の衰退と、東南アジアの勃興。
-category: domestic
+category: overseas
 coverImage: /images/articles/asean-debt-cycle.webp
 ---
 
