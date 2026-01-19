@@ -269,10 +269,10 @@ export default async function Home() {
             <h3 className="font-serif text-2xl font-bold text-gray-900">
               真の豊かさとは、<br />選択肢を持つこと。
             </h3>
-            <p className="text-gray-600 leading-relaxed text-sm">
-              私たちは、単なる情報提供者ではありません。<br />
-              あなたの資産と人生の可能性を最大化する、<br />
-              影の参謀です。
+            <p className="text-gray-600 leading-relaxed text-sm text-justify md:text-center">
+              資産とは、数字の羅列ではない。それは、選択肢である。望む場所に住み、望む時間を生き、望む人々と過ごす。その自由を手にするための、静かなる力である。<br /><br />
+              Wealth Navigatorは、煽らない。甘言を弄さない。私たちが届けるのは、嵐の中でも進路を見失わないための「羅針盤」——厳選されたインテリジェンスと、本質を見抜く視座である。<br /><br />
+              知識こそが、最強の防衛策。そして、真の自由への最短距離である。
             </p>
           </div>
         </section>
