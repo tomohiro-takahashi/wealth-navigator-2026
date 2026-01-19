@@ -10,7 +10,6 @@ import { getCategoryLabel, cn } from '@/lib/utils';
 import Image from 'next/image';
 
 // キャッシュの設定: ISR (60秒)
-export const runtime = "edge";
 export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
