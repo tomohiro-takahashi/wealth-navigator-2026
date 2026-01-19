@@ -282,24 +282,7 @@ export default async function Home() {
       </div>
 
       {/* Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 z-50 flex h-[88px] w-full items-start justify-around border-t border-white/10 bg-[#161410]/95 px-2 pt-3 backdrop-blur-md pb-8 shadow-[0_-5px_20px_rgba(0,0,0,0.3)]">
-        <Link href="/" className="flex flex-col items-center gap-1.5 p-2 text-[#c59f59]">
-          <span className="material-symbols-outlined text-[28px]">home</span>
-          <span className="text-[11px] font-medium tracking-wide">ホーム</span>
-        </Link>
-        <Link href="/articles" className="flex flex-col items-center gap-1.5 p-2 text-gray-500 hover:text-white transition-colors">
-          <span className="material-symbols-outlined text-[28px]">trending_up</span>
-          <span className="text-[11px] font-medium tracking-wide">投資</span>
-        </Link>
-        <Link href="/concierge" className="flex flex-col items-center gap-1.5 p-2 text-gray-500 hover:text-white transition-colors">
-          <span className="material-symbols-outlined text-[28px]">diamond</span>
-          <span className="text-[11px] font-medium tracking-wide">コンシェルジュ</span>
-        </Link>
-        <Link href="/mypage" className="flex flex-col items-center gap-1.5 p-2 text-gray-500 hover:text-white transition-colors">
-          <span className="material-symbols-outlined text-[28px]">person</span>
-          <span className="text-[11px] font-medium tracking-wide">マイページ</span>
-        </Link>
-      </nav>
+
     </div>
   );
 }

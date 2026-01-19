@@ -39,7 +39,7 @@ export default function RootLayout({
       >
         {/* pt-0 because Hero often goes under header or handles its own spacing. Resetting default top padding. */}
         <Header />
-        <main className="flex-grow pb-16 md:pb-0">
+        <main className="flex-grow pb-24 md:pb-0">
           {children}
         </main>
         <Footer />
