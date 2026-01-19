@@ -134,7 +134,7 @@ async function main() {
             }
         }
 
-        // 3. Create Article
+        // 3. Create or Update Article
         const payload = {
             title: args.title,
             content: content,
@@ -151,14 +151,33 @@ async function main() {
             telop_text: args.telop_text || undefined,
         };
 
-        console.log('Creating article...');
-        const res = await client.create({
+        // Check for existing article with same title
+        console.log(`Checking for existing article with title: "${args.title}"...`);
+        const { contents: existingArticles } = await client.getList({
             endpoint: 'articles',
-            content: payload,
+            queries: { filters: `title[equals]${args.title}` }
         });
 
-        console.log(`[SUCCESS] Article created! ID: ${res.id}`);
-        console.log(`Review it here: https://${SERVICE_DOMAIN}.microcms.io/apis/articles/${res.id}`);
+        if (existingArticles.length > 0) {
+            const existingId = existingArticles[0].id;
+            console.log(`[FOUND] Existing article found (ID: ${existingId}). Updating...`);
+
+            await client.update({
+                endpoint: 'articles',
+                contentId: existingId,
+                content: payload,
+            });
+            console.log(`[SUCCESS] Article updated! ID: ${existingId}`);
+            console.log(`Review it here: https://${SERVICE_DOMAIN}.microcms.io/apis/articles/${existingId}`);
+        } else {
+            console.log('[NEW] No existing article found. Creating new article...');
+            const res = await client.create({
+                endpoint: 'articles',
+                content: payload,
+            });
+            console.log(`[SUCCESS] Article created! ID: ${res.id}`);
+            console.log(`Review it here: https://${SERVICE_DOMAIN}.microcms.io/apis/articles/${res.id}`);
+        }
 
     } catch (error) {
         console.error('[ERROR] Import failed:', error.message);
