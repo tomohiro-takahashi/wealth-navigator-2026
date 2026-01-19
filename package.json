@@ -8,7 +8,8 @@
     "deploy": "vercel --prod",
     "start": "next start",
     "lint": "eslint",
-    "generate:images": "npx tsx scripts/generate-images.ts"
+    "generate:images": "npx tsx scripts/generate-images.ts",
+    "sync:force": "npx tsx scripts/force_sync_images.ts"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
