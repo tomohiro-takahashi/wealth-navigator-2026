@@ -17,7 +17,7 @@ const client = createClient({
 });
 
 async function main() {
-    console.log('--- FORCIBLE IMAGE SYNC STARTED ---');
+    console.log('--- FORCIBLE IMAGE SYNC (AGGRESSIVE MODE) STARTED ---');
 
     // 1. Scan local images
     const imagesDir = path.resolve(__dirname, '../public/images/articles');
@@ -33,16 +33,15 @@ async function main() {
     console.log(`Found ${slugs.length} local article directories.`);
 
     // 2. Fetch all articles from MicroCMS
-    // Limit to 100 for now, or handle pagination if needed
     const { contents: articles } = await client.getList({
         endpoint: 'articles',
         queries: { limit: 100 }
     });
 
-    console.log(`Fetched ${articles.length} articles from MicroCMS.`);
+    console.log(`Fetched ${articles.length} articles from MicroCMS.\n`);
 
     for (const slug of slugs) {
-        console.log(`\nProcessing: ${slug}`);
+        console.log(`Processing: ${slug}`);
 
         // Find matching article
         const article = articles.find(a => a.slug === slug || a.id === slug);
@@ -52,111 +51,148 @@ async function main() {
             continue;
         }
 
+        // Auto-detect content field
+        let fieldName = '';
+        if (typeof article.content === 'string') fieldName = 'content';
+        else if (typeof article.body === 'string') fieldName = 'body';
+        else if (typeof article.text === 'string') fieldName = 'text';
+        else if (typeof article.html === 'string') fieldName = 'html';
+
+        if (!fieldName) {
+            console.log(`  [ERROR] No HTML content field detected. Keys: ${Object.keys(article).join(', ')}`);
+            continue;
+        }
+        console.log(`  [Slug: ${slug}] Detected HTML field: ${fieldName}`);
+
+        let content = article[fieldName] as string;
+        const originalContent = content;
+
+        // Get local images
         const localArticleDir = path.join(imagesDir, slug);
         const images = fs.readdirSync(localArticleDir)
             .filter(f => f.endsWith('.webp') || f.endsWith('.png'))
-            .sort(); // 01.webp, 02.webp ...
+            .sort(); // 01.webp, 02.webp...
 
         if (images.length === 0) {
             console.log(`  [SKIP] No images found locally.`);
             continue;
         }
 
-        let content = article.content || "";
-        console.log(`  Current Content Length: ${content.length}`);
-
-        // 3. Force Insertion Logic
+        // 3. Forced Insertion Logic
         let updated = false;
-        let originalContent = content;
 
-        // Strategy: Split by <h2, insert image before each H2 (starting from 1st or 2nd?)
-        // User said: "Insert before first h2 or subsequent"
-        // Let's split by <h2
-        const parts = content.split('<h2');
+        for (let i = 0; i < images.length; i++) {
+            const imgFile = images[i];
+            const imgPath = `/images/articles/${slug}/${imgFile}`;
 
-        if (parts.length <= 1) {
-            console.log(`  [WARN] No H2 tags found. Appending images to bottom.`);
-            // Fallback: Append all images at bottom if no H2
-            for (const imgFile of images) {
-                const imgPath = `/images/articles/${slug}/${imgFile}`;
-                if (!content.includes(imgPath)) {
-                    const imgTag = `<figure class="w-full my-8"><img src="${imgPath}" alt="${article.title}" width="1200" height="630" class="rounded-xl shadow-lg" /></figure>`;
-                    content += imgTag;
-                    updated = true;
-                }
+            // Check existence
+            if (content.includes(imgPath)) {
+                console.log(`  [SKIP] Image already exists: ${imgFile}`);
+                continue;
             }
-        } else {
-            // Reconstruct content
-            let newContent = parts[0]; // Intro
 
-            // We have parts[1]...parts[n] each starting with attributes of h2 and then content
-            // We want to inject images BETWEEN them or inside?
-            // "Before H2" means at the end of the previous section.
+            // Prepare Image Tag
+            const imgTag = `<figure class="w-full my-8"><img src="${imgPath}" alt="${article.title} - ${imgFile}" width="1200" height="630" class="rounded-xl shadow-lg" /></figure>`;
 
-            // Loop through available images
-            let imgIndex = 0;
+            // Decide where to insert
+            const h2Match = content.match(/<h2/);
 
-            // Start injecting from before the FIRST H2 (between intro and first H2)? 
-            // Or after first H2? Usually images look good inside sections.
-            // Let's try to inject before the H2 (at the end of the previous block)
-            // parts[0] + IMG + <h2 + parts[1] + IMG + <h2 + parts[2] ...
+            if (h2Match && h2Match.index !== undefined) {
+                // Insert before the first H2 (or subsequent if we were more complex, but user said "start" or "before H2")
+                // User requirement: "If H2 exists: Insert before first H2"
+                // Actually user said: "If H2 exists: Insert before first H2. If no H2: Insert at START."
 
-            for (let i = 1; i < parts.length; i++) {
-                // Check if we have an image to inject
-                if (imgIndex < images.length) {
-                    const imgFile = images[imgIndex];
-                    const imgPath = `/images/articles/${slug}/${imgFile}`;
+                // Let's stick to a simple strategy:
+                // If we have multiple images, we want to distribute them?
+                // The user prompt logic was: "before first H2 (or subsequent)".
 
-                    // Only inject if NOT already present
-                    // We check the WHOLE original content for this path to avoid duplicates if they are moved
-                    if (!originalContent.includes(imgPath)) {
-                        const imgTag = `<figure class="w-full my-8"><img src="${imgPath}" alt="${article.title}" width="1200" height="630" class="rounded-xl shadow-lg" /></figure>`;
-                        newContent += imgTag; // Append to end of previous section
-                        console.log(`  [INJECT] ${imgFile} before H2 #${i}`);
-                        updated = true;
+                // Simplified Interpretation for Aggressive Mode:
+                // Just put them all? No, we should distribute if possible, but the prompt says 
+                // "if H2 exists, insert before first H2".
+                // If we put ALL images before first H2, it's a gallery.
+                // Let's try to distribute: Image 1 before H2#1. Image 2 before H2#2?
+
+                // Splitting by H2 is safer for distribution.
+                const parts = content.split('<h2');
+                if (parts.length > i + 1) { // We have enough sections
+                    // Insert before H2 #(i+1). 
+                    // part[0] <h2 part[1] <h2 part[2]
+                    // Image 1 goes to end of part[0]. Image 2 goes to end of part[1].
+
+                    // However, string replacement is tricky with split.
+                    // Let's use specific replacement.
+
+                    // Actually, re-reading the prompt: "Check regular expression for <h2>... If not present, insert... If present, insert before first <h2>".
+
+                    // To be safe and aggressive:
+                    // Let's split content by H2 again to inject neatly.
+
+                    // Current content might have changed in this loop? 
+                    // Ah, if I modify `content` in the loop, indices shift.
+
+                    // Re-split current modified content
+                    const currentParts = content.split('<h2');
+                    if (currentParts.length > i + 1) {
+                        // Inject at the end of the previous part
+                        // effectively "before content.split('<h2')[i+1]"
+
+                        // We can construct new content
+                        let tempContent = currentParts[0];
+                        for (let k = 1; k < currentParts.length; k++) {
+                            if (k === i + 1) {
+                                // Inject image here (before this H2)
+                                tempContent += imgTag;
+                                console.log(`  [Slug: ${slug}] Inserting ${imgFile} before H2 #${k}`);
+                            }
+                            tempContent += '<h2' + currentParts[k];
+                        }
+                        content = tempContent;
                     } else {
-                        console.log(`  [EXISTS] ${imgFile} already in content.`);
+                        // Not enough H2s for this image, append to end or before first H2?
+                        // Fallback: Before FIRST H2
+                        console.log(`  [Slug: ${slug}] Not enough H2s for ${imgFile}. Inserting before H2 #1`);
+                        const p = content.split('<h2');
+                        p[0] += imgTag;
+                        content = p.join('<h2');
                     }
-                    imgIndex++;
-                }
 
-                newContent += '<h2' + parts[i];
-            }
-
-            // If there are leftover images (more images than H2s), append them to the end
-            while (imgIndex < images.length) {
-                const imgFile = images[imgIndex];
-                const imgPath = `/images/articles/${slug}/${imgFile}`;
-                if (!originalContent.includes(imgPath)) {
-                    const imgTag = `<figure class="w-full my-8"><img src="${imgPath}" alt="${article.title}" width="1200" height="630" class="rounded-xl shadow-lg" /></figure>`;
-                    newContent += imgTag;
-                    console.log(`  [INJECT] ${imgFile} at end.`);
-                    updated = true;
+                } else {
+                    // Should not happen if h2Match was true, unless parts length is 1 (start with H2?)
+                    // Just prepend to first H2
+                    console.log(`  [Slug: ${slug}] Inserting ${imgFile} before first H2 (fallback)`);
+                    const p = content.split('<h2');
+                    p[0] += imgTag;
+                    content = p.join('<h2');
                 }
-                imgIndex++;
+            } else {
+                // No H2 -> Insert at START
+                console.log(`  [Slug: ${slug}] Inserting ${imgFile} at START (No H2 found)`);
+                content = imgTag + content;
             }
-            content = newContent;
+            updated = true;
         }
 
+        // 4. Update
         if (updated) {
-            console.log(`  Updating MicroCMS for ${slug}...`);
+            console.log(`  [Slug: ${slug}] PATCH request sent...`);
             try {
+                // Ensure we send ONLY the detected field
+                const updateData: any = {};
+                updateData[fieldName] = content;
+
                 await client.update({
                     endpoint: 'articles',
                     contentId: article.id,
-                    content: {
-                        content: content
-                    }
+                    content: updateData
                 });
                 console.log(`  SUCCESS: [${slug}] Updated.`);
-            } catch (e) {
+            } catch (e: any) {
                 console.error(`  FAILED: [${slug}] Update failed.`, e.message);
             }
         } else {
-            console.log(`  [OK] No changes needed for ${slug}.`);
+            console.log(`  [Slug: ${slug}] No changes required (images present).`);
         }
     }
-
     console.log('--- SYNC COMPLETE ---');
 }
 
