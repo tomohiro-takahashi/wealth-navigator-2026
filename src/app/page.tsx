@@ -23,18 +23,25 @@ const getSummary = (content: string, limit: number = 80) => {
 
 export default async function Home() {
   // 1. Fetch Data
-  // We prioritize Local Markdown for "Latest Articles" as per request
-  // But we still fetch properties from CMS (or mock)
-  const [propertiesData] = await Promise.all([
-    getList('properties', { limit: 3, filters: 'status_badge[contains]おすすめ' })
+  // Switch to MicroCMS for consistency with production deployment
+  const [propertiesData, articlesData] = await Promise.all([
+    getList('properties', { limit: 3, filters: 'status_badge[contains]おすすめ' }),
+    getList('articles', { limit: 10 }), // Fetch latest 10 articles
   ]);
 
-  const localArticles = getLocalArticles();
-  // If local is empty, try CMS (Backward compatibility)? 
-  // For now, adhere to instruction: "Acquire Markdown articles".
-  const articles = localArticles;
-
   let properties = propertiesData.contents as Property[];
+
+  // Map MicroCMS articles to Article type, adding image fallback
+  // Since we skipped MicroCMS image upload, we construct the path from the slug.
+  const articles = (articlesData.contents as Article[]).map(article => ({
+    ...article,
+    eyecatch: article.eyecatch || {
+      url: `/images/articles/${article.slug}.webp`, // Fallback to local Vercel-hosted image
+      height: 600,
+      width: 800
+    },
+    // Ensure category is typed correctly if needed, though casting above handles it loosely
+  }));
 
   // ... property fallback logic ...
 
