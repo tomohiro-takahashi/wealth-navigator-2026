@@ -82,7 +82,8 @@ export default async function Home() {
           </div>
 
           {/* Key Visual Area */}
-          <div className="relative flex w-full flex-col items-center justify-center px-6 pt-20 pb-40">
+          {/* Key Visual Area */}
+          <div className="relative flex w-full flex-col items-center justify-center px-6 pt-20 pb-20">
             {/* Background Effect */}
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#4a4235] via-[#161410] to-[#161410] opacity-60 pointer-events-none"></div>
 
@@ -104,7 +105,7 @@ export default async function Home() {
                 <span className="material-symbols-outlined text-2xl transition-transform group-hover:translate-x-1">arrow_forward</span>
                 <div className="absolute inset-0 rounded-md ring-1 ring-inset ring-white/20 pointer-events-none"></div>
               </Link>
-              <Link href="/about" className="mt-4 flex h-14 w-full max-w-md mx-auto items-center justify-center gap-2 rounded-md border border-[#c59f59] bg-transparent px-8 text-base font-medium text-white transition-all duration-300 hover:bg-[#c59f59] hover:text-[#161410] active:scale-[0.98]">
+              <Link href="/about" className="mt-2 flex h-14 w-full max-w-md mx-auto items-center justify-center gap-2 rounded-md border border-[#c59f59] bg-transparent px-8 text-base font-medium text-white transition-all duration-300 hover:bg-[#c59f59] hover:text-[#161410] active:scale-[0.98]">
                 <span>About us 私たちについて</span>
               </Link>
             </div>
