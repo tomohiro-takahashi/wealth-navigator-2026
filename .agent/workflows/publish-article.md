@@ -146,11 +146,20 @@ This workflow automates the research, writing, image generation, and ingestion o
    - Run `python3 scripts/auto_video_maker.py [TOPIC_SLUG]`.
    - This outputs: `public/videos/[TOPIC_SLUG].mp4`.
 
-# Step 6: Google Drive Backup
+# Step 6: Social Media Strategy
+1. **Generate X (Twitter) Posts**:
+   - Run `python3 scripts/generate_social_posts.py [TOPIC_SLUG]`.
+   - Output: `content/social/[TOPIC_SLUG]_posts.md` (Summary/Question/Impact patterns).
+
+# Step 7: Google Drive Backup
 // turbo
 1. **Upload Assets**:
    - Run `python3 scripts/upload_to_drive.py [TOPIC_SLUG]`.
-   - This creates a folder `YYYY-MM-DD_[slug]` in Drive and uploads Video, Prompts, and Images.
+   - This creates a folder `YYYY-MM-DD_[slug]` in Drive and uploads:
+     - 【動画】 Video (.mp4)
+     - 【台本】 Script (Doc)
+     - 【プロンプト】 Prompts (Doc)
+     - 【SNS】 Social Posts (Doc)
 
 # Step 6: Completion
 ---

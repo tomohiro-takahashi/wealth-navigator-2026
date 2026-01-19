@@ -13,9 +13,19 @@ This workflow takes a raw markdown article, saves it, generates matching images,
    - Save the `[ARTICLE_CONTENT]` to the generated path.
    - Ensure the directory `content/articles/` exists.
 
+# Step 1.5: Content Polishing (AI Structure)
+1. **Apply Logic & Format**:
+   - Run `python3 scripts/polish_article.py content/articles/[filename-slug].md`.
+   - **Gemini 2.0 Flash** analyzes the raw content and:
+     - Formats it into strict HTML (`h2`, `h3`, `p`).
+     - Extracts "Expert Tips" into `<div class="expert-box">`.
+     - Inserts 3 comparison comparison tables if data exists.
+     - Inserts `IMAGE_ID_1`, `IMAGE_ID_2`, `IMAGE_ID_3` placeholders.
+   - **Result**: The file is overwritten with the high-quality HTML version.
+
 # Step 2: Image Generation
 1. **Analyze Content**:
-   - Read the saved file (Title and Introduction).
+   - Read the polished file.
    - Create a DALL-E 3 prompt based on: "Abstract, Luxury, Minimalist artwork representing [Theme of the article]".
 2. **Generate Image**:
    - Use `generate_image` tool.
@@ -34,8 +44,8 @@ This workflow takes a raw markdown article, saves it, generates matching images,
 
 # Step 3: Body Image Generation
 1. **Scan Content**:
-   - Read the saved article file.
-   - Look for placeholders like `IMAGE_ID_1`, `IMAGE_ID_2`, etc.
+   - Read the polished article file.
+   - Look for placeholders `IMAGE_ID_1`, `IMAGE_ID_2`, `IMAGE_ID_3`.
 2. **Process Each Placeholder**:
    - **Context Analysis**: Read the paragraph before and after the placeholder.
    - **Generate Image**:
@@ -64,7 +74,7 @@ This workflow takes a raw markdown article, saves it, generates matching images,
 
 # Step 6: Full Video Production
 1. **Generate Script & Prompts (Gemini)**:
-   - Run `node scripts/generate_video_script.js content/articles/YYYY-MM-DD-[theme].md`.
+   - Run `node scripts/generate_video_script.js [filename-slug]`.
    - This saves:
      - Script: `content/scripts/[filename-slug].md`
      - Prompts: `content/prompts/[filename-slug]_prompts.md`
@@ -73,15 +83,24 @@ This workflow takes a raw markdown article, saves it, generates matching images,
    - This reads the script and images, and outputs:
      - Video: `public/videos/[filename-slug].mp4`
 
-# Step 7: Google Drive Backup
+# Step 7: Social Media Strategy
+1. **Generate X (Twitter) Posts**:
+   - Run `python3 scripts/generate_social_posts.py [filename-slug]`.
+   - Output: `content/social/[filename-slug]_posts.md` (Summary/Question/Impact patterns).
+
+# Step 8: Google Drive Backup
 1. **Upload Assets**:
    - Run `python3 scripts/upload_to_drive.py [filename-slug]`.
-   - This creates a folder `YYYY-MM-DD_[slug]` in Drive and uploads Video, Prompts, and Images.
+   - This creates a folder `YYYY-MM-DD_[slug]` in Drive and uploads:
+     - 【動画】 Video (.mp4)
+     - 【台本】 Script (Doc)
+     - 【プロンプト】 Prompts (Doc)
+     - 【SNS】 Social Posts (Doc)
 
-# Step 7: Completion
+# Step 9: Completion
 1. Notify variables:
    - `[MicroCMS Preview URL]`
-2. Send final confirmation message to the user: "Article finalized, uploaded to MicroCMS, and images pushed to Production."
+2. Send final confirmation message to the user: "Article finalized, polished, uploaded to MicroCMS, and images pushed to Production."
 
 ---
 To run: `/finalize-article [ARTICLE_CONTENT]`

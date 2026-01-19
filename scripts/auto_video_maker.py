@@ -15,11 +15,10 @@ from moviepy import *
 # but 'concatenate_videoclips' etc are top level.
 
 # --- Configuration ---
-VOICE = "ja-JP-NanamiNeural"  # Creating a human-like feel
+# --- Configuration ---
+VOICE = "ja-JP-KeitaNeural"  # Male Voice
 VIDEO_WIDTH = 1080
 VIDEO_HEIGHT = 1920
-FONT_SIZE = 60
-STROKE_WIDTH = 4
 
 # Usage: python3 auto_video_maker.py [slug]
 
@@ -32,86 +31,14 @@ BASE_DIR = os.getcwd()
 SCRIPT_PATH = os.path.join(BASE_DIR, "content/scripts", f"{SLUG}.md")
 IMAGE_DIR = os.path.join(BASE_DIR, "public/images/articles")
 OUTPUT_DIR = os.path.join(BASE_DIR, "public/videos")
+SUBTITLE_DIR = os.path.join(BASE_DIR, "content/social") # Save subtitles to social folder for easy access
 OUTPUT_FILE = os.path.join(OUTPUT_DIR, f"{SLUG}.mp4")
+SUBTITLE_FILE = os.path.join(SUBTITLE_DIR, f"【自動生成動画テロップ】{SLUG}.txt")
 
 if not os.path.exists(OUTPUT_DIR):
     os.makedirs(OUTPUT_DIR)
-
-# 1. Font Finder for macOS/Linux to avoid Tofu
-def get_japanese_font_path():
-    """Find a suitable Japanese font on the system."""
-    # Priority list for macOS
-    candidates = [
-        "/System/Library/Fonts/ヒラギノ角ゴシック W6.ttc",  # Hiragino Sans W6 (Bold)
-        "/System/Library/Fonts/Hiragino Sans GB.ttc",
-        "/System/Library/Fonts/JejuGothic.ttf",           # Fallback
-        "/Library/Fonts/Arial Unicode.ttf",
-        "/System/Library/Fonts/AppleSDGothicNeo.ttc"
-    ]
-    
-    for path in candidates:
-        if os.path.exists(path):
-            return path
-            
-    # Fallback to system default (might fail for JP)
-    return "Arial" 
-
-FONT_PATH = get_japanese_font_path()
-print(f"Using Font: {FONT_PATH}")
-
-# 2. Text Clip Generator (Using Pillow for Robustness vs ImageMagick)
-def create_caption_clip(text, duration, width=VIDEO_WIDTH, height=VIDEO_HEIGHT):
-    """
-    Creates a MoviePy ImageClip containing the captioned text.
-    Uses PIL to draw text with stroke (background transparent).
-    """
-    # Create a transparent image
-    img = Image.new('RGBA', (width, height), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-    
-    # Load Font
-    try:
-        font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
-    except Exception:
-        font = ImageFont.load_default()
-    
-    # Wrap text
-    # Estimate chars per line (rough)
-    max_chars = 16
-    lines = textwrap.wrap(text, width=max_chars)
-    
-    # Calculate text position (Bottom Center)
-    # Start drawing from bottom - margin
-    # Full height of text block
-    line_h = FONT_SIZE * 1.5
-    total_text_h = len(lines) * line_h
-    start_y = height - total_text_h - 200 # 200px margin from bottom
-    
-    for i, line in enumerate(lines):
-        # Calculate text width to center
-        # bbox = draw.textbbox((0, 0), line, font=font)
-        # w = bbox[2] - bbox[0]
-        # h = bbox[3] - bbox[1]
-        # Pillow < 10 might verify textsize
-        w = draw.textlength(line, font=font)
-        x = (width - w) / 2
-        y = start_y + (i * line_h)
-        
-        # Draw Stroke (Black)
-        draw.text((x-STROKE_WIDTH, y), line, font=font, fill="black")
-        draw.text((x+STROKE_WIDTH, y), line, font=font, fill="black")
-        draw.text((x, y-STROKE_WIDTH), line, font=font, fill="black")
-        draw.text((x, y+STROKE_WIDTH), line, font=font, fill="black")
-        
-        # Draw Text (White)
-        draw.text((x, y), line, font=font, fill="white")
-    
-    # Convert PIL image to numpy array for MoviePy
-    img_np = np.array(img)
-    
-    # Create Clip
-    txt_clip = ImageClip(img_np).with_duration(duration)
-    return txt_clip
+if not os.path.exists(SUBTITLE_DIR):
+    os.makedirs(SUBTITLE_DIR)
 
 # 3. Script Parsing
 def parse_script(file_path):
@@ -137,9 +64,19 @@ def parse_script(file_path):
             if len(parts) >= 4:
                 audio_text = parts[3]
                 if audio_text and audio_text != "Audio":
+                    # Clean Audio text
+                    # Remove timestamps, Visual descriptions, or "Narration 1:" prefixes
+                    # Regex to remove "Narration X:", "Narrator:", "Visual:" etc
+                    import re
+                    # Remove "Narration 1:", "Narrator 1:", "M1:", "Male:", etc.
+                    cleaned_text = re.sub(r'^(Narration\s*\d*:|Narrator:|Man:|Woman:|Visual:|Audio:)\s*', '', audio_text, flags=re.IGNORECASE)
+                    
                     # Remove any markdown bold/italic
-                    audio_text = audio_text.replace('**', '').replace('*', '')
-                    audio_segments.append(audio_text)
+                    cleaned_text = cleaned_text.replace('**', '').replace('*', '')
+                    cleaned_text = cleaned_text.strip()
+                    
+                    if cleaned_text:
+                        audio_segments.append(cleaned_text)
                     
     return audio_segments
 
@@ -166,18 +103,11 @@ def process_image_for_clip(img_path, duration):
         x_center = w / 2
         clip = clip.cropped(x1=x_center - VIDEO_WIDTH/2, y1=0, width=VIDEO_WIDTH, height=VIDEO_HEIGHT)
     
-    # Ken Burns Effect (Slow Zoom)
-    # In MoviePy v2, simple zoom can be tricky.
-    # We'll stick to a static beautiful crop for stability in "Auto" mode, 
-    # OR try a safe transform if available.
-    # For V2 reliability, let's keep it static but ensure high quality.
-    # If the user INSISTS on zoom, we can try `vfx.scroll` or similar, but often it breaks compilation.
-    
     return clip
 
 # --- MAIN ---
 async def main():
-    print(f"🎬 Starting Video Engine V2 for: {SLUG}")
+    print(f"🎬 Starting Video Engine V3 (Clean) for: {SLUG}")
     print(f"🎙️  Voice: {VOICE}")
     
     # 1. Get Segments
@@ -198,6 +128,7 @@ async def main():
 
     final_clips = []
     temp_files = []
+    subtitle_lines = []
 
     print(f"Processing {len(segments)} segments...")
 
@@ -214,22 +145,19 @@ async def main():
         img_path = images[i % len(images)]
         img_clip = process_image_for_clip(img_path, duration)
         
-        # C. Caption (Subtitle)
-        txt_clip = create_caption_clip(text, duration)
-        
-        # D. Composite
-        # Image at bottom, Text on top
-        video_segment = CompositeVideoClip([img_clip, txt_clip]).with_duration(duration)
-        video_segment = video_segment.with_audio(audio_clip)
+        # C. Composite (No Captions)
+        # Just Image with Audio
+        video_segment = img_clip.with_audio(audio_clip)
         
         final_clips.append(video_segment)
+        subtitle_lines.append(text)
         print(f"  [{i+1}/{len(segments)}] Generated clip ({duration:.1f}s): {text[:20]}...")
 
     # 3. Concatenate
     print("Combining clips...")
     final_video = concatenate_videoclips(final_clips)
     
-    # 4. Write File
+    # 4. Write Video File
     print(f"Writing to {OUTPUT_FILE}...")
     final_video.write_videofile(
         OUTPUT_FILE, 
@@ -239,7 +167,12 @@ async def main():
         threads=4
     )
     
-    print("✅ Video Generation V2 Complete!")
+    # 5. Write Subtitle File
+    print(f"Writing subtitles to {SUBTITLE_FILE}...")
+    with open(SUBTITLE_FILE, "w", encoding="utf-8") as f:
+        f.write("\n\n".join(subtitle_lines))
+        
+    print("✅ Video Generation V3 Complete!")
     
     # Cleanup
     for f in temp_files:

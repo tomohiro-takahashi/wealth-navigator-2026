@@ -1,0 +1,7 @@
+- Prompt 1: A panoramic view of a bustling Tokyo financial district with skyscrapers piercing through a cloudy sky, juxtaposed with a rapidly declining Japanese Yen symbol animation, creating a sense of impending economic crisis. The scene should evoke a feeling of unease and uncertainty.
+- Prompt 2: A high-definition shot of a family sadly canceling their dream vacation abroad due to the weak Japanese Yen, followed by a montage of rising prices in local Japanese stores, symbolizing the impact of inflation and the declining purchasing power of the Yen.
+- Prompt 3: Visualize a modern minimalist apartment interior in Tokyo, with a person looking anxiously at a news ticker showing the Yen's plummeting value. Outside the window, a futuristic city fades into the horizon, suggesting a sense of lost economic power.
+- Prompt 4: A montage of images showcasing the beauty and luxury of overseas properties in destinations like the Philippines and Malaysia, transitioning smoothly into visuals of financial charts and graphs indicating potential returns and stability amidst Yen depreciation.
+- Prompt 5: Depict a diverse group of people attending a virtual seminar on overseas property investment, animated with vibrant colors and interactive elements. The scene should convey hope and empowerment as individuals explore alternative strategies to safeguard their assets during the Yen's decline.
+
+これらの成果物が、あなたの動画制作に役立つことを願っています。

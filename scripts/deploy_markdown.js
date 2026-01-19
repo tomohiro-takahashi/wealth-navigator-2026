@@ -17,36 +17,7 @@ const client = createClient({
     apiKey: API_KEY,
 });
 
-async function uploadImage(imagePath) {
-    if (!fs.existsSync(imagePath)) {
-        throw new Error(`Image file not found: ${imagePath}`);
-    }
-
-    const fileBuffer = fs.readFileSync(imagePath);
-    const fileName = path.basename(imagePath);
-    const formData = new FormData();
-    const blob = new Blob([fileBuffer]);
-    formData.append('file', blob, fileName);
-
-    console.log(`Uploading image: ${fileName}...`);
-
-    const response = await fetch(`https://upload.microcms.io/api/v1/media`, {
-        method: 'POST',
-        headers: {
-            'X-MICROCMS-API-KEY': API_KEY,
-        },
-        body: formData,
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to upload image: ${response.status} ${response.statusText} - ${errorText}`);
-    }
-
-    const data = await response.json();
-    console.log(`Image uploaded successfully: ${data.url}`);
-    return data.url;
-}
+// uploadImage function removed as we use local paths
 
 function parseFrontmatter(text) {
     const match = text.match(/^---\n([\s\S]*?)\n---/);
@@ -103,42 +74,16 @@ async function main() {
     }
 
     // 2. Handle Images
-    // Find all images: ![alt](/images/...) or <img src="/images/...">
-    // We assume mostly standard markdown for this workflow
-    const imageRegex = /!\[.*?\]\((.*?)\)/g;
-    const matches = [...finalBody.matchAll(imageRegex)];
+    // Logic Changed: Do NOT upload to MicroCMS. Use Vercel-hosted local paths directly.
+    // The images are already in public/images/articles/[slug].webp via previous steps.
+    // The Markdown content typically references them as /images/articles/[slug].webp.
+    // We simply keep them as is.
 
-    // Include coverImage in list to process
-    const imageMap = new Map(); // LocalPath -> RemoteURL
+    console.log('Skipping MicroCMS Image Upload (Using Vercel-hosted paths)...');
 
-    const allImages = matches.map(m => m[1]);
-    if (coverImageRef) allImages.push(coverImageRef);
+    // 3. Replace in Body (No longer needed as we use local paths, but valid if we needed to fix paths)
+    // Current markdown already has /images/articles/... so no replacement needed.
 
-    // Filter duplicates and only process local images
-    const uniqueImages = [...new Set(allImages)].filter(img => img.startsWith('/'));
-
-    for (const imgPath of uniqueImages) {
-        // Map /images/articles/xxx -> public/images/articles/xxx
-        const localSystemPath = path.join(process.cwd(), 'public', imgPath);
-
-        try {
-            const remoteUrl = await uploadImage(localSystemPath);
-            imageMap.set(imgPath, remoteUrl);
-        } catch (e) {
-            console.warn(`[WARN] Failed to process image ${imgPath}: ${e.message}`);
-            console.warn(`[WARN] Keeping local path: ${imgPath}. Ensure this image is deployed to your frontend server.`);
-            // Do not exit, just keep the local path (by not setting it in imageMap, or mapping to itself)
-            imageMap.set(imgPath, imgPath);
-        }
-    }
-
-    // 3. Replace in Body
-    imageMap.forEach((remoteUrl, localPath) => {
-        // Only replace if they are different
-        if (remoteUrl !== localPath) {
-            finalBody = finalBody.split(localPath).join(remoteUrl);
-        }
-    });
 
     // 4. Extract Expert Tip
     const expertTip = extractExpertTip(finalBody);
@@ -147,8 +92,8 @@ async function main() {
     const payload = {
         title: title,
         content: finalBody,
-        category: ['overseas'], // Defaulting to overseas for this specific task context, or could infer
-        target_yield: "0", // Default
+        category: frontmatter.category ? [frontmatter.category] : ['overseas'],
+        target_yield: frontmatter.target_yield || "0",
         expert_tip: expertTip,
     };
 
