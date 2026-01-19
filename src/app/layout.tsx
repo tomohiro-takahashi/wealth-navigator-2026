@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP, Shippori_Mincho } from "next/font/google"; // Removed Geist as per new design
-import "./globals.css";
+import "./styles.css";
 
 const notoSansJP = Noto_Sans_JP({
   variable: "--font-noto-sans",
