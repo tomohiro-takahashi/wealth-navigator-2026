@@ -4,10 +4,12 @@ import { Article } from '@/types';
 import { DynamicCTA } from '@/components/cta/DynamicCTA';
 import { ExpertTip } from '@/components/articles/ExpertTip';
 import { ArticleTOC } from '@/components/articles/ArticleTOC';
-import { injectTOCIds } from '@/lib/html-utils';
+import { injectTOCIds, processArticleContent } from '@/lib/html-utils';
 import { Metadata } from 'next';
 import { getCategoryLabel, cn } from '@/lib/utils';
 import Image from 'next/image';
+import parse, { Element } from 'html-react-parser';
+import { ImageWithPlaceholder } from '@/components/articles/ImageWithPlaceholder';
 
 // キャッシュの設定: ISR (60秒)
 export const revalidate = 60;
@@ -50,8 +52,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         day: 'numeric',
     });
 
-    // Inject TOC IDs
-    const { html: contentWithIds, toc } = injectTOCIds(article.content);
+
+    // Process Content (Markdown -> HTML + Frontmatter Strip + TOC + Image Injection)
+    const { html: contentWithIds, toc } = await processArticleContent(article.content);
 
     // 構造化データ (Article)
     const articleLd = {
@@ -157,7 +160,21 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                         "prose-tr:hover:bg-white/5 prose-tr:transition-colors",
                         article.math_enabled && "math-enabled"
                     )}>
-                        <div dangerouslySetInnerHTML={{ __html: contentWithIds }} />
+                        {parse(contentWithIds, {
+                            replace: (domNode) => {
+                                if (domNode instanceof Element && domNode.name === 'img') {
+                                    const { src, alt, width, height } = domNode.attribs;
+                                    return (
+                                        <ImageWithPlaceholder
+                                            src={src} // Ensure src is passed
+                                            alt={alt || ''}
+                                            width={width}
+                                            height={height}
+                                        />
+                                    );
+                                }
+                            }
+                        })}
                     </div>
 
                     {/* Dynamic CTA */}

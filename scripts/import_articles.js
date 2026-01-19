@@ -19,37 +19,26 @@ const client = createClient({
 });
 
 /**
- * Upload image to microCMS Media API
+ * Handle image: Copy to public/images/articles/ and return relative path
  */
-async function uploadImage(imagePath) {
+function handleImage(imagePath) {
     if (!fs.existsSync(imagePath)) {
         throw new Error(`Image file not found: ${imagePath}`);
     }
 
-    const fileBuffer = fs.readFileSync(imagePath);
     const fileName = path.basename(imagePath);
-    const formData = new FormData();
-    const blob = new Blob([fileBuffer]);
-    formData.append('file', blob, fileName);
-
-    console.log(`Uploading image: ${fileName}...`);
-
-    const response = await fetch(`https://upload.microcms.io/api/v1/media`, {
-        method: 'POST',
-        headers: {
-            'X-MICROCMS-API-KEY': API_KEY,
-        },
-        body: formData,
-    });
-
-    if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to upload image: ${response.status} ${response.statusText} - ${errorText}`);
+    // Dest: public/images/articles/
+    const destDir = path.resolve(__dirname, '../public/images/articles');
+    if (!fs.existsSync(destDir)) {
+        fs.mkdirSync(destDir, { recursive: true });
     }
 
-    const data = await response.json();
-    console.log(`Image uploaded successfully: ${data.url}`);
-    return data.url;
+    const destPath = path.join(destDir, fileName);
+    fs.copyFileSync(imagePath, destPath);
+    console.log(`[LOCAL] Copied image to: ${destPath}`);
+
+    // Return URL path relative to public root
+    return `/images/articles/${fileName}`;
 }
 
 /**
@@ -85,20 +74,36 @@ function parseArgs() {
 async function main() {
     const args = parseArgs();
 
-    // Validate required arguments
-    if (!args.file || !args.title || !args.category) {
-        console.error('Usage: node scripts/import_articles.js --file <path> --title <title> --category <category> --expert_tip <tip> --target_yield <yield> [--images <path1> <path2>...] [--slug <slug>]');
+    // Validate required arguments for minimal operation
+    if (!args.file || !args.title) {
+        console.error('Usage: node scripts/import_articles.js --file <path> --title <title> [options]');
         process.exit(1);
     }
 
     try {
+
         // 1. Read Content
         let content = fs.readFileSync(args.file, 'utf8');
 
-        // 2. Upload Images and Replace Placeholders
-        // Expected Logic:
-        // Input: --images A.png B.png C.png
-        // Content Placeholders: IMAGE_ID_1, IMAGE_ID_2, IMAGE_ID_3
+
+        // STRIP FRONTMATTER: Use regex to remove YAML block at the start
+        content = content.replace(/^---[\s\S]*?---\s*/, '').trim();
+
+        // SPLIT EXPERT TIP: Extract <div class="expert-box">...</div>
+        // If expert_tip is not provided in args, try to extract it.
+        // Always remove it from body to prevent duplication with the ExpertTip component.
+        const expertTipRegex = /<div class="expert-box">([\s\S]*?)<\/div>/;
+        const expertTipMatch = content.match(expertTipRegex);
+        if (expertTipMatch) {
+            const extractedTip = expertTipMatch[1].trim();
+            console.log('[INFO] Extracted Expert Tip from content.');
+            if (!args.expert_tip) {
+                args.expert_tip = extractedTip;
+            }
+            content = content.replace(expertTipRegex, '').trim();
+        }
+
+        // 2. Handle Images (Local Copy)
         if (args.images.length > 0) {
             console.log(`Processing ${args.images.length} images...`);
 
@@ -107,7 +112,8 @@ async function main() {
                 const imageIdPlaceholder = `IMAGE_ID_${i + 1}`;
 
                 try {
-                    const imageUrl = await uploadImage(imagePath);
+                    // Start local handler
+                    const imageUrl = handleImage(imagePath);
 
                     // Replace placeholder in content
                     if (content.includes(imageIdPlaceholder)) {
@@ -118,38 +124,25 @@ async function main() {
                     }
 
                 } catch (error) {
-                    console.warn(`[WARN] Image upload failed for ${imagePath}: ${error.message}`);
-                    console.warn(`[WARN] Using local path fallback. Ensure images are deployed to production.`);
-
-                    // Fallback: Use the local path relative to public/
-                    // Assuming imagePath is something like "public/images/tmp/foo.png"
-                    // We need "/images/tmp/foo.png" for the src
-                    const publicRelPath = imagePath.replace('public/', '/');
-
-                    if (content.includes(imageIdPlaceholder)) {
-                        content = content.replace(new RegExp(imageIdPlaceholder, 'g'), publicRelPath);
-                        console.log(`[FALLBACK] ${imageIdPlaceholder} -> ${publicRelPath}`);
-                    }
+                    console.warn(`[WARN] Image processing failed for ${imagePath}: ${error.message}`);
                 }
             }
         }
 
-        // 3. Create or Update Article
+        // 3. Construct Payload (Only include fields if present in args)
         const payload = {
             title: args.title,
-            content: content,
-            category: [args.category],
-            slug: args.slug || undefined,
-            target_yield: args.target_yield || "0",
-            expert_tip: args.expert_tip || "",
-            meta_title: args.meta_title || undefined,
-            meta_description: args.meta_description || undefined,
-            keywords: args.keywords || undefined,
-            video_script_a: args.video_script_a || undefined,
-            video_script_b: args.video_script_b || undefined,
-            prop_list: args.prop_list || undefined,
-            telop_text: args.telop_text || undefined,
+            content: content, // Content is always updated from file
         };
+
+        if (args.category) payload.category = [args.category];
+        if (args.slug) payload.slug = args.slug;
+        if (args.target_yield) payload.target_yield = args.target_yield;
+        if (args.expert_tip) payload.expert_tip = args.expert_tip;
+        if (args.meta_title) payload.meta_title = args.meta_title;
+        if (args.meta_description) payload.meta_description = args.meta_description;
+        if (args.keywords) payload.keywords = args.keywords;
+        // Add other fields as needed, but DO NOT default to empty string
 
         // Check for existing article with same title
         console.log(`Checking for existing article with title: "${args.title}"...`);
@@ -161,6 +154,7 @@ async function main() {
         if (existingArticles.length > 0) {
             const existingId = existingArticles[0].id;
             console.log(`[FOUND] Existing article found (ID: ${existingId}). Updating...`);
+            console.log('Update Payload:', JSON.stringify(payload, null, 2));
 
             await client.update({
                 endpoint: 'articles',
@@ -168,15 +162,17 @@ async function main() {
                 content: payload,
             });
             console.log(`[SUCCESS] Article updated! ID: ${existingId}`);
-            console.log(`Review it here: https://${SERVICE_DOMAIN}.microcms.io/apis/articles/${existingId}`);
         } else {
             console.log('[NEW] No existing article found. Creating new article...');
-            const res = await client.create({
+            // For creation, we might want defaults if fields are mandatory, 
+            // but for now let's send what we have. API might validation error if missing required.
+            if (!payload.category) payload.category = ['overseas']; // Default for creation only
+
+            await client.create({
                 endpoint: 'articles',
                 content: payload,
             });
-            console.log(`[SUCCESS] Article created! ID: ${res.id}`);
-            console.log(`Review it here: https://${SERVICE_DOMAIN}.microcms.io/apis/articles/${res.id}`);
+            console.log(`[SUCCESS] Article created!`);
         }
 
     } catch (error) {

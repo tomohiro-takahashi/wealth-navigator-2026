@@ -11,16 +11,77 @@ coverImage: "/images/articles/vintage-superiority.webp"
 <div class="image-wrapper"><img src="/images/articles/vintage-superiority_1.webp" alt="都心のヴィンテージマンション"></div>
 <div class="expert-box">【30年のプロの眼】新築の「プレミアム」は虚飾に過ぎない。真に価値ある不動産は、立地、土地持ち分、そして歴史が証明する品質にある。ヴィンテージ物件にこそ、富を築くチャンスが眠っている。</div>
 
+
 <h3>はじめに——鍵を開けた瞬間、あなたは損をしている</h3>
 <p>新築マンションの購入は、資産価値の減少から始まる。購入と同時に「新築プレミアム」が剥落し、市場価格は大きく下落する。この構造的な欠陥を理解せず、新築に固執するのは愚策と言える。</p>
+
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-center border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10 text-left">経過年数</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">新築マンション (8,000万円)</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">ヴィンテージ (8,000万円)</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">購入直後 (鍵引渡し)</td>
+        <td class="py-4 px-6 text-red-400">6,500万円 (▼1,500万)<br/><span class="text-xs">プレミアム剥落</span></td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">8,000万円 (±0)<br/><span class="text-xs">市場価値そのまま</span></td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">10年後</td>
+        <td class="py-4 px-6 text-red-500">5,500万円 (▼30%)<br/><span class="text-xs">建物減価の進行</span></td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">8,500万円 (△5%)<br/><span class="text-xs">土地値上昇が上回る</span></td>
+      </tr>
+      <tr class="hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">20年後</td>
+        <td class="py-4 px-6 text-red-600 font-bold">4,000万円 (半値)<br/><span class="text-xs">大規模修繕リスク</span></td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">9,000万円 (資産化)<br/><span class="text-xs">希少性・建て替え期待</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 <p>日本人の「新品信仰」は、不動産投資においては足枷となる。欧米の富裕層がヴィンテージ物件を重視するのに対し、日本人は新築に過剰な価値を見出す。この価値観の転換こそが、賢明な投資への第一歩である。</p>
 
 <h3>タワーマンションという名の「空中のコンクリート」</h3>
 <p>タワーマンションは、その眺望や共用施設の魅力に隠されがちだが、本質的な欠陥を抱えている。それは「土地の裏付けの欠如」である。高層階の住戸は、文字通り「空中のコンクリート」に過ぎず、土地という不動産の根幹を欠いている。</p>
 <p>50年後を想像してほしい。コンクリートの劣化、設備の陳腐化、そして高額な修繕費用。タワーマンションは、長期的な資産価値の維持が極めて難しい物件と言える。</p>
 
+
 <h3>土地本位制——インフレに勝てる唯一の資産</h3>
 <p>不動産投資の原則は、「土地」にある。建物は減価償却資産だが、土地は有限であり、その価値は不変である。特にインフレ局面においては、土地の価値は相対的に上昇し、資産を守る盾となる。</p>
+
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-center border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10 text-left">物件種別</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">土地：建物 比率</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">30年後の価値</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">タワーマンション (高層)</td>
+        <td class="py-4 px-6 text-red-400">1 : 9 (土地極小)</td>
+        <td class="py-4 px-6 text-red-400">激減 (建物部分が消滅に近づく)</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">新築マンション (一般)</td>
+        <td class="py-4 px-6">3 : 7</td>
+        <td class="py-4 px-6 text-yellow-400">半減 (建物依存度が高い)</td>
+      </tr>
+      <tr class="hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">都心ヴィンテージ (低層)</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">7 : 3 (土地メイン)</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">維持・上昇 (土地値が支配的)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <p>タワーマンションの高層階など、土地持ち分の少ない不動産は、インフレに対する耐性が低い。長期的な資産形成を目指すなら、「土地の持ち分」を最大化する戦略こそが合理的だ。</p>
 <div class="image-wrapper"><img src="/images/articles/vintage-superiority_2.webp" alt="土地の価値を示すグラフ"></div>
 <h3>都心3区×低層マンションという解</h3>

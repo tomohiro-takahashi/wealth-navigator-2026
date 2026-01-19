@@ -17,17 +17,85 @@ coverImage: /images/articles/2026-01-18-tokyo-one-room-alchemy_cover.webp
 
 ## 第四章：真の錬金術——都心ヴィンテージ×低レバレッジという解
 
-### 土地値こそがインフレヘッジ
-ここまで、ワンルーム新築投資の問題点を指摘してきた。では、不動産投資そのものが間違いなのか。そうではない。問題は「何を買うか」「どう買うか」である。
 
-30年の経験が教える真実がある。**真の資産は「都心3区（千代田・中央・港）の低層・中古（Vintage）」にある。**なぜか。土地の持ち分が大きいからである。
+<h3>土地値こそがインフレヘッジ——幻想と現実の比較</h3>
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-left border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">比較項目</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">新築ワンルーム (偽物)</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">都心ヴィンテージ (本物)</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">価格構成</td>
+        <td class="py-4 px-6 text-red-400">建物70% / 土地30%<br/><span class="text-xs">減価する建物にお金を払う</span></td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">建物30% / 土地70%<br/><span class="text-xs">価値ある土地にお金を払う</span></td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">販売価格</td>
+        <td class="py-4 px-6">業者の利益が乗った「定価」<br/><span class="text-xs">(相場より2-3割高い)</span></td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">市場原理で決まる「時価」<br/><span class="text-xs">(割安な歪みがある)</span></td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">資産価値</td>
+        <td class="py-4 px-6 text-red-400">購入直後から下落開始</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">横ばい、または上昇</td>
+      </tr>
+      <tr class="hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">インフレ耐性</td>
+        <td class="py-4 px-6">弱い (建物は劣化する)</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">最強 (土地は劣化しない)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p>築30年、40年のヴィンテージマンションは、新築に比べて価格が抑えられている。建物の減価償却が進み、価格に占める土地の比率が高まっている。これは投資家にとって有利である。</p>
 
-10戸程度の低層マンション、敷地面積300㎡、坪単価800万円の港区であれば、土地の持ち分は30㎡、2,400万円相当になる。6,000万円の物件のうち、40%が土地の価値である。この土地は、インフレが進行しても減価しない。むしろ、インフレとともに価値が上昇する。土地の持ち分こそが、真のインフレヘッジなのである。
 
-築30年、40年のヴィンテージマンションは、新築に比べて価格が抑えられている。建物の減価償却が進み、価格に占める土地の比率が高まっている。これは投資家にとって有利である。建物価値の下落余地が小さく、土地価値の上昇を享受できる。「安く買って、土地を持つ」——これが真の錬金術である。
+<h3>2026年シミュレーション：金利上昇が招く「逆回転」</h3>
+<p>もう一つ重要なのは、レバレッジの使い方である。フルローンで4,000万円のワンルームを買うことは、レバレッジを最大化する行為である。金利が低い時代には有効に見えるが、金利が上昇すれば、レバレッジは逆回転を始める。</p>
 
-### 低レバレッジの重要性
-もう一つ重要なのは、レバレッジの使い方である。フルローンで4,000万円のワンルームを買うことは、レバレッジを最大化する行為である。金利が低い時代には有効に見えるが、金利が上昇すれば、レバレッジは逆回転を始める。
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-center border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10 text-left">金利シナリオ</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">月額返済</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">収支 (CF)</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">判定</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">現在 (0.5%)</td>
+        <td class="py-4 px-6">10.5万円</td>
+        <td class="py-4 px-6 text-yellow-400">トントン</td>
+        <td class="py-4 px-6">ギリギリ維持</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">上昇 (1.5%)</td>
+        <td class="py-4 px-6">12.3万円</td>
+        <td class="py-4 px-6 text-red-400">▲1.8万円</td>
+        <td class="py-4 px-6">持ち出し発生</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">本格化 (2.5%)</td>
+        <td class="py-4 px-6">14.2万円</td>
+        <td class="py-4 px-6 text-red-500 font-bold">▲3.7万円</td>
+        <td class="py-4 px-6 text-red-500 font-bold">給与補填不可避</td>
+      </tr>
+      <tr class="hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">金利正常化 (4.0%)</td>
+        <td class="py-4 px-6">17.5万円</td>
+        <td class="py-4 px-6 text-red-600 font-bold">▲7.0万円</td>
+        <td class="py-4 px-6 text-red-600 font-bold">破産リスク大</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 賢明な投資家（Wealth Navigator）は、自己資金を十分に用意し、低レバレッジで投資する。6,000万円のヴィンテージ物件を、3,000万円の自己資金と3,000万円のローンで購入する。LTV（Loan to Value）50%。この水準であれば、金利が上昇しても、持ち出しは限定的である。物件価格が20%下落しても、債務超過には陥らない。
 

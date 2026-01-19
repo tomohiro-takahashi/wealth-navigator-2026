@@ -112,23 +112,16 @@ This workflow automates the research, writing, image generation, and ingestion o
    - Prompt: "[Context extracted from text around IMAGE_ID_1] + photorealistic luxury style. Cinematic lighting, 8k resolution".
    - Output: `[Artifact Path]`
    - **Optimize**: Run `node scripts/optimize_image.js [Artifact Path] public/images/tmp/[TOPIC_SLUG]_1.webp`.
-4. Generate Image 2:
+3. Generate Image 2:
    - Prompt: "[Context extracted from text around IMAGE_ID_2] + photorealistic luxury style. Cinematic lighting, 8k resolution".
    - Output: `[Artifact Path]`
    - **Optimize**: Run `node scripts/optimize_image.js [Artifact Path] public/images/tmp/[TOPIC_SLUG]_2.webp`.
-5. Generate Image 3:
+4. Generate Image 3:
    - Prompt: "[Context extracted from text around IMAGE_ID_3] + photorealistic luxury style. Cinematic lighting, 8k resolution".
    - Output: `[Artifact Path]`
    - **Optimize**: Run `node scripts/optimize_image.js [Artifact Path] public/images/tmp/[TOPIC_SLUG]_3.webp`.
 
-# Step 3: Auto Ingestion
-// turbo
-1. Read `expert_tip.txt` into a variable.
-2. Read `metadata.json` and parse `meta_title`, `meta_description`, and `keywords`.
-3. Execute ingestion script:
-   - Command: `node scripts/import_articles.js --file content_draft.html --title "[TOPIC]" --category "[CATEGORY]" --slug "[TOPIC_SLUG]" --expert_tip "$(cat expert_tip.txt)" --target_yield "0" --meta_title "META_TITLE_FROM_JSON" --meta_description "META_DESC_FROM_JSON" --keywords "KEYWORDS_FROM_JSON" --images public/images/tmp/[TOPIC_SLUG]_1.webp public/images/tmp/[TOPIC_SLUG]_2.webp public/images/tmp/[TOPIC_SLUG]_3.webp`
-
-# Step 4: Git Image Sync (Production Release)
+# Step 3: Git Image Sync (Production Release)
 // turbo
 1. **Stage Images**:
    - Run `git add public/images/tmp/`.
@@ -136,7 +129,15 @@ This workflow automates the research, writing, image generation, and ingestion o
    - Run `git commit -m "Deploy optimized WebP images for auto-generated article: [TOPIC]"`.
 3. **Push**:
    - Run `git push origin main`.
-   - This ensures images are available in production even if MicroCMS upload fails.
+   - This triggers Vercel deployment, making the images accessible in production via Git (resolving the 401 issue/MicroCMS limit).
+
+# Step 4: Auto Ingestion (Text Only)
+// turbo
+1. Read `expert_tip.txt` into a variable.
+2. Read `metadata.json` and parse `meta_title`, `meta_description`, and `keywords`.
+3. Execute ingestion script:
+   - Command: `node scripts/import_articles.js --file content_draft.html --title "[TOPIC]" --category "[CATEGORY]" --slug "[TOPIC_SLUG]" --expert_tip "$(cat expert_tip.txt)" --target_yield "0" --meta_title "META_TITLE_FROM_JSON" --meta_description "META_DESC_FROM_JSON" --keywords "KEYWORDS_FROM_JSON" --images public/images/tmp/[TOPIC_SLUG]_1.webp public/images/tmp/[TOPIC_SLUG]_2.webp public/images/tmp/[TOPIC_SLUG]_3.webp`
+
 # Step 5: Full Video Production
 // turbo
 1. **Generate Script & Prompts (Gemini)**:
@@ -161,7 +162,7 @@ This workflow automates the research, writing, image generation, and ingestion o
      - 【プロンプト】 Prompts (Doc)
      - 【SNS】 Social Posts (Doc)
 
-# Step 6: Completion
+# Step 8: Completion
 ---
 To run: `/publish-article [CATEGORY] [THEME]`
 * `[CATEGORY]`: domestic, overseas, column

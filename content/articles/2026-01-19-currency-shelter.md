@@ -34,7 +34,43 @@ category: column
     <p>米国の政策金利は5%台。日本は0.25%。この金利差がある限り、投資家は円を売ってドルを買う。なぜなら、ドルで運用した方が利回りが高いからだ。</p>
     <p>「日銀が利上げすれば金利差は縮小する」という反論があるだろう。確かにその通りだ。だが、日銀はどこまで利上げできるか。</p>
     <p>日本の政府債務残高は1,200兆円を超える。GDP比260%。世界最悪の水準だ。金利が1%上昇すれば、利払い費は年間12兆円増加する。2%上昇すれば24兆円。これは国家予算を圧迫し、財政破綻のリスクを高める。</p>
-    <p>つまり、日銀は「利上げしたくてもできない」のだ。できたとしても、米国との金利差を解消するほどの利上げは不可能である。</p>
+
+<h3>日米実質金利差——お金は「高い方」へ流れる</h3>
+<p>つまり、日銀は「利上げしたくてもできない」のだ。できたとしても、米国との金利差を解消するほどの利上げは不可能である。</p>
+
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-center border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10 text-left">比較項目</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">米国 (USD)</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">日本 (JPY)</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">勝者</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">政策金利</td>
+        <td class="py-4 px-6">5.25% - 5.50%</td>
+        <td class="py-4 px-6">0.25%</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">米国 (圧倒的)</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">インフレ率</td>
+        <td class="py-4 px-6">3% 程度</td>
+        <td class="py-4 px-6">3% 程度</td>
+        <td class="py-4 px-6">-</td>
+      </tr>
+      <tr class="bg-white/5 font-bold">
+        <td class="py-4 px-6 text-left text-white">実質金利<br/><span class="text-xs font-normal">(金利 - インフレ)</span></td>
+        <td class="py-4 px-6 text-[#c59f59]">+2.0% (資産増)</td>
+        <td class="py-4 px-6 text-red-500">▲2.75% (資産減)</td>
+        <td class="py-4 px-6 text-[#c59f59]">米国</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<ul>
     <li><strong>第二に、貿易赤字の定着。</strong></li>
     <p>かつて日本は貿易黒字国だった。輸出で稼いだドルを円に換える実需があり、これが円を支えていた。</p>
     <p>だが、2022年以降、日本は恒常的な貿易赤字国に転落した。エネルギー輸入の増加、製造業の海外移転、インバウンド収入だけでは補えない輸入超過——。これらが重なり、貿易収支は赤字が常態化している。</p>
@@ -54,8 +90,42 @@ category: column
 <p>ドルやユーロも、インフレによる購買力低下は避けられない。だが、これらの通貨には、少なくとも「金利」という緩衝材がある。米国債を持っていれば年5%の利子が付く。インフレ率が3%でも、実質2%のプラスだ。</p>
 <p>円にはそれがない。金利はほぼゼロ。インフレ率が3%なら、実質マイナス3%だ。</p>
 <p>さらに、円は他の主要通貨に対しても下落している。ドルだけでなく、ユーロ、ポンド、スイスフラン、さらには新興国通貨に対しても、円は弱い。</p>
+
 <p>これは「ドルが強い」のではなく、「円が弱い」のだ。</p>
 <p>円建て資産だけを持っている日本人は、この「円の弱さ」をすべて被ることになる。自覚があるかないかに関わらず。</p>
+
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-center border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10 text-left">資産種別</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">30年前 (1994)</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">現在 (2024)</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">円の価値</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">ハワイ旅行<br/><span class="text-xs font-normal">(4泊6日)</span></td>
+        <td class="py-4 px-6">10万円</td>
+        <td class="py-4 px-6">40万円</td>
+        <td class="py-4 px-6 text-red-400">1/4 に下落</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">iPhone<br/><span class="text-xs font-normal">(最新モデル)</span></td>
+        <td class="py-4 px-6">約6万円<br/><span class="text-xs">(換算)</span></td>
+        <td class="py-4 px-6">16万円</td>
+        <td class="py-4 px-6 text-red-500">1/3 に下落</td>
+      </tr>
+      <tr class="hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">ゴールド<br/><span class="text-xs font-normal">(1g)</span></td>
+        <td class="py-4 px-6">1,200円</td>
+        <td class="py-4 px-6">13,000円</td>
+        <td class="py-4 px-6 text-red-600 font-bold">1/10 に暴落</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <h2>4. 円資産100%という自殺行為</h2>
 <p>資産運用の基本原則は「分散」である。</p>

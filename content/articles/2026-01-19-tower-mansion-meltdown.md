@@ -40,7 +40,49 @@ coverImage: /images/articles/tower-mansion-meltdown.webp
 
 <p>国土交通省の調査によれば、タワーマンションの大規模修繕費用は、1戸あたり1,000万円を超えるケースも珍しくない。そして、この費用は今後、さらに高騰する。理由は二つ。インフレと人手不足だ。建築資材の価格は、2020年代に入って急騰した。鉄鋼、コンクリート、銅、アルミ——。すべてが値上がりしている。この傾向は、世界的なインフレと資源制約により、今後も続く。</p>
 
-<p>これらを考慮すれば、10年後、20年後の大規模修繕費用は、現在の想定を大きく上回ることが確実だ。その費用は、誰が負担するのか。住民である。修繕積立金の大幅値上げ、あるいは一時金の徴収という形で。月々の修繕積立金が1万円から3万円に値上げされたらどうなるか。月2万円の追加負担。金利上昇による月4万円の追加負担と合わせれば、月6万円。年間72万円。これが、「第二のローン」の正体だ。</p>
+
+<h3>月々の支払いはこう変わる——「二重の衝撃」シミュレーション</h3>
+<p>これらを考慮すれば、10年後、20年後の大規模修繕費用は、現在の想定を大きく上回ることが確実だ。その費用は、誰が負担するのか。住民である。</p>
+
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-center border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10 text-left">コスト項目</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">現在 (平和な時代)</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">2026年以降 (崩壊の始まり)</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">増加額</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">ローン返済 (月額)</td>
+        <td class="py-4 px-6">20万円 (金利0.4%)</td>
+        <td class="py-4 px-6 text-red-400">24万円 (金利1.5%)</td>
+        <td class="py-4 px-6 text-red-400">+4万円</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">修繕積立金</td>
+        <td class="py-4 px-6">1.5万円 (安値設定)</td>
+        <td class="py-4 px-6 text-red-400">3.5万円 (適正化)</td>
+        <td class="py-4 px-6 text-red-400">+2万円</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">管理費・その他</td>
+        <td class="py-4 px-6">3.5万円</td>
+        <td class="py-4 px-6 text-red-400">4.5万円 (インフレ)</td>
+        <td class="py-4 px-6 text-red-400">+1万円</td>
+      </tr>
+      <tr class="bg-white/5 font-bold">
+        <td class="py-4 px-6 text-left text-[#c59f59]">合計 (住居費のみ)</td>
+        <td class="py-4 px-6 text-white">25万円</td>
+        <td class="py-4 px-6 text-red-500">32万円</td>
+        <td class="py-4 px-6 text-red-500">+7万円/月<br/>(+84万円/年)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p>月々修繕積立金が値上げされ、金利上昇による追加負担と合わせれば、月7万円。年間84万円。これが、「第二のローン」の正体だ。手取り1000万円世帯にとって、教育費や老後資金を直撃する致命的な金額である。</p>
 
 <h3>管理費破綻の悪夢</h3>
 <p>修繕積立金の値上げには、管理組合の決議が必要だ。だが、値上げ決議が通らなければどうなるか。修繕積立金が不足すれば、大規模修繕は実施できない。実施できなければ、建物は劣化する。外壁にひびが入り、設備が故障し、エレベーターが止まる。資産価値は急落する。</p>
@@ -51,12 +93,44 @@ coverImage: /images/articles/tower-mansion-meltdown.webp
 
 <div class="image-wrapper"><img src="IMAGE_ID_2" alt="老朽化したマンション"></div>
 
+
 <h3>出口の閉鎖——オーバーローンという監獄</h3>
-<p>金利が上昇し、修繕費が高騰し、生活が苦しくなった。「売ればいい」そう考えるかもしれない。だが、売れるとは限らない。タワーマンションの価格が下落局面に入れば、多くの保有者が同時に売りに出す。供給過剰により、価格はさらに下落する。売りが売りを呼ぶパニック相場だ。</p>
+<p>金利が上昇し、修繕費が高騰し、生活が苦しくなった。「売ればいい」そう考えるかもしれない。だが、売れるとは限らない。オーバーローンがあなたを縛り付けるからだ。</p>
 
-<p>そして、価格が下落した時、待っているのは「オーバーローン」という監獄だ。オーバーローンとは、ローン残債が物件の売却価格を上回る状態を指す。8,000万円で購入し、ローン残債が7,000万円。物件価格が6,000万円に下落した場合、売却しても1,000万円の借金が残る。この1,000万円を現金で用意できなければ、売却は不可能だ。銀行は抵当権を外さない。つまり、売るに売れない。</p>
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-center border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10 text-left">シナリオ</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">ローン残債</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">売却可能価格</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">売却時の結末</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">現在 (購入直後)</td>
+        <td class="py-4 px-6">8,000万円</td>
+        <td class="py-4 px-6">8,000万円</td>
+        <td class="py-4 px-6 text-yellow-400">プラマイゼロ (手数料別)</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">2026年 (下落開始)</td>
+        <td class="py-4 px-6">7,500万円</td>
+        <td class="py-4 px-6">6,500万円</td>
+        <td class="py-4 px-6 text-red-400">1,000万円の現金が必要</td>
+      </tr>
+      <tr class="hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 text-left font-bold text-white">2028年 (流動性枯渇)</td>
+        <td class="py-4 px-6">7,000万円</td>
+        <td class="py-4 px-6 text-red-500">5,000万円</td>
+        <td class="py-4 px-6 text-red-600 font-bold">2,000万円の現金が必要<br/>(売却不可能 = 監獄)</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-<p>特に危険なのは、フルローン、あるいは諸費用ローンまで組んで購入した層だ。彼らは、最初から「借金＞資産価値」という状態でスタートしている。価格が少しでも下落すれば、即座にオーバーローンとなる。湾岸タワーマンションの購入者には、このようなフルローン層が多い。高年収だが資産はない。だからフルローンで買う。彼らは、最も脆弱な立場にある。そして、最も多い。</p>
+<p>特に危険なのは、フルローン、あるいは諸費用ローンまで組んで購入した層だ。彼らは、最初から「借金＞資産価値」という状態でスタートしている。価格が少しでも下落すれば、即座にオーバーローンとなる。</p>
 
 <h2>行動指針：2026年に向けたポートフォリオ再構築</h2>
 

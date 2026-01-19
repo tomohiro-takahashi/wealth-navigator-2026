@@ -53,12 +53,42 @@ coverImage: /images/articles/manila-land-price-2026.webp
 <p>マニラ地下鉄沿線への投資においては、RFO（完成済み物件）を強く推奨する。</p>
 
 <h3>6.1 RFO推奨の理由</h3>
-<ul>
-    <li><strong>遅延リスクの排除：</strong>プレビルド物件の遅延リスクを回避し、即時の賃料収入を確保。</li>
-    <li><strong>品質の確認：</strong>実際の物件を見て、納得して購入できる。</li>
-    <li><strong>地下鉄開通とのタイミング：</strong>価格上昇と賃料収入の両方を享受できる。</li>
-</ul>
-<p>既に完成しているRFOを押さえることが、最もリスクが低く、かつリターンの高い投資戦略となる。</p>
+
+<h3>6.1 RFO推奨の理由——プレビルドとの決定的違い</h3>
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-left border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">比較項目</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">プレビルド (青田買い)</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">RFO (完成物件)</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">竣工リスク</td>
+        <td class="py-4 px-6 text-red-400">あり (遅延・凍結の可能性)</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">なし (現物確認可)</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">収益発生時期</td>
+        <td class="py-4 px-6">竣工後 (数年先)</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">即時 (購入直後から)</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">価格</td>
+        <td class="py-4 px-6">将来価格を織り込み済み (割高)</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">市場価格 (割安な場合あり)</td>
+      </tr>
+      <tr class="hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">地下鉄開通の影響</td>
+        <td class="py-4 px-6">完成時期がズレるリスク</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">ダイレクトに享受</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<p>表の通り、マニラ地下鉄開通という「確定したイベント」を最大限活かすには、不確実性のないRFOが圧倒的に有利である。</p>
 
 <h2>7. 歪みの是正——裁定機会の窓</h2>
 <p>現在のマニラ地下鉄沿線の不動産価格は「割安」である。市場はインフラ完成を十分に織り込んでおらず、特に海外投資家にとってフィリピン市場はまだ馴染みが薄い。この「情報の非対称性」が、裁定機会を生んでいる。</p>
@@ -70,12 +100,41 @@ coverImage: /images/articles/manila-land-price-2026.webp
 <p>投資すべきエリアは、駅の徒歩圏内だ。</p>
 
 <h3>8.1 注目の駅</h3>
-<ul>
-    <li>ケソン・アベニュー駅</li>
-    <li>オルティガス駅</li>
-    <li>ボニファシオ・グローバル・シティ駅</li>
-    <li>ニノイ・アキノ国際空港第3ターミナル駅</li>
-</ul>
+
+<h3>8.1 注目の駅——投資のスイートスポット</h3>
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-left border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">駅名</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">エリア特徴</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">投資ポテンシャル</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">Ortigas North<br/><span class="text-xs text-gray-400">(オルティガス北)</span></td>
+        <td class="py-4 px-6">ビジネス街中心地。<br/>既存コンドミニアム多数。</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">★★★★★<br/><span class="text-xs">賃貸需要が最も堅い</span></td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">BGC Terminal<br/><span class="text-xs text-gray-400">(ボニファシオ)</span></td>
+        <td class="py-4 px-6">最高級エリア。<br/>富裕層・駐在員向け。</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">★★★★☆<br/><span class="text-xs">キャピタルゲイン狙い</span></td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">Quezon Ave<br/><span class="text-xs text-gray-400">(ケソンアベニュー)</span></td>
+        <td class="py-4 px-6">新興開発エリア。<br/>カジノリゾート隣接。</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">★★★★☆<br/><span class="text-xs">今後の伸び代が大きい</span></td>
+      </tr>
+      <tr class="hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">NAIA Terminal 3<br/><span class="text-xs text-gray-400">(空港第3)</span></td>
+        <td class="py-4 px-6">空港直結。<br/>短期滞在・Airbnb需要。</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">★★★☆☆<br/><span class="text-xs">利回り重視</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 <p>これらの駅から徒歩10分圏内のRFO物件が、最も有望な投資対象となる。徒歩5〜10分圏内が、価格と利便性のバランスが最も良い「スイートスポット」だ。</p>
 
 <div class="image-wrapper"><img src="IMAGE_ID_3" alt="ボニファシオ・グローバル・シティの街並み"></div>

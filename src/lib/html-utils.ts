@@ -1,7 +1,44 @@
+
+import matter from 'gray-matter';
+import { marked } from 'marked';
+
 export type TOCItem = {
     id: string;
     text: string;
     level: number;
+};
+
+export const processArticleContent = async (rawContent: string): Promise<{ html: string; toc: TOCItem[] }> => {
+    // 1. Strip Frontmatter (Robustly)
+    // gray-matter parses YAML frontmatter and returns content without it.
+    const { content: markdown } = matter(rawContent);
+
+    // 2. Convert to HTML
+    // marked.parse is async in newer versions
+    const htmlContent = await marked.parse(markdown);
+
+    // 3. Inject TOC IDs & Extract TOC
+    // We do this on the HTML string
+    // injectTOCIds is defined below, due to hosting let's define it before or just ensure it's available.
+    // In TS/JS module scope, functions defined with const are not hoisted, but this is inside an async function calling an outer export.
+    const { html: htmlWithIds, toc } = injectTOCIds(htmlContent);
+
+    // 4. (Removed) Image Placeholders are now embedded in the content itself during generation.
+
+    return { html: htmlWithIds, toc };
+};
+
+export const injectTOCIds = (html: string): { html: string; toc: TOCItem[] } => {
+    const toc: TOCItem[] = [];
+    const newHtml = html.replace(/<h([2-3])([^>]*)>(.*?)<\/h\1>/gi, (match, levelStr, attrs, content) => {
+        const level = parseInt(levelStr);
+        const cleanContent = content.replace(/<[^>]+>/g, "");
+        const id = `heading-${toc.length}`;
+        toc.push({ id, text: cleanContent, level });
+        // Keep existing attributes but add id
+        return `<h${level} id="${id}"${attrs}>${content}</h${level}>`;
+    });
+    return { html: newHtml, toc };
 };
 
 export const extractTOC = (html: string): TOCItem[] => {
@@ -28,17 +65,4 @@ export const extractTOC = (html: string): TOCItem[] => {
         items.push({ id, text: content, level });
     }
     return items;
-};
-
-export const injectTOCIds = (html: string): { html: string; toc: TOCItem[] } => {
-    const toc: TOCItem[] = [];
-    const newHtml = html.replace(/<h([2-3])([^>]*)>(.*?)<\/h\1>/gi, (match, levelStr, attrs, content) => {
-        const level = parseInt(levelStr);
-        const cleanContent = content.replace(/<[^>]+>/g, "");
-        const id = `heading-${toc.length}`;
-        toc.push({ id, text: cleanContent, level });
-        // Keep existing attributes but add id
-        return `<h${level} id="${id}"${attrs}>${content}</h${level}>`;
-    });
-    return { html: newHtml, toc };
 };

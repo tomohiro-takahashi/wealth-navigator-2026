@@ -33,45 +33,99 @@ coverImage: /images/articles/asean-debt-cycle.webp
 <p>ダリオの分析によれば、現在の米国は、このサイクルの「衰退期後半」に位置している。そして、中国を筆頭とするアジアが、「上昇期」にある。</p>
 <p>日本は、米国よりさらに先に衰退期に入った。1990年のバブル崩壊以降、30年以上にわたり停滞を続けている。日本のビッグ・サイクルは、既に「衰退期末期」と言っても過言ではない。</p>
 
-<h3>借金漬けの巨人——数字が示す不都合な真実</h3>
-<p>債務の数字を見れば、先進国の状況がいかに深刻かが分かる。</p>
-<p><strong>米国</strong></p>
-<p>政府債務残高は35兆ドルを超え、GDP比約120%。利払い費だけで年間1兆ドルを超え、国防費を上回った。毎年の財政赤字は2兆ドル規模。この赤字は、さらなる債務の積み上げで賄われている。</p>
-<p><strong>日本</strong></p>
-<p>政府債務残高は約1,270兆円。GDP比260%超。先進国の中で断トツのワースト。国債の利払い費と償還費は、一般会計歳出の約25%を占める。新たな政策に使える予算は、年々圧縮されている。</p>
-<p><strong>欧州</strong></p>
-<p>ドイツを除く主要国は、軒並みGDP比100%超の債務を抱える。イタリアは140%、フランスは110%。ギリシャ危機の記憶は薄れたが、構造的な問題は何も解決していない。</p>
-<p>これらの債務は、どうやって返済されるのか。</p>
-<p>答えは「返済されない」だ。</p>
-<p>返済するには、税収を増やすか、歳出を減らすか、あるいはその両方が必要だ。だが、いずれも政治的に不可能である。増税は選挙で負け、歳出削減は社会不安を招く。</p>
-<p>だから、債務は増え続ける。そして、増え続ける債務を維持するために、中央銀行は通貨を刷り続ける。</p>
-<p>これが意味することは何か。</p>
-<p><strong>インフレーション</strong>——通貨価値の毀損——である。</p>
-<p>債務を返済できない国家は、インフレによって実質的な債務負担を軽減する。名目上の債務額は変わらなくても、通貨価値が半分になれば、実質的な債務負担は半減する。</p>
-<p>これは、債権者（国民）から債務者（政府）への富の移転である。預金者は購買力を失い、国家は借金を「インフレ課税」で返済する。</p>
-<p>先進国に資産を持つということは、このインフレ課税を甘受することを意味する。</p>
+
+<h3>借金漬けの巨人 vs 健全なASEAN —— 財政健全性の比較</h3>
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-left border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">国名</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">政府債務対GDP比</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">財政状況</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">日本</td>
+        <td class="py-4 px-6 text-red-400 font-bold">260%超</td>
+        <td class="py-4 px-6">危機的水準</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">米国</td>
+        <td class="py-4 px-6 text-red-400 font-bold">120%超</td>
+        <td class="py-4 px-6">悪化中</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">インドネシア</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">約40%</td>
+        <td class="py-4 px-6">極めて健全</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">フィリピン</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">約60%</td>
+        <td class="py-4 px-6">健全</td>
+      </tr>
+      <tr class="hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">ベトナム</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">約40%</td>
+        <td class="py-4 px-6">健全</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <h3>若さと健全性——ASEANのバランスシート</h3>
-<p>先進国の債務漬けの状況と対照的なのが、ASEAN諸国である。</p>
-<p><strong>政府債務GDP比</strong></p>
-<ul>
-    <li>インドネシア: 約40%</li>
-    <li>フィリピン: 約60%</li>
-    <li>マレーシア: 約65%</li>
-    <li>タイ: 約60%</li>
-    <li>ベトナム: 約40%</li>
-</ul>
-<p>これらの数字を見れば、一目瞭然だ。ASEAN諸国の債務水準は、先進国の半分以下である。</p>
+<p>先進国の債務漬けの状況と対照的なのが、ASEAN諸国である。上記の表が示す通り、ASEAN諸国の債務水準は先進国の半分以下であり、政策の自由度が極めて高い。</p>
 <p>債務が少ないということは、将来の政策余地が大きいということだ。</p>
 <p>先進国は、既に「弾切れ」の状態にある。景気後退が来ても、大規模な財政出動は困難だ。債務が多すぎて、追加の借り入れは金利を押し上げ、財政を一層悪化させる。</p>
 <p>一方、ASEAN諸国には余裕がある。インフラ投資、教育投資、産業育成——。成長に必要な支出を、まだまだ増やせる。債務が少ないからこそ、成長を加速させる政策を打てる。</p>
 <p>これが、「健全なバランスシート」の持つ力だ。</p>
 
+
+
 <h3>人口ボーナス——数十年続く成長エンジン</h3>
 <p>ASEAN諸国のもう一つの強みは、人口動態である。</p>
-<p>日本の生産年齢人口（15〜64歳）は、1995年をピークに減少を続けている。現在、総人口に占める65歳以上の割合は約30%。世界最速で高齢化が進む国だ。</p>
-<p>米国は日本ほど深刻ではないが、ベビーブーマー世代の引退により、生産年齢人口の伸びは鈍化している。中国も、一人っ子政策の後遺症で、急速な高齢化に直面している。</p>
-<p>一方、ASEAN諸国の人口動態は、まったく異なる。</p>
+
+<div class="table-container my-8 overflow-x-auto">
+  <table class="w-full text-sm text-left border-collapse border border-white/10 rounded-lg overflow-hidden">
+    <thead class="bg-white/5 text-[#c59f59]">
+      <tr>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">国名</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">平均年齢</th>
+        <th class="py-4 px-6 font-serif font-bold border-b border-white/10">人口動態</th>
+      </tr>
+    </thead>
+    <tbody class="text-gray-300">
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">日本</td>
+        <td class="py-4 px-6">約48歳</td>
+        <td class="py-4 px-6 text-red-400">超高齢化・人口減少</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">米国</td>
+        <td class="py-4 px-6">約38歳</td>
+        <td class="py-4 px-6">高齢化進行中</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">フィリピン</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">約25歳</td>
+        <td class="py-4 px-6 text-[#c59f59]">人口爆発・ボーナス期</td>
+      </tr>
+      <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">インドネシア</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">約30歳</td>
+        <td class="py-4 px-6 text-[#c59f59]">人口ボーナス期</td>
+      </tr>
+      <tr class="hover:bg-white/5 transition-colors">
+        <td class="py-4 px-6 font-bold text-white">ベトナム</td>
+        <td class="py-4 px-6 text-[#c59f59] font-bold">約32歳</td>
+        <td class="py-4 px-6 text-[#c59f59]">成長期</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>日本や米国の高齢化と比較すると、ASEAN諸国の若さは圧倒的だ。</p>
 <p><strong>フィリピン</strong></p>
 <p>人口約1.1億人。平均年齢は約25歳。毎年約200万人が生産年齢人口に加わる。2050年まで人口増加が続く見込み。</p>
 <p><strong>インドネシア</strong></p>
@@ -81,6 +135,7 @@ coverImage: /images/articles/asean-debt-cycle.webp
 <p>これらの国々は、「人口ボーナス」の真っただ中にある。</p>
 <p>人口ボーナスとは、生産年齢人口の比率が高く、扶養負担が軽い状態を指す。働く人が多く、養う人が少ない。この状態では、貯蓄率が高まり、投資が増え、経済成長が加速する。</p>
 <p>日本も、1960年代から1990年代にかけて、人口ボーナスの恩恵を受けた。高度経済成長、所得倍増、不動産価格の上昇——。これらは、人口ボーナスがもたらした果実だった。</p>
+
 <p>今、ASEANはかつての日本と同じ段階にある。人口ボーナスが始まったばかりで、数十年にわたる成長エンジンを手に入れている。</p>
 
 <h3>覇権の移動——西から東へ、先進国から成長国へ</h3>
