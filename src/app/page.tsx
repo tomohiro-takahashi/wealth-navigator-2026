@@ -278,17 +278,7 @@ export default async function Home() {
         </section>
 
         {/* Footer */}
-        <footer className="bg-[#F8F9FA] border-t border-gray-200 px-6 pt-12 pb-32">
-          <div className="w-full max-w-md mx-auto text-center">
-            <h4 className="font-bold text-gray-800 mb-6 tracking-wide text-lg">Wealth Navigator</h4>
-            <div className="flex justify-center gap-6 mb-8 flex-wrap">
-              <a className="text-sm font-medium text-gray-500 hover:text-[#c59f59] transition-colors" href="#">運営会社</a>
-              <a className="text-sm font-medium text-gray-500 hover:text-[#c59f59] transition-colors" href="#">お問い合わせ</a>
-              <a className="text-sm font-medium text-gray-500 hover:text-[#c59f59] transition-colors" href="#">プライバシー</a>
-            </div>
-            <p className="text-xs text-gray-400 font-light tracking-wide">© 2026 Wealth Navigator. All rights reserved.</p>
-          </div>
-        </footer>
+
       </div>
 
       {/* Bottom Nav */}
