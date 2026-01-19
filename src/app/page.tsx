@@ -25,7 +25,7 @@ export default async function Home() {
   // 1. Fetch Data
   // Switch to MicroCMS for consistency with production deployment
   const [propertiesData, articlesData] = await Promise.all([
-    getList('properties', { limit: 3, filters: 'status_badge[contains]おすすめ' }),
+    getList('properties', { limit: 3 }),
     getList('articles', { limit: 10 }), // Fetch latest 10 articles
   ]);
 

@@ -30,6 +30,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+      </head>
 
       <body
         className={`${notoSansJP.variable} ${shipporiMincho.variable} antialiased bg-[#F8F9FA] text-[#1A1A1B] pt-0 flex flex-col min-h-screen font-sans`}
