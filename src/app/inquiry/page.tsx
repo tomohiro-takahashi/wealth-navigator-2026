@@ -2,7 +2,7 @@ import { MultiStepForm } from "@/components/inquiry/MultiStepForm";
 import { Metadata } from "next";
 
 
-export const runtime = "edge";
+
 export const metadata: Metadata = {
     title: "Contact | Wealth Navigator",
     description: "お問い合わせ・個別相談のお申し込み",

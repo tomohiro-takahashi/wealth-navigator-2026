@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 
 // 再検証時間: 60秒
-export const runtime = "edge";
+
 export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
