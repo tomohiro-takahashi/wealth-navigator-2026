@@ -14,8 +14,16 @@ export const processArticleContent = async (rawContent: string): Promise<{ html:
     const { content: markdown } = matter(rawContent);
 
     // 2. Convert to HTML
-    // marked.parse is async in newer versions
-    const htmlContent = await marked.parse(markdown);
+    // Heuristic: If content starts with an HTML tag, assume it's pre-rendered HTML and skip marked.
+    // This prevents double-encoding or escaping of valid HTML (like <figure>) by the markdown parser.
+    const isHtml = /^\s*<[a-z][\s\S]*>/i.test(markdown.trim());
+
+    let htmlContent = '';
+    if (isHtml) {
+        htmlContent = markdown;
+    } else {
+        htmlContent = await marked.parse(markdown);
+    }
 
     // 3. Inject TOC IDs & Extract TOC
     // We do this on the HTML string
