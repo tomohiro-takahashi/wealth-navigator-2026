@@ -48,7 +48,7 @@ async function main() {
                 continue;
             }
 
-            const newContent = content.replace(mdImageRegex, (match, alt, src) => {
+            const newContent = content.replace(mdImageRegex, (match: string, alt: string, src: string) => {
                 console.log(`  Replacing: ${match}`);
                 // Ensure correct path (if it's already /images/..., great)
                 // If it's relative or external, leave as is.

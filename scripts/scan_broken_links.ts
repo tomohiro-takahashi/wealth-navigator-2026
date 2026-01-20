@@ -25,7 +25,7 @@ async function main() {
         const matches = content.match(/\/images\/articles\/[^"'\s>]+/g);
 
         if (matches) {
-            matches.forEach(m => {
+            matches.forEach((m: string) => {
                 const parts = m.split('/');
                 // ["", "images", "articles", "slug", "file.webp"] -> length 5
                 // ["", "images", "articles", "slug.webp"] -> length 4
