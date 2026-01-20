@@ -7,18 +7,22 @@ import { cn } from '@/lib/utils';
 interface ImageWithPlaceholderProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     src: string;
     alt: string;
+    hideOnError?: boolean;
 }
 
-export const ImageWithPlaceholder = ({ src, alt, className, width, height, ...props }: ImageWithPlaceholderProps) => {
+export const ImageWithPlaceholder = ({ src, alt, className, width, height, hideOnError = false, ...props }: ImageWithPlaceholderProps) => {
     const [error, setError] = useState(false);
 
     if (error) {
+        // DEBUG MODE: Show Red Border and Path
         return (
             <div className={cn(
-                "w-full h-64 bg-neutral-800 border-2 border-dashed border-neutral-600 rounded-xl flex items-center justify-center my-8",
+                "w-full p-4 my-8 border-4 border-red-600 bg-black/80 rounded-xl",
                 className
             )}>
-                <p className="text-white font-serif tracking-wider">画像生成待ち...</p>
+                <p className="text-red-500 font-bold text-xl mb-2">⚠ IMAGE LOAD FAILED</p>
+                <p className="text-white font-mono text-sm break-all">SRC: {src}</p>
+                <p className="text-gray-400 text-xs mt-2">Alt: {alt}</p>
             </div>
         );
     }

@@ -58,6 +58,12 @@ async function main() {
         else if (typeof article.text === 'string') fieldName = 'text';
         else if (typeof article.html === 'string') fieldName = 'html';
 
+        // Debug Object Types
+        if (!fieldName) {
+            if (typeof article.content === 'object') console.log(`  [WARN] 'content' is an Object (Rich Text?):`, JSON.stringify(article.content).slice(0, 50) + "...");
+            if (typeof article.body === 'object') console.log(`  [WARN] 'body' is an Object (Rich Text?):`, JSON.stringify(article.body).slice(0, 50) + "...");
+        }
+
         if (!fieldName) {
             console.log(`  [ERROR] No HTML content field detected. Keys: ${Object.keys(article).join(', ')}`);
             continue;
@@ -186,8 +192,12 @@ async function main() {
                     content: updateData
                 });
                 console.log(`  SUCCESS: [${slug}] Updated.`);
-            } catch (e: any) {
-                console.error(`  FAILED: [${slug}] Update failed.`, e.message);
+            } catch (error) {
+                if (error instanceof Error) {
+                    console.error(`  FAILED: [${slug}] Update failed.`, error.message);
+                } else {
+                    console.error(`  FAILED: [${slug}] Update failed.`, error);
+                }
             }
         } else {
             console.log(`  [Slug: ${slug}] No changes required (images present).`);

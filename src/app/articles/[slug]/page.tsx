@@ -8,7 +8,7 @@ import { injectTOCIds, processArticleContent } from '@/lib/html-utils';
 import { Metadata } from 'next';
 import { getCategoryLabel, cn } from '@/lib/utils';
 import Image from 'next/image';
-import parse, { Element } from 'html-react-parser';
+import parse, { Element, domToReact as domNodeToReact } from 'html-react-parser';
 import { ImageWithPlaceholder } from '@/components/articles/ImageWithPlaceholder';
 
 // キャッシュの設定: ISR (60秒)
@@ -55,6 +55,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
     // Process Content (Markdown -> HTML + Frontmatter Strip + TOC + Image Injection)
     const { html: contentWithIds, toc } = await processArticleContent(article.content);
+
+    // Auto-Injection State
+    let h2Count = 0;
+    console.log(`[DEBUG] Rendering article content for slug: ${article.slug}`);
 
     // 構造化データ (Article)
     const articleLd = {
@@ -161,16 +165,56 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     )}>
                         {parse(contentWithIds, {
                             replace: (domNode) => {
+                                // Debug: Log all nodes? No, too noisy.
+
+                                // 1. Existing <img /> replacement
                                 if (domNode instanceof Element && domNode.name === 'img') {
+                                    // ... existing ... (using original code here via wildcard or just assuming it's part of context? Better to rewrite block)
+                                    // Actually, let's keep it simple. I will just replace the WHOLE replace function to be safe and insert logs.
                                     const { src, alt, width, height } = domNode.attribs;
                                     return (
                                         <ImageWithPlaceholder
-                                            src={src} // Ensure src is passed
+                                            src={src}
                                             alt={alt || ''}
                                             width={width}
                                             height={height}
+                                            hideOnError={false} // Debug: show errors
+                                            className="w-full h-auto rounded-lg my-6 md:max-w-2xl mx-auto"
                                         />
                                     );
+                                }
+
+                                // 2. Auto-Injection Check
+                                if (domNode instanceof Element && domNode.name === 'h2') {
+                                    h2Count++;
+                                    console.log(`[DEBUG] Found H2 tag #${h2Count} in article: ${article.slug}`);
+
+                                    if (h2Count <= 3) {
+                                        const imgNum = String(h2Count).padStart(2, '0');
+                                        const imgSrc = `/images/articles/${article.slug}/${imgNum}.webp`;
+
+                                        console.log(`[DEBUG] Injecting image: ${imgSrc}`);
+
+                                        const prev = (domNode as any).prev;
+                                        if (prev && (prev.name === 'img' || prev.name === 'figure')) {
+                                            console.log(`[DEBUG] Skipping injection: Previous element is ${prev.name}`);
+                                            return domNodeToReact([domNode]);
+                                        }
+
+                                        return (
+                                            <>
+                                                <ImageWithPlaceholder
+                                                    src={imgSrc}
+                                                    alt={`${article.title} - Image ${imgNum}`}
+                                                    width={1200}
+                                                    height={630}
+                                                    hideOnError={false} // FORCE DEBUG DISPLAY
+                                                    className="w-full h-auto rounded-lg my-6 md:max-w-2xl mx-auto"
+                                                />
+                                                {domNodeToReact([domNode])}
+                                            </>
+                                        );
+                                    }
                                 }
                             }
                         })}
@@ -192,6 +236,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     )}
                 </div>
             </div>
-        </article>
+        </article >
     );
 }

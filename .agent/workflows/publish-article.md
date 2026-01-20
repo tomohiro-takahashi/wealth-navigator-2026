@@ -40,7 +40,7 @@ This workflow automates the research, writing, image generation, and ingestion o
           * 禁止事項: 「いかがでしたか？」等のWebライター表現。
 
           **【Volume & Depth (ボリューム規定)】**
-          1. **Target Length:** 日本語で **3,000文字以上、5,000文字程度** を目指すこと。
+          1. **Target Length:** 日本語で **5,000文字程度** を目指すこと（3,000文字以上必須）。
           2. **No Summaries:** 要約や箇条書きで逃げず、論理（Logic）と背景（Context）を文章で丁寧に説明すること。
           3. **Deep Dive:** 各見出し（H2）に対して、最低でも3〜4つのパラグラフを費やし、Titanの知識ベースにある「歴史的背景」や「データ」を必ず引用して補強すること。
 

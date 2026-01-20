@@ -116,9 +116,17 @@ async def main():
         print("No script segments found!")
         return
 
-    # 2. Get Images
-    images = glob.glob(os.path.join(IMAGE_DIR, f"{SLUG}*.webp"))
+    # 2. Get Images (Support Folder Structure)
+    # Check public/images/articles/[SLUG]/*.webp
+    images = glob.glob(os.path.join(IMAGE_DIR, SLUG, "*.webp"))
+    
+    # Fallback: Check flat files in public/images/articles/[SLUG]*.webp
     if not images:
+        images = glob.glob(os.path.join(IMAGE_DIR, f"{SLUG}*.webp"))
+        
+    if not images:
+        # Fallback 2: Check any webp in root of articles? (Maybe generic?)
+        # Or just fail? Let's check root just in case
         images = glob.glob(os.path.join(IMAGE_DIR, "*.webp"))
     images.sort()
     

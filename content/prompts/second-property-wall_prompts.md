@@ -1,0 +1,7 @@
+- Prompt 1: A 35-year-old elite salaryman with a frustrated expression sits in front of a bank loan officer. The scene is a modern bank office with glass walls and digital displays. The atmosphere is tense and filled with disappointment.
+- Prompt 2: A wide shot of a luxurious high-rise apartment building in Tokyo at night. Lights are on in many apartments, suggesting a comfortable urban lifestyle. The camera slowly zooms in to a single unit where a couple is looking worried while reviewing financial documents.
+- Prompt 3: An animated graph showing a person's income, mortgage payments, and available credit. The graph illustrates how a large mortgage can quickly deplete one's borrowing capacity, blocking future investment opportunities.
+- Prompt 4: A montage showing a person selling off various personal assets such as a luxury car, designer watches, and high-end golf clubs. These items are being liquidated to free up cash for investment. The overall tone is one of sacrifice and determination.
+- Prompt 5: A business owner in his 40s confidently walks into a small real estate office to sign a commercial lease, establishing a new business entity. The scene conveys optimism and financial control, suggesting success through strategic asset management.
+
+上記でいかがでしょうか？ご要望に応じて修正も可能です。
