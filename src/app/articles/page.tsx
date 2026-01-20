@@ -60,7 +60,7 @@ export default async function ArticlesPage({
                                 <div className="relative aspect-video w-full overflow-hidden">
                                     <div
                                         className="absolute inset-0 bg-gray-700 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                                        style={{ backgroundImage: `url('${article.eyecatch?.url || '/images/articles/' + article.slug + '.webp'}')` }}
+                                        style={{ backgroundImage: `url('${article.eyecatch?.url || '/images/articles/' + article.slug + '/01.webp'}')` }}
                                     ></div>
                                     <div className="absolute top-3 left-3 bg-[#161410]/80 backdrop-blur-sm px-3 py-1 rounded text-xs font-bold text-[#c59f59] border border-[#c59f59]/30">
                                         {article.category?.[0] ? getCategoryLabel(article.category[0]) : 'News'}

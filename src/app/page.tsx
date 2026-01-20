@@ -36,7 +36,7 @@ export default async function Home() {
   const articles = (articlesData.contents as Article[]).map(article => ({
     ...article,
     eyecatch: article.eyecatch || {
-      url: `/images/articles/${article.slug}.webp`, // Fallback to local Vercel-hosted image
+      url: `/images/articles/${article.slug}/01.webp`, // Fallback to local Vercel-hosted image
       height: 600,
       width: 800
     },
