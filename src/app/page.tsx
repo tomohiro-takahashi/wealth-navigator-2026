@@ -92,14 +92,16 @@ export default async function Home() {
                 </p>
               </div>
 
-              <Link href="/diagnosis" className="group relative flex h-16 w-full max-w-md mx-auto items-center justify-center gap-3 rounded-md bg-gradient-to-r from-[#c59f59] to-[#b88f45] px-8 text-lg font-bold text-[#161410] transition-all hover:brightness-110 active:scale-[0.98] shadow-[0_0_25px_rgba(197,159,89,0.3)]">
-                <span>資産ポートフォリオを診断する</span>
-                <span className="material-symbols-outlined text-2xl transition-transform group-hover:translate-x-1">arrow_forward</span>
-                <div className="absolute inset-0 rounded-md ring-1 ring-inset ring-white/20 pointer-events-none"></div>
-              </Link>
-              <Link href="/about" className="mt-2 flex h-14 w-full max-w-md mx-auto items-center justify-center gap-2 rounded-md border border-[#c59f59] bg-transparent px-8 text-base font-medium text-white transition-all duration-300 hover:bg-[#c59f59] hover:text-[#161410] active:scale-[0.98]">
-                <span>About us 私たちについて</span>
-              </Link>
+              <div className="flex flex-col items-center w-full gap-6">
+                <Link href="/diagnosis" className="group relative flex h-16 w-full max-w-md mx-auto items-center justify-center gap-3 rounded-md bg-gradient-to-r from-[#c59f59] to-[#b88f45] px-8 text-lg font-bold text-[#161410] transition-all hover:brightness-110 active:scale-[0.98] shadow-[0_0_25px_rgba(197,159,89,0.3)]">
+                  <span>資産ポートフォリオを診断する</span>
+                  <span className="material-symbols-outlined text-2xl transition-transform group-hover:translate-x-1">arrow_forward</span>
+                  <div className="absolute inset-0 rounded-md ring-1 ring-inset ring-white/20 pointer-events-none"></div>
+                </Link>
+                <Link href="/about" className="flex h-14 w-full max-w-md mx-auto items-center justify-center gap-2 rounded-md border border-[#c59f59] bg-transparent px-8 text-base font-medium text-white transition-all duration-300 hover:bg-[#c59f59] hover:text-[#161410] active:scale-[0.98]">
+                  <span>About us 私たちについて</span>
+                </Link>
+              </div>
             </div>
           </div>
         </header>

@@ -1,0 +1,27 @@
+{
+    "name": "video-generator",
+    "version": "1.0.0",
+    "description": "Wealth Navigator Video Generator",
+    "scripts": {
+        "start": "remotion preview src/index.ts",
+        "render": "remotion render src/index.ts MyVideo out/video.mp4",
+        "build": "remotion build src/index.ts",
+        "upgrade": "remotion upgrade"
+    },
+    "dependencies": {
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "remotion": "4.0.264",
+        "zod": "^3.22.4"
+    },
+    "devDependencies": {
+        "@remotion/cli": "4.0.264",
+        "@types/react": "^19.0.0",
+        "@types/react-dom": "^19.0.0",
+        "@types/web": "^0.0.187",
+        "typescript": "^5.7.0",
+        "prettier": "^3.2.5",
+        "eslint": "^8.57.0"
+    },
+    "packageManager": "npm@10.2.4"
+}

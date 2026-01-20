@@ -217,6 +217,23 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                                         );
                                     }
                                 }
+                                // 3. Table Horizontal Scroll Wrapper
+                                if (domNode instanceof Element && domNode.name === 'table') {
+                                    return (
+                                        <div className="overflow-x-auto w-full my-6 block border border-white/10 rounded-lg">
+                                            <table className="min-w-full text-left text-sm text-gray-300">
+                                                {domNodeToReact(domNode.children as any[], {
+                                                    replace: (childNode) => {
+                                                        if (childNode instanceof Element && (childNode.name === 'th' || childNode.name === 'td')) {
+                                                            // Optional: force nowrap here if user wanted, but CSS class above handles most.
+                                                            // Let's just return children to preserve content.
+                                                        }
+                                                    }
+                                                })}
+                                            </table>
+                                        </div>
+                                    );
+                                }
                             }
                         })}
                     </div>
