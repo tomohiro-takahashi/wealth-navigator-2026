@@ -164,12 +164,19 @@ def main():
         f"content/scripts/{slug}.md",           # Script
         f"content/prompts/{slug}_prompts.md",   # Prompts
         f"content/social/{slug}_posts.md",      # Social Posts
-        f"content/social/【自動生成動画テロップ】{slug}.txt" # Subtitles
+        f"content/social/【自動生成動画テロップ】{slug}.txt", # Subtitles
+        f"content/articles/{slug}.md"           # Article (Final Content)
     ]
     
     # Image (Cover)
-    image_pattern = f"public/images/articles/{slug}*.webp"
+    # Check for images in subfolder first (new structure)
+    image_pattern = f"public/images/articles/{slug}/*.webp"
     images = glob.glob(image_pattern)
+    if not images:
+        # Fallback to old flat structure
+        image_pattern = f"public/images/articles/{slug}*.webp"
+        images = glob.glob(image_pattern)
+
     if images:
         assets.extend(images)
     else:

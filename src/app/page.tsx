@@ -47,7 +47,9 @@ export default async function Home() {
   // ... property fallback logic ...
 
   // 2. Identify Featured Article (Must Read)
-  const featuredArticle = articles.find(a => a.is_featured || a.badge_text) || articles[0];
+  const featuredArticle = articles.find(a => a.slug === 'wealth-navigator-manifesto')
+    || articles.find(a => a.is_featured || a.badge_text)
+    || articles[0];
 
   // 3. Identify List Articles (Exclude Featured)
   const listArticles = articles.filter(a => a.id !== featuredArticle?.id).slice(0, 5); // Show top 5 recent

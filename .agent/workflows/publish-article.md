@@ -74,33 +74,17 @@ This workflow automates the research, writing, image generation, and ingestion o
    - Search for specific deadlines like "Manila Subway land acquisition completion March 2026" or "Reiwa 8 tax reform implementation date".
 5. Identify "Information Asymmetry" (Win for the informed, Loss for the uninformed).
 
-# Step 1: High-Precision HTML Writing
+# Step 1: Brain-Driven Production (Architect & Builder)
 // turbo
-1. Read `.agent/rules/writing-guide.md` to understand Persona and Logic.
-2. Write the article content with **Strict Rules**:
-   - **Length**: Minimum 2,500 words.
-   - **Format**: Standard HTML (`h2`, `h3`, `p`, `ul`, `li`, `table`, `strong`). **NO Markdown**.
-   - **Expert Perspective**:
-     - Separate a 200-char "Expert Tip" (30 years experience, authoritative).
-     - Inside content, use `<div class="expert-box">【30年のプロの眼】...</div>` for emphasis.
-   - **Comparison Table**: Mandatory `<table>` comparing "Old/New", "Japan/Overseas", or "Pre-build/RFO".
-   - **Images**: Insert exactly 3 placeholders in effective locations:
-     - 1. `<div class="image-wrapper"><img src="IMAGE_ID_1" alt="[Scene Description]"></div>`
-     - 2. `<div class="image-wrapper"><img src="IMAGE_ID_2" alt="[Scene Description]"></div>`
-     - 3. `<div class="image-wrapper"><img src="IMAGE_ID_3" alt="[Scene Description]"></div>`
-   - **Output**:
-     - Save HTML content to `content_draft.html`.
-     - Save the "Expert Tip" text to `expert_tip.txt`.
-     - **Save Metadata**:
-       - Create `metadata.json` with the following JSON structure:
-         ```json
-         {
-           "meta_title": "[SEO optimized title, max 32 chars]",
-           "meta_description": "[Compelling summary, max 120 chars]",
-           "keywords": "[comma,separated,keywords,max,5]",
-           "target_yield": "[Estimated annual yield, e.g. '8.5%' or '5.0-6.0%'. If unknown, 'N/A']"
-         }
-         ```
+1. **The Architect (Gemini)**:
+   - Run `node scripts/brain_architect.js "[TOPIC]" "[CATEGORY]"`
+   - **Goal**: Design the "Blueprint" (JSON Structure) based on `libs/brain/article_editor.md` (Binder).
+   - Output: `content/blueprints/[TOPIC_SLUG]_blueprint.json`
+2. **The Builder (Claude)**:
+   - Run `node scripts/brain_builder.js "[TOPIC_SLUG]"`
+   - **Goal**: Write high-quality HTML content into the Blueprint.
+   - Output: `content_draft.html`, `expert_tip.txt`, `metadata.json`
+   - **Optimization**: This leverages Claude only for strictly defined writing tasks, maximizing quality per token.
 
 # Step 2: Context-Aware Image Generation
 // turbo
@@ -139,14 +123,11 @@ This workflow automates the research, writing, image generation, and ingestion o
 3. Execute ingestion script:
    - Command: `node scripts/import_articles.js --file content_draft.html --title "[TOPIC]" --category "[CATEGORY]" --slug "[TOPIC_SLUG]" --expert_tip "$(cat expert_tip.txt)" --target_yield "0" --meta_title "META_TITLE_FROM_JSON" --meta_description "META_DESC_FROM_JSON" --keywords "KEYWORDS_FROM_JSON" --images public/images/tmp/[TOPIC_SLUG]_1.webp public/images/tmp/[TOPIC_SLUG]_2.webp public/images/tmp/[TOPIC_SLUG]_3.webp`
 
-# Step 5: Full Video Production
+# Step 5: Automated Header Video Generation
 // turbo
-1. **Generate Script & Prompts (Gemini)**:
-   - Run `node scripts/generate_video_script.js content_draft.html [TOPIC_SLUG]`.
-   - This saves Script (`content/scripts/[TOPIC_SLUG].md`) and Prompts (`content/prompts/[TOPIC_SLUG]_prompts.md`).
-2. **Auto-Generate Video (Python)**:
-   - Run `python3 scripts/auto_video_maker.py [TOPIC_SLUG]`.
-   - This outputs: `public/videos/[TOPIC_SLUG].mp4`.
+1. **Execute Video Pipeline**:
+   - Run `sh scripts/create_article_video.sh "[TOPIC]" "[TOPIC_SLUG]"`
+   - This parses the article title, generates an AI voiceover, renders a motion graphics video using Remotion, and saves it to `public/videos/[TOPIC_SLUG].mp4`.
 
 # Step 6: Social Media Strategy
 1. **Generate X (Twitter) Posts**:

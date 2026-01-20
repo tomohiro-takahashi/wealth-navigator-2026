@@ -1,0 +1,32 @@
+# Video Construction Prompts for Generative AI
+Project: Video_Script_WealthNav
+Description: Use these prompts in tools like Sora, Runway Gen-2, or Pika to generate short clips for each scene.
+
+## Scene 1 (HOOK) - 4s
+**Prompt**: High-quality, realistic close-up of a stack of Japanese yen bills being slowly consumed by flames. Dark background.
+**Context**: 年収3000万でも油断大敵
+
+## Scene 2 (RETENTION) - 8s
+**Prompt**: Realistic animation of a graph showing a sharp decline labeled 'Asset Value'. Background shows a stormy sea.
+**Context**: 2026年 大転換期 資産価値15%減?
+
+## Scene 3 (RETENTION) - 8s
+**Prompt**: Montage of realistic images: a luxury apartment building with 'SOLD' sign, a graph of interest rates going up sharply, a map of Japan with arrows pointing outwards.
+**Context**: タワマン崩壊? 海外投資家撤退?
+
+## Scene 4 (LOGIC) - 10s
+**Prompt**: Side-by-side comparison of a modern luxury apartment building and a classic, well-maintained older building in a prime location. Image of gold bars.
+**Context**: 解決策: 都心中古 & 現物GOLD
+
+## Scene 5 (LOGIC) - 9s
+**Prompt**: Animation of assets (buildings, etc.) being moved from one side of the screen (labeled 'SELL') to another side (labeled 'CASH'). A subtle animation showing a 'BUY' sign appearing at a later point.
+**Context**: 今すぐ売却! 現金20%確保!
+
+## Scene 6 (LOGIC) - 4s
+**Prompt**: Abstract image of a brain with gears turning, followed by an image of a hand pressing a button.
+**Context**: 冷静な分析と迅速な行動
+
+## Scene 7 (CTA) - 12s
+**Prompt**: Clean graphic with a link to the profile and a QR code. Background is a blurred cityscape at night.
+**Context**: 無料 資産健康度チェックはプロフへ
+

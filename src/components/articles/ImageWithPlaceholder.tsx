@@ -31,9 +31,13 @@ export const ImageWithPlaceholder = ({ src, alt, className, width, height, hideO
     const imgWidth = width ? parseInt(width.toString()) : 1200;
     const imgHeight = height ? parseInt(height.toString()) : 630;
 
+    // Cache buster to force refresh
+    const cacheBuster = `?t=${new Date().toISOString().slice(0, 10)}`; // Daily cache bust (or use timestamp for aggressive)
+    const finalSrc = src.startsWith('http') ? src : `${src}${cacheBuster}`;
+
     return (
         <img
-            src={src}
+            src={finalSrc}
             alt={alt}
             width={imgWidth}
             height={imgHeight}

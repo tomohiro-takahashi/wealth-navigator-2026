@@ -1,0 +1,65 @@
+{
+  "project_title": "Wealth Navigator Manifesto",
+  "target_persona": {
+    "income_range": "800万〜3000万円",
+    "pain_points": [
+      "資産防衛",
+      "円安インフレ",
+      "金利上昇"
+    ],
+    "knowledge_level": "High"
+  },
+  "script_type": "A",
+  "scenes": [
+    {
+      "scene_id": 1,
+      "section_type": "hook",
+      "duration_sec": 8.5,
+      "narration_text": "2026年、不動産市場は大転換を迎えます。まだ楽観視しているのですか？",
+      "screen_text": "2026年 市場大転換",
+      "visual_prompt": "Dark cinematic shot of a storm gathering over the Tokyo skyline using dark blue and gold tones.",
+      "audio_cues": "Thunder rumble and ominous drone sound."
+    },
+    {
+      "scene_id": 2,
+      "section_type": "truth",
+      "duration_sec": 12.899999999999999,
+      "narration_text": "金利上昇、インフレ、円安。この三重苦があなたの資産を直撃します。現金はゴミ、過去の成功法則は通用しません。",
+      "screen_text": "現金はゴミ 過去は通用しない",
+      "visual_prompt": "Overlay of rising interest rate graphs and burning yen bills. Intense and urgent atmosphere.",
+      "audio_cues": "Tense rhythmic ticking or heartbeat sound."
+    },
+    {
+      "scene_id": 3,
+      "section_type": "truth",
+      "duration_sec": 10.2,
+      "narration_text": "必要なのは「ノアの方舟」。ボロ船から乗り換えてください。都心の中古レジデンス、そしてゴールド。",
+      "screen_text": "ノアの方舟へ乗り換えろ",
+      "visual_prompt": "A glowing golden compass or ark sailing through rough seas, symbolizing safety and direction.",
+      "audio_cues": "Shift to more hopeful, majestic orchestral swell."
+    },
+    {
+      "scene_id": 4,
+      "section_type": "solution",
+      "duration_sec": 9.6,
+      "narration_text": "Wealth Navigatorは、嵐の時代の羅針盤です。冷徹なリアリズムで、あなたの資産を守り抜きます。",
+      "screen_text": "資産を守り抜く羅針盤",
+      "visual_prompt": "Wealth Navigator logo with a compass motif, clean and premium gold/navy aesthetic.",
+      "audio_cues": "Confident and trustworthy melody."
+    },
+    {
+      "scene_id": 5,
+      "section_type": "cta",
+      "duration_sec": 7.4,
+      "narration_text": "未来は行動する人の手に。まずは無料のポートフォリオ診断から始めましょう。",
+      "screen_text": "無料ポートフォリオ診断",
+      "visual_prompt": "Professional consultant offering a hand or pointing to a chart, with a clear 'Free Consultation' button graphic.",
+      "audio_cues": "Uplifting finale with a clear call-to-action chime."
+    }
+  ],
+  "metadata": {
+    "total_duration": 49,
+    "bgm_style": "Dramatic / Epic to Hopeful",
+    "voice_tone": "Authoritative, Deep, Professional"
+  }
+}

@@ -57,27 +57,30 @@ async function generateScript() {
         title = slug;
     }
 
-    // 5. Construct Prompt
+    // 5. Load Video Brain
+    const brainPath = path.join(process.cwd(), 'libs/brain/video_director.md');
+    let brainContent = '';
+    if (fs.existsSync(brainPath)) {
+        brainContent = fs.readFileSync(brainPath, 'utf8');
+        console.log("Loaded Video Director Brain.");
+    } else {
+        console.warn("WARNING: Video Director Brain not found. Using fallback prompt.");
+        brainContent = `
+        You are a professional video creator.
+        Create a TikTok/Shorts script based on the article.
+        Format: JSON
+        `;
+    }
+
+    // 6. Construct Prompt
     const prompt = `
-  あなたはプロの動画クリエイターです。
-  以下の記事をもとに、2つの成果物を作成してください。
-
-  # 成果物1: TikTok/Shorts用台本
-  - 構成: 冒頭フック(2秒) -> 要点3つ -> 結び(CTA)
-  - フォーマット: Markdownテーブル (Time, Visual, Audio, Note)
-  
-  # 成果物2: 動画生成AI(Veo/Sora)用プロンプト集
-  - 記事のシーンを描写する高精細な英語プロンプトを3〜5個。
-  - フォーマット: 
-    ## AI Video Prompts
-    - Prompt 1: ...
-    - Prompt 2: ...
-
-  # 記事内容
-  タイトル: ${title}
-  本文:
-  ${content.substring(0, 10000)}
-  `;
+    ${brainContent}
+    
+    # Input Article
+    **Title:** ${title}
+    **Content:**
+    ${content.substring(0, 15000)}
+    `;
 
     try {
         console.log("Sending request to Gemini (gemini-1.5-flash)...");

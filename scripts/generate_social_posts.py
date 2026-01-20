@@ -76,7 +76,7 @@ def generate_posts(slug):
     print(f"🤖 Generating social posts for {slug}...")
 
     # Generation
-    model = genai.GenerativeModel('gemini-2.0-flash')
+    model = genai.GenerativeModel('gemini-pro')
     response = model.generate_content(prompt)
     
     if response.text:

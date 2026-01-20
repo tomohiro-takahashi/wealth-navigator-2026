@@ -49,6 +49,35 @@ def parse_script(file_path):
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
+    # Try JSON parsing first (New Brain Format)
+    import json
+    import re
+
+    # Extract JSON block
+    json_match = re.search(r'```json\s*([\s\S]*?)\s*```', content)
+    if json_match:
+        try:
+            json_str = json_match.group(1)
+            data = json.loads(json_str)
+            
+            audio_segments = []
+            if "scenes" in data:
+                for scene in data["scenes"]:
+                    # Brain Ver 2.0 uses "narration_text"
+                    # Brain Ver 1.0 used "audio_script"
+                    text = scene.get("narration_text") or scene.get("audio_script") or ""
+                    
+                    if text:
+                        audio_segments.append(text)
+            
+            if audio_segments:
+                print(f"✅ Parsed {len(audio_segments)} segments from JSON.")
+                return audio_segments
+        except json.JSONDecodeError as e:
+            print(f"⚠️ JSON found but failed to parse: {e}")
+
+    # Fallback to Old Markdown Table parsing
+    print("⚠️ JSON not found or invalid. Trying legacy Markdown Table parsing...")
     lines = content.split('\n')
     audio_segments = []
     
@@ -65,13 +94,7 @@ def parse_script(file_path):
                 audio_text = parts[3]
                 if audio_text and audio_text != "Audio":
                     # Clean Audio text
-                    # Remove timestamps, Visual descriptions, or "Narration 1:" prefixes
-                    # Regex to remove "Narration X:", "Narrator:", "Visual:" etc
-                    import re
-                    # Remove "Narration 1:", "Narrator 1:", "M1:", "Male:", etc.
                     cleaned_text = re.sub(r'^(Narration\s*\d*:|Narrator:|Man:|Woman:|Visual:|Audio:)\s*', '', audio_text, flags=re.IGNORECASE)
-                    
-                    # Remove any markdown bold/italic
                     cleaned_text = cleaned_text.replace('**', '').replace('*', '')
                     cleaned_text = cleaned_text.strip()
                     

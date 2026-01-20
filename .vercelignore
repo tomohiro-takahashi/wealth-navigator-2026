@@ -1,0 +1,14 @@
+# Vercel Ignore
+video-generator/
+mcp-server/
+.git/
+.github/
+.vscode/
+test-results/
+tests/
+scripts/
+content_draft.html
+content_draft_*.html
+expert_tip.txt
+metadata.json
+README.md

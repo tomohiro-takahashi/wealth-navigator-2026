@@ -1,0 +1,91 @@
+{
+  "project_title": "Video_Script_WealthNav",
+  "target_persona": {
+    "income_range": "8M-30M JPY",
+    "pain_points": [
+      "High Tax",
+      "Inflation",
+      "Lack of Time"
+    ],
+    "knowledge_level": "Beginner/Intermediate"
+  },
+  "scenes": [
+    {
+      "scene_id": 1,
+      "section_type": "hook",
+      "duration_sec": 4,
+      "narration_text": "年収3000万でも安心するな。その定期預金、実質マイナス金利です。",
+      "screen_text": "実質マイナス金利",
+      "visual_prompt": "Close-up of a stressed face looking at a bank statement. Dark background with gold accents. Emphasize the red numbers indicating loss.",
+      "audio_cues": "Start with a low, unsettling hum that quickly fades into Lo-fi Jazz."
+    },
+    {
+      "scene_id": 2,
+      "section_type": "retention",
+      "duration_sec": 8,
+      "narration_text": "2026年、不動産市場は大転換。金利上昇、インフレ、円安。無策だと資産が目減りする一方です。",
+      "screen_text": "2026年 大転換",
+      "visual_prompt": "Fast-paced montage of graphs showing rising interest rates, inflation numbers, and a weakening Yen. Overlayed with news headlines. Gloomy feel.",
+      "audio_cues": "Jazz tempo increases slightly."
+    },
+    {
+      "scene_id": 3,
+      "section_type": "retention",
+      "duration_sec": 8,
+      "narration_text": "都心のタワマン、変動金利ローン…リスクを知らずに放置すると、あっという間に55%減。",
+      "screen_text": "リスク放置で55%減",
+      "visual_prompt": "Animated visual of a skyscraper shrinking and crumbling. Highlight the '55%' with a bold red color. Focus on vulnerability.",
+      "audio_cues": "Subtle sound effect of something crumbling."
+    },
+    {
+      "scene_id": 4,
+      "section_type": "logic",
+      "duration_sec": 10,
+      "narration_text": "解決策は？資産の組み換えです。都心の中古レジデンス、現物ゴールド、海外不動産。リスク分散こそが鍵。",
+      "screen_text": "解決策: 資産の組み換え",
+      "visual_prompt": "Split screen showing: (1) A modern, well-maintained apartment building in a central Tokyo location. (2) Gold bars. (3) A luxury villa with a pool in Sydney, Australia. Bright, optimistic feel.",
+      "audio_cues": "Music becomes slightly more upbeat and confident."
+    },
+    {
+      "scene_id": 5,
+      "section_type": "logic",
+      "duration_sec": 7,
+      "narration_text": "法人化も視野に。税金対策と事業拡大を同時に実現。賢く資産を守りましょう。",
+      "screen_text": "法人化で税金対策",
+      "visual_prompt": "Elegant animation showing a company logo forming, then branching out into different areas of growth and prosperity. Gold and navy color scheme.",
+      "audio_cues": "Add a subtle 'ka-ching' sound effect when the logo solidifies."
+    },
+    {
+      "scene_id": 6,
+      "section_type": "logic",
+      "duration_sec": 5,
+      "narration_text": "投資は怖い？いいえ、知識がないのが怖いんです。",
+      "screen_text": "知識こそ最強の武器",
+      "visual_prompt": "Image of a book opening and shining a bright light, revealing insights and opportunities.",
+      "audio_cues": "Sound effect of a page turning."
+    },
+    {
+      "scene_id": 7,
+      "section_type": "cta",
+      "duration_sec": 16,
+      "narration_text": "まずはあなたの資産健康度をチェック。プロフィールのリンクから、無料診断へ。たった3分で未来が変わります。",
+      "screen_text": "無料 資産健康度チェック → プロフへ",
+      "visual_prompt": "Animated call to action. A phone displaying a simple quiz interface with progress bar. Animated arrows pointing to the profile link.",
+      "audio_cues": "Music fades out smoothly. End with a gentle, encouraging tone."
+    },
+    {
+      "scene_id": 8,
+      "section_type": "cta",
+      "duration_sec": 2,
+      "narration_text": "",
+      "screen_text": "",
+      "visual_prompt": "Wealth Navigator logo with tagline.",
+      "audio_cues": ""
+    }
+  ],
+  "metadata": {
+    "total_duration": 60,
+    "bgm_style": "Smart Lo-fi / Modern Jazz",
+    "voice_tone": "Trustworthy, Professional"
+  }
+}
