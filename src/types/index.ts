@@ -32,10 +32,14 @@ export type Article = {
     target_yield?: string; // 想定利回り
     expert_tip?: string;   // プロの解説
     author?: string;       // 執筆者
-    cta_mode?: 'simulation' | 'line' | 'list'; // listに変更
+    cta_mode?: string[]; // 複数選択に修正 ('simulation' | 'line' | 'list' など)
     math_enabled?: boolean; // 数式有効化
     is_featured?: boolean; // 注目記事フラグ
     badge_text?: string;   // バッジテキスト (例: MUST READ)
+    // Meta (SEO)
+    meta_title?: string;
+    meta_description?: string;
+    keywords?: string;
 };
 
 export type Property = {

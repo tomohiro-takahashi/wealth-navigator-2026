@@ -97,7 +97,8 @@ This workflow automates the research, writing, image generation, and ingestion o
          {
            "meta_title": "[SEO optimized title, max 32 chars]",
            "meta_description": "[Compelling summary, max 120 chars]",
-           "keywords": "[comma,separated,keywords,max,5]"
+           "keywords": "[comma,separated,keywords,max,5]",
+           "target_yield": "[Estimated annual yield, e.g. '8.5%' or '5.0-6.0%'. If unknown, 'N/A']"
          }
          ```
 

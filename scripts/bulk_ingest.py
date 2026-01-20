@@ -56,7 +56,7 @@ def main():
             "--category", meta["category"],
             "--slug", meta["slug"],
             "--expert_tip", meta["expert_tip"],
-            "--target_yield", "0",
+            "--target_yield", meta.get("target_yield", "0"),
             # SEO & Video Scripts (passed as flags supported by updated script if applicable, 
             # if script allows unknown flags or we need to update script)
             # Note: The current import_articles.js threw error on video_script_a.

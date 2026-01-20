@@ -21,8 +21,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         if (!article) return { title: 'Not Found | Wealth Navigator' };
 
         return {
-            title: `${article.title} | Wealth Navigator`,
-            description: article.content.replace(/<[^>]+>/g, '').slice(0, 120) + '...',
+            title: article.meta_title ? `${article.meta_title} | Wealth Navigator` : `${article.title} | Wealth Navigator`,
+            description: article.meta_description || article.content.replace(/<[^>]+>/g, '').slice(0, 120) + '...',
+            keywords: article.keywords ? article.keywords.split(',') : [],
         };
     } catch {
         return {
