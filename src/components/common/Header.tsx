@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
+import { useMenu } from '@/context/MenuContext';
 
 export const Header = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { isMenuOpen, toggleMenu } = useMenu();
 
     // Prevent scrolling when menu is open
     useEffect(() => {
@@ -19,16 +20,11 @@ export const Header = () => {
         };
     }, [isMenuOpen]);
 
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
-
-    const menuItems = [
+    const menuItems: { label: string; href: string; external?: boolean }[] = [
         { label: 'HOME', href: '/' },
         { label: '国内不動産コラム', href: '/articles?category=domestic' },
         { label: '海外不動産コラム', href: '/articles?category=overseas' },
         { label: '資産運用コラム', href: '/columns' },
-        { label: '無料相談 (LINE)', href: 'https://line.me/R/ti/p/@wealth-navigator', external: true },
     ];
 
     return (
@@ -77,7 +73,7 @@ export const Header = () => {
 
             {/* Mobile Drawer Menu (Modal Overlay) */}
             {isMenuOpen && (
-                <div className="fixed inset-0 z-50">
+                <div className="fixed inset-0 z-[100]">
                     {/* Backdrop */}
                     <div
                         className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
@@ -85,7 +81,7 @@ export const Header = () => {
                     />
 
                     {/* Drawer Panel */}
-                    <div className="absolute left-0 top-0 bottom-0 w-64 bg-[#1a1a1a] shadow-2xl flex flex-col transform transition-transform duration-300 ease-in-out">
+                    <div className="absolute left-0 top-0 w-80 h-fit bg-[#1a1a1a] shadow-2xl flex flex-col rounded-br-xl overflow-hidden pb-6 transform transition-transform duration-300 ease-in-out">
                         {/* Drawer Header */}
                         <div className="flex items-center justify-between px-6 h-16 border-b border-white/10 bg-[#1a1a1a]">
                             <span className="font-display text-lg tracking-wider text-white">MENU</span>
@@ -99,7 +95,7 @@ export const Header = () => {
                         </div>
 
                         {/* Drawer Links */}
-                        <nav className="flex-grow flex flex-col p-6 space-y-4 overflow-y-auto bg-[#1a1a1a]">
+                        <nav className="flex-grow flex flex-col p-6 space-y-4 bg-[#1a1a1a]">
                             {menuItems.map((item) => (
                                 <Link
                                     key={item.label}
@@ -114,8 +110,20 @@ export const Header = () => {
                             ))}
                         </nav>
 
-                        {/* Bottom CTA */}
-                        <div className="p-6 border-t border-white/10 bg-[#23201b]">
+                        {/* Bottom CTA Area */}
+                        <div className="px-6 pt-2 bg-[#1a1a1a] flex flex-col gap-4">
+                            {/* LINE Button (Sub Action) */}
+                            <a
+                                href="https://line.me/R/ti/p/@wealth-navigator"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block w-full py-3 border border-[#c59f59] text-[#c59f59] text-sm text-center font-bold tracking-widest rounded transition-colors hover:bg-[#c59f59] hover:text-white"
+                                onClick={toggleMenu}
+                            >
+                                無料相談 (LINE)
+                            </a>
+
+                            {/* Diagnosis Button (Main Action) */}
                             <a
                                 href="/diagnosis"
                                 className="block w-full py-3 bg-[#c59f59] text-white text-sm text-center font-bold tracking-widest rounded shadow-md hover:bg-[#b08d4b] transition-all"

@@ -3,6 +3,7 @@ import { getList } from '@/lib/microcms';
 import { Article, Property } from '@/types';
 import { getCategoryLabel } from '@/lib/utils';
 import Link from 'next/link';
+import { HomeHeader } from '@/components/home/HomeHeader';
 
 // ISR Configuration
 export const revalidate = 60;
@@ -69,17 +70,8 @@ export default async function Home() {
 
         {/* Header & Hero Section */}
         <header className="relative bg-[#161410] text-white">
-          <div className="sticky top-0 z-50 flex h-16 w-full items-center justify-between bg-[#161410]/95 px-5 border-b border-white/5 backdrop-blur-sm">
-            <button className="flex h-12 w-12 items-center justify-center rounded-full text-[#c59f59] transition-colors hover:text-white active:bg-white/5">
-              <span className="material-symbols-outlined text-[32px]">menu</span>
-            </button>
-            <h1 className="flex-1 text-center text-lg font-bold tracking-wide text-white/90">
-              Wealth Navigator
-            </h1>
-            <button className="flex h-12 w-12 items-center justify-center rounded-full text-[#c59f59] transition-colors hover:text-white active:bg-white/5">
-              <span className="material-symbols-outlined text-[28px]">search</span>
-            </button>
-          </div>
+          <HomeHeader />
+
 
           {/* Key Visual Area */}
           {/* Key Visual Area */}
@@ -286,6 +278,6 @@ export default async function Home() {
 
       {/* Bottom Nav */}
 
-    </div>
+    </div >
   );
 }

@@ -22,6 +22,7 @@ export const metadata: Metadata = {
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
 import { BottomNav } from "@/components/common/BottomNav";
+import { MenuProvider } from "@/context/MenuContext";
 
 export default function RootLayout({
   children,
@@ -37,13 +38,15 @@ export default function RootLayout({
       <body
         className={`${notoSansJP.variable} ${shipporiMincho.variable} antialiased bg-[#F8F9FA] text-[#1A1A1B] pt-0 flex flex-col min-h-screen font-sans`}
       >
-        {/* pt-0 because Hero often goes under header or handles its own spacing. Resetting default top padding. */}
-        <Header />
-        <main className="flex-grow pb-24 md:pb-0">
-          {children}
-        </main>
-        <Footer />
-        <BottomNav />
+        <MenuProvider>
+          {/* pt-0 because Hero often goes under header or handles its own spacing. Resetting default top padding. */}
+          <Header />
+          <main className="flex-grow pb-24 md:pb-0">
+            {children}
+          </main>
+          <Footer />
+          <BottomNav />
+        </MenuProvider>
       </body>
     </html>
   );
