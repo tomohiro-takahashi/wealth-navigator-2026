@@ -1,65 +1,92 @@
 {
-  "project_title": "Wealth Navigator Manifesto",
+  "project_title": "JS-SEZ: Asia's Next Wealth Haven or Tax Trap?",
   "target_persona": {
     "income_range": "800万〜3000万円",
     "pain_points": [
-      "資産防衛",
-      "円安インフレ",
-      "金利上昇"
+      "稼いでいるのに貯まらない",
+      "税金が高い"
     ],
     "knowledge_level": "High"
   },
-  "script_type": "A",
+  "script_type": "B",
   "scenes": [
     {
       "scene_id": 1,
-      "section_type": "hook",
-      "duration_sec": 8.5,
-      "narration_text": "2026年、不動産市場は大転換を迎えます。まだ楽観視しているのですか？",
-      "screen_text": "2026年 市場大転換",
-      "visual_prompt": "Dark cinematic shot of a storm gathering over the Tokyo skyline using dark blue and gold tones.",
-      "audio_cues": "Thunder rumble and ominous drone sound."
+      "section_type": "The Protagonist",
+      "duration_sec": 7.1000000000000005,
+      "narration_text": "年収2000万円のタナカさん。JS-SEZの税制優遇に飛びついたが…",
+      "screen_text": "JS-SEZの落とし穴",
+      "visual_prompt": "A Japanese businessman, Tanaka, smiling confidently in front of a luxury apartment complex in Johor Bahru, Malaysia. Slow zoom in. COMMAND: No text, no subtitles, no words, clean footage.",
+      "audio_cues": "Upbeat, optimistic music starts."
     },
     {
       "scene_id": 2,
-      "section_type": "truth",
-      "duration_sec": 12.899999999999999,
-      "narration_text": "金利上昇、インフレ、円安。この三重苦があなたの資産を直撃します。現金はゴミ、過去の成功法則は通用しません。",
-      "screen_text": "現金はゴミ 過去は通用しない",
-      "visual_prompt": "Overlay of rising interest rate graphs and burning yen bills. Intense and urgent atmosphere.",
-      "audio_cues": "Tense rhythmic ticking or heartbeat sound."
+      "section_type": "The Conflict",
+      "duration_sec": 8,
+      "narration_text": "為替リスクを見落とし、円高で資産価値が激減。手続きの遅延でキャッシュフローも逼迫。",
+      "screen_text": "円高・遅延",
+      "visual_prompt": "Tanaka looking stressed and worried, checking his phone with a concerned expression. Currency exchange rate chart showing a sharp decline of JPY against MYR. Quick cuts. COMMAND: No text, no subtitles, no words, clean footage.",
+      "audio_cues": "Music becomes more tense and dramatic."
     },
     {
       "scene_id": 3,
-      "section_type": "truth",
-      "duration_sec": 10.2,
-      "narration_text": "必要なのは「ノアの方舟」。ボロ船から乗り換えてください。都心の中古レジデンス、そしてゴールド。",
-      "screen_text": "ノアの方舟へ乗り換えろ",
-      "visual_prompt": "A glowing golden compass or ark sailing through rough seas, symbolizing safety and direction.",
-      "audio_cues": "Shift to more hopeful, majestic orchestral swell."
+      "section_type": "The Conflict",
+      "duration_sec": 8.2,
+      "narration_text": "さらに、政治情勢の変化で税制優遇が縮小。タナカさんの計画は完全に崩壊。",
+      "screen_text": "優遇縮小",
+      "visual_prompt": "A gavel slamming down on a wooden block, symbolizing a sudden change in regulations. News headlines flashing about political instability. Fast-paced editing. COMMAND: No text, no subtitles, no words, clean footage.",
+      "audio_cues": "Sound of a gavel slamming, news broadcast sound effects."
     },
     {
       "scene_id": 4,
-      "section_type": "solution",
-      "duration_sec": 9.6,
-      "narration_text": "Wealth Navigatorは、嵐の時代の羅針盤です。冷徹なリアリズムで、あなたの資産を守り抜きます。",
-      "screen_text": "資産を守り抜く羅針盤",
-      "visual_prompt": "Wealth Navigator logo with a compass motif, clean and premium gold/navy aesthetic.",
-      "audio_cues": "Confident and trustworthy melody."
+      "section_type": "The Turnaround",
+      "duration_sec": 8.899999999999999,
+      "narration_text": "教訓：税制だけを見るな。為替、政治、手続き…全てを見越した戦略が必要。",
+      "screen_text": "戦略ミス",
+      "visual_prompt": "Tanaka sitting alone in a dimly lit office, looking defeated and reflecting on his mistakes. A spotlight shines on him. Slow zoom out. COMMAND: No text, no subtitles, no words, clean footage.",
+      "audio_cues": "Music softens, becomes more melancholic."
     },
     {
       "scene_id": 5,
-      "section_type": "cta",
-      "duration_sec": 7.4,
-      "narration_text": "未来は行動する人の手に。まずは無料のポートフォリオ診断から始めましょう。",
-      "screen_text": "無料ポートフォリオ診断",
-      "visual_prompt": "Professional consultant offering a hand or pointing to a chart, with a clear 'Free Consultation' button graphic.",
-      "audio_cues": "Uplifting finale with a clear call-to-action chime."
+      "section_type": "The Turnaround",
+      "duration_sec": 7.7,
+      "narration_text": "賢者は、全体像を見て、リスクを管理する。それが富を守る唯一の方法。",
+      "screen_text": "全体像を見よ",
+      "visual_prompt": "A chessboard with various pieces, symbolizing different aspects of investment strategy. A hand moving the pieces strategically. Top-down view. Slow pan. COMMAND: No text, no subtitles, no words, clean footage.",
+      "audio_cues": "Music becomes more thoughtful and strategic."
+    },
+    {
+      "scene_id": 6,
+      "section_type": "Solution",
+      "duration_sec": 8.1,
+      "narration_text": "Wealth Navigatorなら、JS-SEZのリスクを徹底分析。あなただけの最適戦略を。",
+      "screen_text": "最適戦略を",
+      "visual_prompt": "Animated infographic showing risk assessment and mitigation strategies for JS-SEZ investments. Charts, graphs, and arrows illustrating the process. Dynamic movement. COMMAND: No text, no subtitles, no words, clean footage.",
+      "audio_cues": "Music becomes more confident and reassuring."
+    },
+    {
+      "scene_id": 7,
+      "section_type": "Solution",
+      "duration_sec": 7.3,
+      "narration_text": "為替ヘッジ、法務サポート、現地ネットワーク。全てをワンストップで提供。",
+      "screen_text": "ワンストップ",
+      "visual_prompt": "A globe spinning, with icons representing different services (currency exchange, legal documents, networking events) appearing around JS-SEZ. Bright and professional. Quick zoom. COMMAND: No text, no subtitles, no words, clean footage.",
+      "audio_cues": "Sound effects of currency exchange, typing on a keyboard, and networking chatter."
+    },
+    {
+      "scene_id": 8,
+      "section_type": "CTA",
+      "duration_sec": 7.9,
+      "narration_text": "JS-SEZ投資、本当に大丈夫？まずは無料ポートフォリオ診断でリスクをチェック！",
+      "screen_text": "無料診断",
+      "visual_prompt": "A hand clicking on a button labeled 'Free Portfolio Assessment' on a sleek website interface. Background showing a panoramic view of Johor Bahru and Singapore skyline. Clean and modern design. COMMAND: No text, no subtitles, no words, clean footage.",
+      "audio_cues": "Clicking sound, upbeat and optimistic music swells."
     }
   ],
   "metadata": {
-    "total_duration": 49,
-    "bgm_style": "Dramatic / Epic to Hopeful",
-    "voice_tone": "Authoritative, Deep, Professional"
+    "total_duration": 64,
+    "bgm_style": "Smart Lo-fi / Modern Jazz",
+    "voice_tone": "Trustworthy, Professional",
+    "generation_note": "Optimized for 8s Manual Video Generation"
   }
 }

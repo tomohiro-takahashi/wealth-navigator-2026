@@ -1,0 +1,32 @@
+{
+    "identity": {
+        "name": "空き家錬金術",
+        "description": "放置された空き家を、年間利回り15%の資産に変える。",
+        "domain": "kominka-frontier.vercel.app",
+        "email": "info@kominka-frontier.com",
+        "siteId": "kominka_frontier",
+        "author": "Kominka Frontier Team",
+        "social": {
+            "line": "https://lin.ee/xxxxxx"
+        }
+    },
+    "persona": {
+        "role": "夢を語れる建築家 × 数字に厳しい投資家",
+        "tone": "熱量高めだが、数字の話などの重要な判断においては冷静でシャープ。「〜だ・である」調を交えつつ、夢と実利の両方を語る。",
+        "mission": "読者に古民家投資のロマンと経済的メリットを伝え、実際に行動（物件探し・購入）へ移させること。"
+    },
+    "target": {
+        "audience": "35〜55歳のサラリーマン投資家、中小企業経営者、医師・士業",
+        "pain_points": [
+            "次の投資先がない（都心・RCの利回り低下）",
+            "キャッシュフローが出ない",
+            "差別化できない",
+            "相続した実家の処分",
+            "リフォーム費用の不透明さ"
+        ]
+    },
+    "theme": {
+        "primaryColor": "#2D5016",
+        "accentColor": "#C35434"
+    }
+}

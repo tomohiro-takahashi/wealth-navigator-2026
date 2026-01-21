@@ -1,0 +1,26 @@
+{
+    "identity": {
+        "name": "親の家、どうする？",
+        "site_id": "legacy_guard",
+        "description": "実家を'負担'から'資産'に変える、たったひとつの選択。"
+    },
+    "persona": {
+        "tone": "Empathetic, Gentle, Consultant",
+        "first_person": "私 (相続不動産コンサルタント)",
+        "audience_level": "Beginner/Emotional",
+        "keywords": [
+            "寄り添う",
+            "家族会議",
+            "罪悪感",
+            "実家じまい"
+        ]
+    },
+    "target": {
+        "audience": "45-65yo, Heirs, Empty House Owners",
+        "pain_points": [
+            "罪悪感",
+            "手続きが不明",
+            "税金への不安"
+        ]
+    }
+}

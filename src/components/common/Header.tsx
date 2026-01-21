@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { useMenu } from '@/context/MenuContext';
+import { siteConfig } from '@/site.config';
 
 export const Header = () => {
     const { isMenuOpen, toggleMenu } = useMenu();
@@ -42,7 +43,7 @@ export const Header = () => {
                         </button>
 
                         <Link href="/" className="font-display text-2xl tracking-wider hover:text-accent transition-colors">
-                            WEALTH NAVIGATOR
+                            {siteConfig.name}
                         </Link>
                     </div>
 
@@ -62,10 +63,10 @@ export const Header = () => {
                     {/* Desktop Contact Button */}
                     <div className="hidden md:flex items-center space-x-4">
                         <Link
-                            href="/contact"
+                            href="/inquiry"
                             className="px-4 py-2 border border-accent text-accent text-xs tracking-widest hover:bg-accent hover:text-white transition-all duration-300"
                         >
-                            CONTACT
+                            INQUIRY
                         </Link>
                     </div>
                 </div>
@@ -125,11 +126,11 @@ export const Header = () => {
 
                             {/* Diagnosis Button (Main Action) */}
                             <a
-                                href="/diagnosis"
+                                href="/simulation"
                                 className="block w-full py-3 bg-[#c59f59] text-white text-sm text-center font-bold tracking-widest rounded shadow-md hover:bg-[#b08d4b] transition-all"
                                 onClick={toggleMenu}
                             >
-                                資産ポートフォリオを診断する
+                                最適戦略を診断
                             </a>
                         </div>
                     </div>

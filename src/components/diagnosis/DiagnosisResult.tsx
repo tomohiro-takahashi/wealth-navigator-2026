@@ -7,7 +7,7 @@ import {
     Radar as RechartsRadar
 } from "recharts";
 import { motion } from "framer-motion";
-import { Lock, FileText, MessageCircle, Gem } from "lucide-react";
+import { Lock, FileText, MessageCircle, Gem, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { DiagnosisData } from "@/components/inquiry/MultiStepForm";
 
@@ -156,53 +156,96 @@ export const DiagnosisResult = () => {
                     </div>
                 </motion.div>
 
-                {/* CTA Section */}
-                <div className="space-y-4">
-                    <h3 className="text-center font-display text-accent tracking-widest text-sm mb-6">DIGITAL CONCIERGE</h3>
+                {/* Locked Property Examples (Mosaic Effect) */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                    className="mb-12 relative"
+                >
+                    <h3 className="font-bold text-sm tracking-widest mb-4 flex items-center gap-2">
+                        <div className="w-1 h-4 bg-accent"></div> あなたの戦略に適合する『非公開物件』実例
+                    </h3>
 
-                    <Link href="#" className="block group">
+                    <div className="relative overflow-hidden rounded-2xl border border-white/10 group">
+                        {/* Blurred Content */}
+                        <div className="filter blur-md opacity-60 select-none pointer-events-none bg-[#1f1f20] p-6 space-y-4">
+                            {/* Dummy Card 1 */}
+                            <div className="bg-white/5 p-4 rounded-xl border border-white/5 flex gap-4 items-center">
+                                <div className="w-16 h-16 bg-gray-700 rounded-lg"></div>
+                                <div className="flex-1 space-y-2">
+                                    <div className="h-4 w-3/4 bg-gray-600 rounded"></div>
+                                    <div className="h-3 w-1/2 bg-gray-700 rounded"></div>
+                                </div>
+                            </div>
+                            {/* Dummy Card 2 */}
+                            <div className="bg-white/5 p-4 rounded-xl border border-white/5 flex gap-4 items-center">
+                                <div className="w-16 h-16 bg-gray-700 rounded-lg"></div>
+                                <div className="flex-1 space-y-2">
+                                    <div className="h-4 w-2/3 bg-gray-600 rounded"></div>
+                                    <div className="h-3 w-1/2 bg-gray-700 rounded"></div>
+                                </div>
+                            </div>
+                            {/* Dummy Text content */}
+                            <div className="space-y-2 pt-2">
+                                <p className="text-sm">【東京都港区】 築浅RCマンション / 利回り X.X%</p>
+                                <p className="text-sm">【米国テキサス州】 集合住宅プロジェクト / IRR XX%</p>
+                            </div>
+                        </div>
+
+                        {/* Lock Overlay */}
+                        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]">
+                            <Link href="https://line.me/" className="transform transition-transform hover:scale-105">
+                                <div className="bg-accent text-[#1A1A1B] px-6 py-3 rounded-full font-bold flex items-center gap-2 shadow-xl shadow-accent/20">
+                                    <Lock size={18} />
+                                    <span className="text-sm">LINE登録で物件情報を取得</span>
+                                </div>
+                            </Link>
+                            <p className="text-white/70 text-[10px] mt-2 tracking-wider">※ 適合する非公開物件を自動抽出中...</p>
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* CTA Section (Refined Copy) */}
+                <div className="space-y-4">
+                    <h3 className="text-center font-display text-accent tracking-widest text-sm mb-6 uppercase">
+                        Next Action<span className="text-xs text-gray-500 ml-2 normal-case tracking-normal">(この戦略を実行する)</span>
+                    </h3>
+
+                    <Link href="https://line.me/" className="block group">
                         <div className="bg-[#1f1f20] hover:bg-[#2a2a2c] transition-colors border border-white/10 rounded-xl p-5 flex items-center gap-4">
                             <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent">
                                 <Lock size={20} />
                             </div>
                             <div className="flex-1">
-                                <h4 className="font-bold text-sm text-white mb-1">水面下取引（Off-Market）情報</h4>
-                                <p className="text-xs text-gray-400">一般市場に出回らない「Sランク物件」情報の先行開示。</p>
+                                <h4 className="font-bold text-sm text-white mb-1">情報収集する (インサイダー情報の購読)</h4>
+                                <p className="text-xs text-gray-400">銀行員が決して口にしない『不動産投資の裏話』や『非公開情報』を受け取る。</p>
                             </div>
+                            <ArrowRight size={16} className="text-gray-500 group-hover:text-accent transition-colors" />
                         </div>
                     </Link>
 
-                    <Link href="#" className="block group">
-                        <div className="bg-[#1f1f20] hover:bg-[#2a2a2c] transition-colors border border-white/10 rounded-xl p-5 flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent">
-                                <FileText size={20} />
-                            </div>
-                            <div className="flex-1">
-                                <h4 className="font-bold text-sm text-white mb-1">融資承認シミュレーション</h4>
-                                <p className="text-xs text-gray-400">銀行評価（掛目）に基づき、実際の「融資可否」と「金利」を試算。</p>
-                            </div>
-                        </div>
-                    </Link>
-
-                    <Link href="#" className="block group">
+                    <Link href="/inquiry" className="block group">
                         <div className="bg-[#1f1f20] hover:bg-[#2a2a2c] transition-colors border border-white/10 rounded-xl p-5 flex items-center gap-4">
                             <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent">
                                 <MessageCircle size={20} />
                             </div>
                             <div className="flex-1">
-                                <h4 className="font-bold text-sm text-white mb-1">セカンドオピニオン</h4>
-                                <p className="text-xs text-gray-400">オーナー直通ラインを開放。他社提案の妥当性をプロがジャッジ。</p>
+                                <h4 className="font-bold text-sm text-white mb-1">専門家に相談する (具体的プランの作成)</h4>
+                                <p className="text-xs text-gray-400">あなたの借入余力を100%活かす『個別シミュレーション』を作成する。</p>
                             </div>
+                            <ArrowRight size={16} className="text-gray-500 group-hover:text-accent transition-colors" />
                         </div>
                     </Link>
                 </div>
             </main>
 
             {/* Floating Bottom CTA */}
-            <div className="fixed bottom-0 left-0 w-full bg-[#1A1A1B]/90 backdrop-blur-md border-t border-accent/20 p-4 pb-8 z-50">
+            {/* Floating Bottom CTA (Capsule Style) */}
+            <div className="fixed bottom-6 left-0 w-full z-50 mb-[env(safe-area-inset-bottom)] px-4 flex justify-center pointer-events-none">
                 <Link
                     href="https://line.me/"
-                    className="w-full max-w-md mx-auto bg-accent hover:bg-accent-light text-[#1A1A1B] font-bold py-4 rounded-full shadow-lg shadow-accent/20 flex items-center justify-center gap-3 h-auto min-h-[56px] transition-all"
+                    className="pointer-events-auto w-full max-w-md bg-accent hover:bg-accent-light text-[#1A1A1B] font-bold py-4 rounded-full shadow-2xl shadow-accent/20 flex items-center justify-center gap-3 h-auto min-h-[56px] transition-all transform hover:scale-105"
                 >
                     <Lock size={20} className="shrink-0" />
                     <span>「非公開物件リスト」を解錠する</span>

@@ -4,6 +4,35 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { processAudio } = require('./process_audio');
 require('dotenv').config({ path: '.env.local' });
 
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
+
+async function callClaude(prompt) {
+    const response = await fetch(ANTHROPIC_API_URL, {
+        method: 'POST',
+        headers: {
+            'x-api-key': ANTHROPIC_API_KEY,
+            'anthropic-version': '2023-06-01',
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            model: 'claude-3-haiku-20240307', // Fallback to Haiku (Tier 1 safe)
+            max_tokens: 4096,
+            messages: [
+                { role: 'user', content: prompt }
+            ]
+        })
+    });
+
+    if (!response.ok) {
+        const err = await response.text();
+        throw new Error(`Claude API Error: ${response.status} - ${err}`);
+    }
+
+    const data = await response.json();
+    return data.content[0].text;
+}
+
 // --- Configuration ---
 const ARTIFACTS_DIR = path.join(process.cwd(), 'content/blueprints');
 const VIDEO_SCRIPT_PATH = path.join(process.cwd(), 'video-generator/src/video-script.json');
@@ -125,11 +154,92 @@ async function architectArticle(topic, category) {
     const strategistKnowledge = fs.readFileSync(STRATEGIST_BRAIN_PATH, 'utf8');
     const editorBible = fs.readFileSync(EDITOR_BRAIN_PATH, 'utf8');
 
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-    const model = genAI.getGenerativeModel({
-        model: "gemini-2.0-flash",
-        generationConfig: { responseMimeType: "application/json" }
-    });
+    // --- STRATEGY: RESILIENT ARCHITECT ---
+    // Primary: Gemini 3 Flash (Cost/Speed)
+    // Fallback: Claude 3.5 Sonnet (Quality/Reliability)
+
+    async function architectWithFallback(prompt) {
+        // Shared Cleaner Function
+        const cleanAndParse = (text) => {
+            let cleanJson = text.trim();
+            if (cleanJson.includes('```')) cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '');
+            const start = cleanJson.indexOf('{');
+            const end = cleanJson.lastIndexOf('}');
+            if (start !== -1 && end !== -1) cleanJson = cleanJson.slice(start, end + 1);
+
+            // State machine cleaner
+            let fixedJson = '';
+            let inString = false;
+            let escaped = false;
+            for (let i = 0; i < cleanJson.length; i++) {
+                const char = cleanJson[i];
+                if (char === '"' && !escaped) inString = !inString;
+                if (char === '\\' && !escaped) escaped = true;
+                else escaped = false;
+                if (inString) {
+                    if (char === '\n') fixedJson += '\\n';
+                    else if (char === '\r') fixedJson += '\\r';
+                    else if (char === '\t') fixedJson += '\\t';
+                    else fixedJson += char;
+                } else {
+                    fixedJson += char;
+                }
+            }
+            return JSON.parse(fixedJson);
+        };
+
+        // 1. Try Gemini (Primary) with Retries
+        const MAX_RETRIES = 3;
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+            try {
+                console.log(`🌐 Architect Strategy: Attempting Primary (Gemini 3 Flash)... [Attempt ${attempt}/${MAX_RETRIES}]`);
+                const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+                const model = genAI.getGenerativeModel({
+                    model: "gemini-3-flash-preview",
+                    generationConfig: { responseMimeType: "application/json" },
+                    safetySettings: [
+                        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+                    ]
+                });
+
+                const result = await model.generateContent(prompt);
+                const text = result.response.text();
+
+                // Validate IMMEDIATELY
+                return cleanAndParse(text);
+
+            } catch (geminiError) {
+                console.warn(`⚠️ Gemini Attempt ${attempt} Failed: ${geminiError.message}`);
+
+                if (attempt < MAX_RETRIES) {
+                    const waitTime = attempt * 3000; // 3s, 6s...
+                    console.log(`⏳ Waiting ${waitTime / 1000}s before retry...`);
+                    await new Promise(r => setTimeout(r, waitTime));
+                } else {
+                    console.error(`❌ All Gemini attempts failed. Moving to Fallback.`);
+                }
+            }
+        }
+
+        console.log("🛡️ Architect Strategy: Activating Fallback (Claude 3.5 Sonnet)...");
+
+        // 2. Try Claude (Fallback)
+        try {
+            const claudeText = await callClaude(prompt);
+            return cleanAndParse(claudeText);
+        } catch (claudeError) {
+            throw new Error(`CRITICAL: All AI Engines Failed. Claude Error: ${claudeError.message}`);
+        }
+    }
+
+    const dnaPath = path.join(process.cwd(), 'src/dna.config.json');
+    let dna = {};
+    try {
+        dna = require(dnaPath);
+        console.log(`🧬 Loaded DNA for: ${dna.identity.name}`);
+    } catch (e) {
+        console.warn("⚠️ DNA config not found, using defaults.");
+    }
 
     const prompt = `
     ${editorBible}
@@ -137,7 +247,11 @@ async function architectArticle(topic, category) {
     ---
     
     ## TASK: Create the Article Blueprint
-    You are the "Editor-in-Chief". 
+    You are the "Editor-in-Chief" for "${dna.identity?.name || 'the media'}".
+    **Role:** ${dna.persona?.role || 'Expert'}
+    **Tone:** ${dna.persona?.tone || 'Professional'}
+    **Target Audience:** ${dna.target?.audience || 'General'}
+    
     Based on the "Article Production Bible" above, and the "Strategist Knowledge" below, create the JSON Blueprint for the topic: "${topic}".
 
     ## Context: Strategist Knowledge
@@ -155,15 +269,54 @@ async function architectArticle(topic, category) {
     - The Writer will fill in the actual HTML later. You are the Architect defining the structure.
     
     ## Output JSON
+    IMPORTANT: RETURN ONLY THE RAW JSON. NO PREAMBLE.
+    OUTPUT MUST BE MINIFIED (SINGLE LINE). DO NOT USE UNESCAPED NEWLINES INSIDE STRINGS.
     `;
 
     try {
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const blueprint = JSON.parse(response.text());
+        const blueprint = await architectWithFallback(prompt);
+
+        // Remove redundant cleaning logic here since architectWithFallback returns parsed JSON object
+        /*
+        // Clean result (Handle Markdown/Newlines)
+        let cleanJson = resultText.trim();
+        if (cleanJson.includes('```')) {
+            cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '');
+        }
+
+        // Robust extraction: Find first { and last }
+        const start = cleanJson.indexOf('{');
+        const end = cleanJson.lastIndexOf('}');
+        if (start !== -1 && end !== -1) {
+            cleanJson = cleanJson.slice(start, end + 1);
+        }
+
+        // Custom State Machine Cleaner (handles escaped chars in strings)
+        let fixedJson = '';
+        let inString = false;
+        let escaped = false;
+        for (let i = 0; i < cleanJson.length; i++) {
+            const char = cleanJson[i];
+            if (char === '"' && !escaped) inString = !inString;
+            if (char === '\\' && !escaped) escaped = true;
+            else escaped = false;
+
+            if (inString) {
+                if (char === '\n') fixedJson += '\\n';
+                else if (char === '\r') fixedJson += '\\r';
+                else if (char === '\t') fixedJson += '\\t';
+            } else {
+                fixedJson += char;
+            }
+        }
+
+        const blueprint = JSON.parse(fixedJson);
+        */
 
         const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
         const outputPath = path.join(ARTIFACTS_DIR, `${slug}_blueprint.json`);
+
+        blueprint.site_id = dna.identity?.siteId || 'wealth_navigator';
 
         fs.writeFileSync(outputPath, JSON.stringify(blueprint, null, 2));
         console.log(`✅ Blueprint saved to: ${outputPath}`);

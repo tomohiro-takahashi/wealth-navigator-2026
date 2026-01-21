@@ -1,0 +1,21 @@
+{
+    "identity": {
+        "name": "Flip Logic",
+        "site_id": "flip_logic"
+    },
+    "persona": {
+        "tone": "Cold, Logical, Professional Trader",
+        "first_person": "私 (フリッパー)",
+        "audience_level": "Intermediate",
+        "keywords": [
+            "出口戦略",
+            "回転率",
+            "Velocity",
+            "数字は嘘をつかない"
+        ]
+    },
+    "target": {
+        "audience": "Real Estate Traders, 30-50s, Capital Gain Seekers",
+        "income_range": "1000-3000万円"
+    }
+}

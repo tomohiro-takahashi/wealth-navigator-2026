@@ -1,0 +1,30 @@
+{
+    "identity": {
+        "name": "Wealth Navigator",
+        "description": "High-Net-Worth Asset Management Strategy Media",
+        "domain": "wealth-navigator-2026.vercel.app",
+        "email": "info@tom-inc.com",
+        "author": "Wealth Navigator Editorial Team",
+        "social": {
+            "line": "https://lin.ee/xxxxxx"
+        }
+    },
+    "persona": {
+        "role": "Strategic Asset Advisor",
+        "tone": "Professional, authoritative, analytical, yet accessible. Focus on 'Opportunity Loss' and 'Time Leverage'.",
+        "mission": "To provide high-net-worth individuals with strategic options for asset defense and growth."
+    },
+    "target": {
+        "audience": "High-Net-Worth Individuals (HNWI), Business Owners, Doctors, Investors",
+        "pain_points": [
+            "Tax burden (Income Tax, Inheritance Tax)",
+            "Asset devaluation due to inflation",
+            "Lack of reliable second opinions",
+            "Information overload"
+        ]
+    },
+    "theme": {
+        "primaryColor": "#1A1A1B",
+        "accentColor": "#C5A059"
+    }
+}

@@ -10,6 +10,7 @@ import { getCategoryLabel, cn } from '@/lib/utils';
 import Image from 'next/image';
 import parse, { Element, domToReact as domNodeToReact } from 'html-react-parser';
 import { ImageWithPlaceholder } from '@/components/articles/ImageWithPlaceholder';
+import { siteConfig } from '@/site.config';
 
 // キャッシュの設定: ISR (60秒)
 export const revalidate = 60;
@@ -18,16 +19,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     try {
         const article = await getDetailBySlug(slug, 'articles') as Article;
-        if (!article) return { title: 'Not Found | Wealth Navigator' };
+        if (!article) return { title: `Not Found | ${siteConfig.name}` };
 
         return {
-            title: article.meta_title ? `${article.meta_title} | Wealth Navigator` : `${article.title} | Wealth Navigator`,
+            title: article.meta_title ? `${article.meta_title} | ${siteConfig.name}` : `${article.title} | ${siteConfig.name}`,
             description: article.meta_description || article.content.replace(/<[^>]+>/g, '').slice(0, 120) + '...',
             keywords: article.keywords ? article.keywords.split(',') : [],
         };
     } catch {
         return {
-            title: '記事詳細 | Wealth Navigator',
+            title: `記事詳細 | ${siteConfig.name}`,
         };
     }
 }
@@ -71,11 +72,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         dateModified: article.revisedAt || article.publishedAt,
         author: {
             '@type': 'Person',
-            name: article.author || 'Wealth Navigator 編集部',
+            name: article.author || `${siteConfig.name} 編集部`,
         },
         publisher: {
             '@type': 'Organization',
-            name: 'Wealth Navigator',
+            name: siteConfig.name,
             logo: {
                 '@type': 'ImageObject',
                 url: 'https://wealth-navigator.com/logo.png', // 仮のURL
@@ -146,6 +147,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     <div className={cn(
                         "prose prose-lg prose-invert max-w-none font-sans leading-loose",
                         "prose-headings:font-serif prose-headings:font-bold prose-headings:text-white",
+                        // H1 Style: Reduce size on mobile
+                        "prose-h1:text-2xl md:prose-h1:text-4xl prose-h1:leading-tight",
                         // H2 Style: Gold vertical bar
                         "prose-h2:text-2xl prose-h2:mt-16 prose-h2:mb-8 prose-h2:pl-6 prose-h2:border-l-4 prose-h2:border-accent",
                         // H3 Style

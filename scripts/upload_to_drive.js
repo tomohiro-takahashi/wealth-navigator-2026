@@ -80,10 +80,31 @@ async function uploadFile() {
         const drive = google.drive({ version: 'v3', auth: oAuth2Client });
 
         // Determine destination folder
-        let parentId = DRIVE_ROOT_ID;
-        if (subFolderName) {
-            parentId = await findOrCreateFolder(drive, DRIVE_ROOT_ID, subFolderName);
+        // Determine destination folder
+        // 1. Check for Tenant (DNA) Folder
+        const dnaPath = path.resolve(__dirname, '../src/dna.config.json');
+        let dnaName = null;
+        try {
+            const dna = require(dnaPath);
+            dnaName = dna.identity?.name; // e.g., "Kominka Frontier"
+        } catch (e) {
+            // Ignore if DNA not found, use Root directly
         }
+
+        let currentParentId = DRIVE_ROOT_ID;
+
+        // 2. Switch to Tenant Folder if DNA is present
+        if (dnaName) {
+            console.log(`🧬 DNA Detected. Routing to Tenant Folder: [${dnaName}]`);
+            currentParentId = await findOrCreateFolder(drive, DRIVE_ROOT_ID, dnaName);
+        }
+
+        // 3. Enter Subfolder if requested (e.g. "Shorts" or "Articles")
+        if (subFolderName) {
+            currentParentId = await findOrCreateFolder(drive, currentParentId, subFolderName);
+        }
+
+        const parentId = currentParentId;
 
         // Determine File Name
         const uploadName = targetFileName || path.basename(filePath);

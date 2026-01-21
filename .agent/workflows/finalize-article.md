@@ -72,16 +72,21 @@ This workflow takes a raw markdown article, saves it, generates matching images,
    - Run `git push origin main`.
    - This triggers Vercel deployment, making the images accessible in production (resolving the 401 issue).
 
-# Step 6: Full Video Production
-1. **Generate Script & Prompts (Gemini)**:
-   - Run `node scripts/generate_video_script.js [filename-slug]`.
-   - This saves:
-     - Script: `content/scripts/[filename-slug].md`
-     - Prompts: `content/prompts/[filename-slug]_prompts.md`
-2. **Auto-Generate Video (Python)**:
-   - Run `python3 scripts/auto_video_maker.py [filename-slug]`.
-   - This reads the script and images, and outputs:
-     - Video: `public/videos/[filename-slug].mp4`
+# Step 6: Manual Video Workflow Prep
+1. **Generate 8-Second Cut Prompts (Gemini)**:
+   - Run `node scripts/brain_architect.js [filename-slug] --type video`.
+   - **Goal**: Generate "No Text" prompts tailored for Manual Generation tools.
+   - **Output**:
+     - JSON Prompts (8 scenes x 7.5s)
+     - Narration Script
+     - Audio Assets (Synthesized voice for timeline placement)
+2. **Auto-Render Draft Video (Optional)**:
+   - Run `npm run render` in `video-generator/`.
+   - **Goal**: Create a draft MP4 with kinetic text and narration to preview the flow.
+   - **Output**: `public/videos/[filename-slug].mp4`
+3. **Note**:
+   - Actual video rendering can be done Manually using external AI tools.
+   - The generated `audio.mp3` or script can be used for editing.
 
 # Step 7: Social Media Strategy
 1. **Generate X (Twitter) Posts**:

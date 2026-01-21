@@ -142,7 +142,7 @@ async function main() {
         if (args.meta_title) payload.meta_title = args.meta_title;
         if (args.meta_description) payload.meta_description = args.meta_description;
         if (args.keywords) payload.keywords = args.keywords;
-        // Add other fields as needed, but DO NOT default to empty string
+        if (args.site_id) payload.site_id = [args.site_id]; // Treat as Array (Multi-Select/Tag pattern)
 
         // Check for existing article with same title
         console.log(`Checking for existing article with title: "${args.title}"...`);

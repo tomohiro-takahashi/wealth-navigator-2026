@@ -1,16 +1,31 @@
 import { createClient } from 'microcms-js-sdk';
+import dna from '../../src/dna.config.json'; // Direct import from src
 
 export const client = createClient({
     serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN || "service-domain-placeholder",
     apiKey: process.env.MICROCMS_API_KEY || "api-key-placeholder",
 });
 
+const SITE_ID = dna.identity.siteId || 'wealth_navigator';
+
+// Helper to merge filters
+const mergeFilters = (existingFilters?: string) => {
+    const siteFilter = `site_id[equals]${SITE_ID}`;
+    if (!existingFilters) return siteFilter;
+    return `(${existingFilters})[and]${siteFilter}`;
+};
+
 // ブログ一覧を取得
 export const getList = async (endpoint: string = "articles", queries?: Record<string, unknown>) => {
     try {
+        const mergedQueries = {
+            ...queries,
+            filters: mergeFilters(queries?.filters as string),
+        };
+
         const listData = await client.getList({
             endpoint,
-            queries,
+            queries: mergedQueries,
         });
         return listData;
     } catch (error) {
@@ -25,10 +40,14 @@ export const getDetail = async (
     endpoint: string = "articles",
     queries?: Record<string, unknown>
 ) => {
+    const mergedQueries = {
+        ...queries,
+        filters: mergeFilters(queries?.filters as string),
+    };
     const detailData = await client.getListDetail({
         endpoint,
         contentId,
-        queries,
+        queries: mergedQueries,
     });
     return detailData;
 };
@@ -41,7 +60,10 @@ export const getDetailBySlug = async (
     try {
         const listData = await client.getList({
             endpoint,
-            queries: { filters: `slug[equals]${slug}`, limit: 1 },
+            queries: {
+                filters: mergeFilters(`slug[equals]${slug}`),
+                limit: 1
+            },
         });
         if (listData.contents.length === 0) {
             return null;

@@ -3,11 +3,12 @@ import { getList } from '@/lib/microcms';
 import Link from 'next/link';
 import { Property } from '@/types';
 import { Metadata } from 'next';
+import { siteConfig } from '@/site.config';
 
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-    title: 'Properties | Wealth Navigator',
+    title: `Properties | ${siteConfig.name}`,
     description: '厳選された投資用不動産物件一覧',
 };
 
@@ -28,7 +29,7 @@ export default async function PropertiesPage() {
                     厳選物件一覧
                 </h1>
                 <p className="text-gray-500 text-sm md:text-base">
-                    Wealth Navigatorが自信を持っておすすめする、至高のポートフォリオ。
+                    {siteConfig.name}が自信を持っておすすめする、至高のポートフォリオ。
                 </p>
             </header>
 

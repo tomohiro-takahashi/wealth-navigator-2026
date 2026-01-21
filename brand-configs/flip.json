@@ -1,0 +1,32 @@
+{
+    "identity": {
+        "name": "Flip Logic",
+        "description": "不動産は『安く買って高く売る』。それ以外は誤差だ。",
+        "domain": "flip-logic.vercel.app",
+        "email": "info@flip-logic.com",
+        "siteId": "flip_logic",
+        "author": "Flip Logic Analysis",
+        "social": {
+            "line": "https://lin.ee/xxxxxx"
+        }
+    },
+    "persona": {
+        "role": "冷徹な相場師（トレーダー）",
+        "tone": "断定的、シャープ、無駄がない。「だ・である」調。感情を排除し、数字と論理だけで語るプロフェッショナル。",
+        "mission": "キャッシュフロー幻想を断ち切り、キャピタルゲイン（回転率）重視の投資へ読者を転換させること。"
+    },
+    "target": {
+        "audience": "30〜50歳の経営者、自営業、セミプロ投資家",
+        "pain_points": [
+            "キャッシュフロー回収の遅さ",
+            "資金効率（回転率）への不満",
+            "出口が見えない不安",
+            "仕入れルートの情報格差",
+            "相場観の欠如"
+        ]
+    },
+    "theme": {
+        "primaryColor": "#1A1A1A",
+        "accentColor": "#C9A962"
+    }
+}

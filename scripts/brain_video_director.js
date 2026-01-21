@@ -5,7 +5,7 @@ require('dotenv').config({ path: '.env.local' });
 
 // Configuration
 const API_KEY = process.env.GOOGLE_API_KEY;
-const MODEL_NAME = "gemini-2.0-flash-exp";
+const MODEL_NAME = "gemini-3-flash-preview";
 
 if (!API_KEY) {
     console.error("❌ GOOGLE_API_KEY is missing in .env.local");
@@ -25,22 +25,44 @@ async function generateVideoScript(articlePath) {
         process.exit(1);
     }
 
+    // Load DNA Configuration
+    const dnaPath = path.resolve(__dirname, '../src/dna.config.json');
+    let dna = {};
+    try {
+        dna = require(dnaPath);
+        console.log(`🧬 DNA Loaded for Video Director: ${dna.identity?.name}`);
+    } catch (e) {
+        console.warn("⚠️ DNA config not found. Using defaults.");
+        dna = {
+            identity: { name: "Wealth Navigator" },
+            target: { audience: "Affluent Investors" },
+            persona: { tone: "Professional & Trustworthy" }
+        };
+    }
+
     // Load the Director Persona/Instructions
     const directorBrainPath = path.resolve(__dirname, '../libs/brain/video_director.md');
     let directorPersona = "";
     try {
         directorPersona = fs.readFileSync(directorBrainPath, 'utf-8');
+
+        // Dynamic Injection of DNA
+        directorPersona = directorPersona
+            .replace(/{{DNA_BRAND_NAME}}/g, dna.identity?.name || "Wealth Navigator")
+            .replace(/{{DNA_TARGET_AUDIENCE}}/g, dna.target?.audience || "Investory")
+            .replace(/{{DNA_PERSONA_TONE}}/g, dna.persona?.tone || "Professional");
+
     } catch (e) {
         console.error("⚠️ Could not read libs/brain/video_director.md. Using default instructions.");
         directorPersona = "You are a Video Director. Create a 60s script.";
     }
 
-
-${ directorPersona }
+    const prompt = `
+${directorPersona}
 
     ---
 ## Input Article Content
-${ articleContent.substring(0, 15000) } // Limit context if too large
+${articleContent.substring(0, 15000)} // Limit context if too large
     ---
 
 ** Instruction:**
@@ -52,39 +74,48 @@ ${ articleContent.substring(0, 15000) } // Limit context if too large
 
     2. ** Generate Video Script JSON:**
         - Create a JSON object strictly following the provided Schema.
-   - `script_type`: Set to the selected type(e.g., "Type B").
-   - `scenes`: Generate scenes appropriate for that specific type's structure.
-        - `total_duration`: Aim for 60s, but ALLOW IT TO EXCEED 60s if the content is rich.Do not cut off sentences.
-   - `screen_text`: Keep it short!(Max 20 chars per line).
+   - \`script_type\`: Set to the selected type(e.g., "Type B").
+   - \`scenes\`: Generate scenes appropriate for that specific type's structure.
+        - \`total_duration\`: Aim for 60s, but ALLOW IT TO EXCEED 60s if the content is rich.Do not cut off sentences.
+   - \`screen_text\`: Keep it short!(Max 20 chars per line).
 
 Ensure the output is strictly valid JSON inside \`\`\`json\`\`\` blocks.
+`;
 
 
-    try {
-        const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+    for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+            console.log(`🎬 Video Director Attempt ${attempt}...`);
+            const model = genAI.getGenerativeModel({ model: MODEL_NAME });
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
 
-        // Clean and Extract JSON
-        let jsonStr = text;
-        if (text.includes('```json')) {
-    jsonStr = text.split('```json')[1].split('```')[0];
-} else if (text.includes('```')) {
-    jsonStr = text.split('```')[1].split('```')[0];
+            // Clean and Extract JSON
+            let jsonStr = text;
+            if (text.includes('```json')) {
+                jsonStr = text.split('```json')[1].split('```')[0];
+            } else if (text.includes('```')) {
+                jsonStr = text.split('```')[1].split('```')[0];
+            }
+            jsonStr = jsonStr.trim();
+
+            const scriptJson = JSON.parse(jsonStr);
+
+            console.log("✅ Video Script Generated Successfully!");
+            return scriptJson;
+
+        } catch (error) {
+            console.warn(`⚠️ Video Director Attempt ${attempt} Failed: ${error.message}`);
+            if (attempt < 3) await new Promise(r => setTimeout(r, 4000));
+            else {
+                console.error("❌ Generation Failed:", error);
+                process.exit(1);
+            }
+        }
+    }
 }
-jsonStr = jsonStr.trim();
 
-const scriptJson = JSON.parse(jsonStr);
-
-console.log("✅ Video Script Generated Successfully!");
-return scriptJson;
-
-    } catch (error) {
-    console.error("❌ Generation Failed:", error);
-    process.exit(1);
-}
-}
 
 // Main Execution
 (async () => {

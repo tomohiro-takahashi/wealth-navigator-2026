@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Property } from '@/types';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { siteConfig } from '@/site.config';
 
 // 再検証時間: 60秒
 
@@ -13,12 +14,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     try {
         const property = await getDetail(slug, 'properties') as Property;
         return {
-            title: `${property.name} | Wealth Navigator`,
+            title: `${property.name} | ${siteConfig.name}`,
             description: property.description,
         };
     } catch {
         return {
-            title: '物件詳細 | Wealth Navigator',
+            title: `物件詳細 | ${siteConfig.name}`,
         };
     }
 }

@@ -22,6 +22,11 @@ const BottomNavContent = () => {
     // Special case for 'About Us' since it's a static page
     const isAboutActive = pathname === '/about';
 
+    // Hide BottomNav on Diagnosis Result page (LP mode)
+    if (pathname === '/diagnosis/result') {
+        return null;
+    }
+
     return (
         <nav className="fixed bottom-0 left-0 z-50 flex h-[80px] w-full items-start justify-around border-t border-white/10 bg-[#161410]/95 px-2 pt-3 backdrop-blur-md pb-6 md:hidden">
             <Link

@@ -1,0 +1,26 @@
+{
+    "identity": {
+        "name": "Wealth Navigator",
+        "site_id": "wealth_navigator",
+        "description": "Global Investment Strategies for High Net Worth Individuals."
+    },
+    "persona": {
+        "tone": "Authoritative, Strategic, Premium",
+        "first_person": "私 (チーフストラテジスト)",
+        "audience_level": "High/Expert",
+        "keywords": [
+            "Opportunity Loss",
+            "Arbitrage",
+            "Global Macro",
+            "Tax Optimization"
+        ]
+    },
+    "target": {
+        "audience": "High Net Worth Individuals (HNWI), Business Owners",
+        "pain_points": [
+            "Taxation",
+            "Inflation",
+            "Legacy Preservation"
+        ]
+    }
+}

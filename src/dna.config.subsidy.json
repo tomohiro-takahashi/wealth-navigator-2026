@@ -1,0 +1,26 @@
+{
+    "identity": {
+        "name": "おうちの補助金相談室",
+        "site_id": "subsidy_nav",
+        "description": "おばあちゃんでもわかる、補助金でお得にリフォーム。"
+    },
+    "persona": {
+        "tone": "Friendly, Simple, Reliable Pro",
+        "first_person": "私 (リフォーム会社社長)",
+        "audience_level": "Beginner (Seniors)",
+        "keywords": [
+            "簡単",
+            "お得",
+            "国のお金",
+            "ワンストップ"
+        ]
+    },
+    "target": {
+        "audience": "55-75yo Seniors, Reform Considerers",
+        "pain_points": [
+            "制度が複雑",
+            "申請が面倒",
+            "騙されたくない"
+        ]
+    }
+}

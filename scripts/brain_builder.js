@@ -1,9 +1,12 @@
 const fs = require('fs');
 const path = require('path');
 // Reuse logic from generate_with_claude.js for API calls
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 require('dotenv').config({ path: '.env.local' });
 
 const API_KEY = process.env.ANTHROPIC_API_KEY;
+const GOOGLE_API_KEY = process.env.GOOGLE_API_KEY;
+
 const API_URL = 'https://api.anthropic.com/v1/messages';
 
 const EDITOR_BRAIN_PATH = path.join(process.cwd(), 'libs/brain/article_editor.md');
@@ -34,6 +37,27 @@ async function callClaude(prompt) {
     return data.content[0].text;
 }
 
+async function callGemini(prompt) {
+    if (!GOOGLE_API_KEY) {
+        throw new Error("GOOGLE_API_KEY is missing in .env.local");
+    }
+    const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
+    const model = genAI.getGenerativeModel({
+        model: "gemini-3-flash-preview",
+        generationConfig: { responseMimeType: "application/json" },
+        safetySettings: [
+            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+        ]
+    });
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    return response.text();
+}
+
 async function builderArticle() {
     console.log("🔨 Starting Brain Builder (Writer)...");
 
@@ -50,6 +74,7 @@ async function builderArticle() {
     }
 
     const blueprint = fs.readFileSync(blueprintPath, 'utf8');
+    const blueprintObj = JSON.parse(blueprint); // Parse here to access site_id
     const editorBible = fs.readFileSync(EDITOR_BRAIN_PATH, 'utf8');
 
     const prompt = `
@@ -77,7 +102,18 @@ async function builderArticle() {
 
     try {
         console.log(`✍️  Writing content for: ${slug}`);
-        const result = await callClaude(prompt);
+
+        // --- HYBRID SWITCHER LOGIC ---
+        const siteId = blueprintObj.site_id || "wealth_navigator";
+        let result;
+
+        if (siteId === 'wealth_navigator' || siteId === 'legacy_exit') {
+            console.log(`🤖 Using Engine: Claude (High Quality) for ${siteId}`);
+            result = await callClaude(prompt);
+        } else {
+            console.log(`⚡ Using Engine: Gemini (High Speed/Low Cost) for ${siteId}`);
+            result = await callGemini(prompt);
+        }
 
         // Clean result
         let cleanJson = result.trim();
@@ -147,7 +183,8 @@ function convertToArtifacts(json) {
         meta_title: json.h1_title,
         meta_description: json.meta_description,
         keywords: json.target_keyword || "",
-        target_yield: "0"
+        target_yield: "0",
+        site_id: json.site_id || "wealth_navigator"
     };
     fs.writeFileSync('metadata.json', JSON.stringify(metaPayload, null, 2));
     console.log("   -> Saved: metadata.json");

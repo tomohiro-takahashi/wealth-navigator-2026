@@ -4,11 +4,12 @@ import Link from 'next/link';
 import { Article } from '@/types';
 import { getCategoryLabel } from '@/lib/utils';
 import { Metadata } from 'next';
+import { siteConfig } from '@/site.config';
 
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-    title: 'Articles | Wealth Navigator',
+    title: `Articles | ${siteConfig.name}`,
     description: '資産形成に関する最新コラム・投資情報',
 };
 

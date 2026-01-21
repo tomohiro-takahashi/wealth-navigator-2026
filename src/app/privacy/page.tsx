@@ -1,9 +1,10 @@
 
 import React from 'react';
 import { Metadata } from 'next';
+import { siteConfig } from '@/site.config';
 
 export const metadata: Metadata = {
-    title: 'Privacy Policy | Wealth Navigator',
+    title: `Privacy Policy | ${siteConfig.name}`,
     description: 'プライバシーポリシー',
 };
 
@@ -15,7 +16,7 @@ export default function PrivacyPolicy() {
 
                 <div className="space-y-8 leading-relaxed font-sans text-sm md:text-base">
                     <p>
-                        Wealth Navigator運営事務局（以下「当事務局」といいます）は、本ウェブサイト「Wealth Navigator」（以下「本サイト」といいます）をご利用いただくユーザーの皆様の個人情報の保護に関し、以下のとおりプライバシーポリシー（以下「本ポリシー」といいます）を定め、適切な取り扱いと保護に努めます。
+                        {siteConfig.name}運営事務局（以下「当事務局」といいます）は、本ウェブサイト「{siteConfig.name}」（以下「本サイト」といいます）をご利用いただくユーザーの皆様の個人情報の保護に関し、以下のとおりプライバシーポリシー（以下「本ポリシー」といいます）を定め、適切な取り扱いと保護に努めます。
                     </p>
 
                     <section>
@@ -101,8 +102,8 @@ export default function PrivacyPolicy() {
                         <h2 className="text-xl font-serif text-white mb-4 border-b border-neutral-700 pb-2">8. お問い合わせ窓口</h2>
                         <p>本ポリシーに関するお問い合わせ、個人情報の開示等のご請求、その他個人情報の取り扱いに関するご質問・ご意見等は、以下の窓口までご連絡ください。</p>
                         <div className="mt-4 p-4 bg-neutral-800 rounded-lg">
-                            <p className="font-bold">Wealth Navigator 運営事務局</p>
-                            <p className="mt-2">メールアドレス：<a href="mailto:info@tom-inc.com" className="text-[#c59f59] hover:underline">info@tom-inc.com</a></p>
+                            <p className="font-bold">{siteConfig.name} 運営事務局</p>
+                            <p className="mt-2">メールアドレス：<a href={`mailto:${siteConfig.email}`} className="text-[#c59f59] hover:underline">{siteConfig.email}</a></p>
                             <p className="text-sm text-neutral-400 mt-2">※お問い合わせへの回答には、数営業日いただく場合がございます。</p>
                         </div>
                         <p className="text-right text-sm text-neutral-500 mt-8">

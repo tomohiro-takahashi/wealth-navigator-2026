@@ -50,3 +50,8 @@ mcp-server/node_modules
 service_account.json
 token.json
 credentials.json
+.env*.local
+debug_architect.log
+logs.txt
+test_video.mp4
+content_draft_video_script_video_script.json

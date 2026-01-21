@@ -1,3 +1,5 @@
+import { siteConfig } from "@/site.config";
+
 export const Philosophy = () => {
     return (
         <section className="py-24 bg-[#F8F9FA] relative flex flex-col items-center justify-center text-center overflow-hidden">
@@ -27,7 +29,7 @@ export const Philosophy = () => {
 
             <div className="mt-16">
                 <span className="font-display font-bold text-xl tracking-widest text-primary">
-                    WEALTH NAVIGATOR
+                    {siteConfig.name}
                 </span>
             </div>
         </section>

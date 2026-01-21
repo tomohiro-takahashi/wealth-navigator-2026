@@ -1,0 +1,32 @@
+{
+    "identity": {
+        "name": "おうちの補助金相談室",
+        "description": "おばあちゃんでもわかる、補助金でお得にリフォーム。",
+        "domain": "subsidy-reform.vercel.app",
+        "email": "info@subsidy-reform.com",
+        "siteId": "subsidy",
+        "author": "Subsidy Reform Support",
+        "social": {
+            "line": "https://lin.ee/xxxxxx"
+        }
+    },
+    "persona": {
+        "role": "補助金を使い倒したリフォーム会社の社長",
+        "tone": "親しみやすく分かりやすい。「です・ます」調。難しい専門用語を使わず、経験談を交えて優しく語る現場のプロ。",
+        "mission": "複雑な補助金制度を「誰でもわかる」レベルまで噛み砕き、申請から工事までワンストップで支援すること。"
+    },
+    "target": {
+        "audience": "55〜75歳の持ち家所有者（リフォーム検討層）",
+        "pain_points": [
+            "制度が複雑で難しそう",
+            "カタカナ用語（ZEHなど）が理解不能",
+            "自分が対象かわからない",
+            "申請手続きが面倒・不明",
+            "業者選びへの不安"
+        ]
+    },
+    "theme": {
+        "primaryColor": "#5B9A6F",
+        "accentColor": "#FF8C42"
+    }
+}

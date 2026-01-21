@@ -83,13 +83,23 @@ def upload_file(service, file_path, folder_id):
     # [slug]_prompts.md -> 【プロンプト】[slug] (Doc)
     # [slug]_posts.md -> 【SNS】[slug] (Doc)
     
+    
     display_name = name
-    if name.endswith("_posts.md"):
-        display_name = f"【SNS】{name}"
-    elif name.endswith("_prompts.md"):
-        display_name = f"【プロンプト】{name}"
+    
+    # Path-based detection for accuracy
+    if "content/social" in file_path and name.endswith(".md"):
+         display_name = f"【SNS】{name}"
+    elif "content/prompts" in file_path and name.endswith(".md"):
+         display_name = f"【プロンプト】{name}"
+    elif "content/scripts" in file_path and name.endswith(".md"):
+         display_name = f"【台本】{name}"
+    elif "content/articles" in file_path and name.endswith(".md"):
+         display_name = f"【記事原稿】{name}" # Article draft
+    elif name == "walkthrough.md":
+         display_name = "【報告書】walkthrough"
     elif name.endswith(".md"):
-        display_name = f"【台本】{name}"
+        # Fallback for other MD files
+        display_name = f"【資料】{name}"
     elif name.endswith(".mp4"):
         display_name = f"【動画】{name}"
 

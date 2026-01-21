@@ -1,5 +1,6 @@
 import { MicroCMSImage } from "microcms-js-sdk";
 import Image from "next/image";
+import { siteConfig } from "@/site.config";
 
 type Props = {
     image?: MicroCMSImage;
@@ -25,7 +26,7 @@ export const ArticleEyecatch = ({ image, title }: Props) => {
 
             {isDefault && (
                 <div className="absolute bottom-4 right-4 text-white/50 text-xs font-serif tracking-widest uppercase">
-                    Wealth Navigator Original
+                    {siteConfig.name} Original
                 </div>
             )}
         </div>

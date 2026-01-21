@@ -123,11 +123,19 @@ This workflow automates the research, writing, image generation, and ingestion o
 3. Execute ingestion script:
    - Command: `node scripts/import_articles.js --file content_draft.html --title "[TOPIC]" --category "[CATEGORY]" --slug "[TOPIC_SLUG]" --expert_tip "$(cat expert_tip.txt)" --target_yield "0" --meta_title "META_TITLE_FROM_JSON" --meta_description "META_DESC_FROM_JSON" --keywords "KEYWORDS_FROM_JSON" --images public/images/tmp/[TOPIC_SLUG]_1.webp public/images/tmp/[TOPIC_SLUG]_2.webp public/images/tmp/[TOPIC_SLUG]_3.webp`
 
-# Step 5: Automated Header Video Generation
+# Step 5: Manual Video Prompt Generation (8s Cut)
 // turbo
-1. **Execute Video Pipeline**:
-   - Run `sh scripts/create_article_video.sh "[TOPIC]" "[TOPIC_SLUG]"`
-   - This parses the article title, generates an AI voiceover, renders a motion graphics video using Remotion, and saves it to `public/videos/[TOPIC_SLUG].mp4`.
+1. **Generate Video Director Assets**:
+   - Run `node scripts/brain_architect.js "[TOPIC_SLUG]" --type video`.
+   - **Goal**: Create instructions for **Manual Video Generation** (Sora/Runway).
+   - **Output**:
+     - `video-generator/src/video-script.json` (The "8-Second Cut" Prompts).
+     - `content/scripts/[TOPIC_SLUG].md` (Narration Script).
+   - **Note**: The user will manually use these prompts in external AI tools later.
+2. **Auto-Render Draft Video (Optional)**:
+   - Run `npm run render` in `video-generator/`.
+   - **Goal**: Create a draft MP4 with kinetic text and narration to preview the flow.
+   - **Output**: `public/videos/[TOPIC_SLUG].mp4`
 
 # Step 6: Social Media Strategy
 1. **Generate X (Twitter) Posts**:

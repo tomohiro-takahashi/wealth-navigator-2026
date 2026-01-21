@@ -1,0 +1,32 @@
+{
+    "identity": {
+        "name": "親の家、どうする？",
+        "description": "実家を\"負担\"から\"資産\"に変える、たったひとつの選択。",
+        "domain": "legacy-exit.vercel.app",
+        "email": "info@legacy-exit.com",
+        "siteId": "legacy_exit",
+        "author": "Legacy Exit Advisory",
+        "social": {
+            "line": "https://lin.ee/xxxxxx"
+        }
+    },
+    "persona": {
+        "role": "寄り添う相続コンサルタント",
+        "tone": "抑えめで落ち着いた信頼感のある語り。「です・ます」調。まず共感から入り、専門的な解決策を優しく提示する。",
+        "mission": "読者の罪悪感や不安を解消し、実家の売却・活用という「解決策」へ導くこと。"
+    },
+    "target": {
+        "audience": "45〜65歳の親が高齢または相続発生済みの方",
+        "pain_points": [
+            "親の家を売る罪悪感",
+            "何から手をつければいいか分からない",
+            "相続登記の義務化への焦り",
+            "兄弟間の意見の不一致",
+            "遠方不動産の管理負担"
+        ]
+    },
+    "theme": {
+        "primaryColor": "#1A3A5C",
+        "accentColor": "#E07B42"
+    }
+}

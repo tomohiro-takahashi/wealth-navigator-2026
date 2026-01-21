@@ -1,91 +1,93 @@
 {
-  "project_title": "Video_Script_WealthNav",
+  "project_title": "2026年金利上昇ショック：新築信仰を捨て「古民家」で資産を守る処方箋",
   "target_persona": {
-    "income_range": "8M-30M JPY",
+    "income_range": "年収1,500万円〜5,000万円（医師、経営者、高属性サラリーマン）",
     "pain_points": [
-      "High Tax",
-      "Inflation",
-      "Lack of Time"
+      "金利上昇による不動産収支の悪化",
+      "新築タワマンの修繕積立金高騰",
+      "インフレによる現金資産の目減り"
     ],
-    "knowledge_level": "Beginner/Intermediate"
+    "knowledge_level": "中級（投資経験はあるが、現在の市場変化に危機感を持っている）"
   },
+  "script_type": "Type A: The Myth Buster (常識破壊型)",
   "scenes": [
     {
       "scene_id": 1,
       "section_type": "hook",
-      "duration_sec": 4,
-      "narration_text": "年収3000万でも安心するな。その定期預金、実質マイナス金利です。",
-      "screen_text": "実質マイナス金利",
-      "visual_prompt": "Close-up of a stressed face looking at a bank statement. Dark background with gold accents. Emphasize the red numbers indicating loss.",
-      "audio_cues": "Start with a low, unsettling hum that quickly fades into Lo-fi Jazz."
+      "duration_sec": 7.5,
+      "narration_text": "2026年、新築マンション投資は『自死行為』です。まだパンフレットの利回りを信じているのですか？",
+      "screen_text": "新築マンション投資は\n「自死行為」である",
+      "visual_prompt": "Cinematic shot, a sharp-looking consultant in a high-end office looking directly at the camera, serious expression. Soft morning light through large windows. No text, no UI, clean footage.",
+      "audio_cues": "Sharp 'whoosh' sound, BGM: Sophisticated Lo-fi Jazz starts."
     },
     {
       "scene_id": 2,
-      "section_type": "retention",
-      "duration_sec": 8,
-      "narration_text": "2026年、不動産市場は大転換。金利上昇、インフレ、円安。無策だと資産が目減りする一方です。",
-      "screen_text": "2026年 大転換",
-      "visual_prompt": "Fast-paced montage of graphs showing rising interest rates, inflation numbers, and a weakening Yen. Overlayed with news headlines. Gloomy feel.",
-      "audio_cues": "Jazz tempo increases slightly."
+      "section_type": "truth",
+      "duration_sec": 7.5,
+      "narration_text": "金利上昇と円安。買った瞬間に1,500万円の含み損。それが現在の『新築プレミアム』の正体です。",
+      "screen_text": "買った瞬間に\n1500万円の赤字",
+      "visual_prompt": "Fast motion time-lapse of a modern skyscraper construction site, transitioning to a rainy city street at night. Professional cinematic grading. No text, no subtitles.",
+      "audio_cues": "Deep bass pulse."
     },
     {
       "scene_id": 3,
-      "section_type": "retention",
-      "duration_sec": 8,
-      "narration_text": "都心のタワマン、変動金利ローン…リスクを知らずに放置すると、あっという間に55%減。",
-      "screen_text": "リスク放置で55%減",
-      "visual_prompt": "Animated visual of a skyscraper shrinking and crumbling. Highlight the '55%' with a bold red color. Focus on vulnerability.",
-      "audio_cues": "Subtle sound effect of something crumbling."
+      "section_type": "truth",
+      "duration_sec": 7.5,
+      "narration_text": "プロは『空中権』にお金を払いません。勝者が選ぶのは、圧倒的な『土地持ち分』を持つヴィンテージ・アセット。",
+      "screen_text": "空中権ではなく\n「土地」を買え",
+      "visual_prompt": "Close-up of a fountain pen signing a real estate contract, then a slow zoom into an old but well-maintained stone wall of a vintage building. No text, clean footage.",
+      "audio_cues": "Sound of a pen scratching on paper."
     },
     {
       "scene_id": 4,
-      "section_type": "logic",
-      "duration_sec": 10,
-      "narration_text": "解決策は？資産の組み換えです。都心の中古レジデンス、現物ゴールド、海外不動産。リスク分散こそが鍵。",
-      "screen_text": "解決策: 資産の組み換え",
-      "visual_prompt": "Split screen showing: (1) A modern, well-maintained apartment building in a central Tokyo location. (2) Gold bars. (3) A luxury villa with a pool in Sydney, Australia. Bright, optimistic feel.",
-      "audio_cues": "Music becomes slightly more upbeat and confident."
+      "section_type": "solution",
+      "duration_sec": 7.5,
+      "narration_text": "狙うべきは都心の『古民家』。再調達価格のインフレにより、既に建っている優良物件は最強の防波堤になります。",
+      "screen_text": "都心の「古民家」が\n最強の防波堤になる",
+      "visual_prompt": "Cinematic drone shot flying low through a narrow street in a high-end Tokyo residential area (like Minato-ku), focusing on a traditional gate. No text, no UI.",
+      "audio_cues": "Subtle wind whoosh."
     },
     {
       "scene_id": 5,
-      "section_type": "logic",
-      "duration_sec": 7,
-      "narration_text": "法人化も視野に。税金対策と事業拡大を同時に実現。賢く資産を守りましょう。",
-      "screen_text": "法人化で税金対策",
-      "visual_prompt": "Elegant animation showing a company logo forming, then branching out into different areas of growth and prosperity. Gold and navy color scheme.",
-      "audio_cues": "Add a subtle 'ka-ching' sound effect when the logo solidifies."
+      "section_type": "solution",
+      "duration_sec": 7.5,
+      "narration_text": "実質利回り4.2%超。新築の2倍近いキャッシュフローが、あなたの家計をインフレから守り抜く。",
+      "screen_text": "利回り5.5%\n新築の約2倍を実現",
+      "visual_prompt": "A digital tablet showing a clean financial graph with a rising green line. A person's hand pointing at the peak. Minimalist office background. No text, clean footage.",
+      "audio_cues": "Digital chime."
     },
     {
       "scene_id": 6,
-      "section_type": "logic",
-      "duration_sec": 5,
-      "narration_text": "投資は怖い？いいえ、知識がないのが怖いんです。",
-      "screen_text": "知識こそ最強の武器",
-      "visual_prompt": "Image of a book opening and shining a bright light, revealing insights and opportunities.",
-      "audio_cues": "Sound effect of a page turning."
+      "section_type": "solution",
+      "duration_sec": 7.5,
+      "narration_text": "鍵は『スペースの再定義』。ヴィンテージ空間をSOHOやスタジオへ。リノベで収益を1.5倍に跳ね上げるのです。",
+      "screen_text": "SOHO化で\n収益を1.5倍へ",
+      "visual_prompt": "Interior shot of a stylishly renovated old house with exposed beams and modern designer furniture. Slow pan movement. No text, clean footage.",
+      "audio_cues": "Smooth transition in BGM."
     },
     {
       "scene_id": 7,
-      "section_type": "cta",
-      "duration_sec": 16,
-      "narration_text": "まずはあなたの資産健康度をチェック。プロフィールのリンクから、無料診断へ。たった3分で未来が変わります。",
-      "screen_text": "無料 資産健康度チェック → プロフへ",
-      "visual_prompt": "Animated call to action. A phone displaying a simple quiz interface with progress bar. Animated arrows pointing to the profile link.",
-      "audio_cues": "Music fades out smoothly. End with a gentle, encouraging tone."
+      "section_type": "truth",
+      "duration_sec": 7.5,
+      "narration_text": "2008年のリーマンショックと同じ。今、恐怖で縮こまる層から『富の再分配』が始まっています。",
+      "screen_text": "富の再分配は\n既に始まっている",
+      "visual_prompt": "Black and white montage of a ticking clock and a busy stock exchange floor (abstract), shifting back to full color consultant looking confident. No text, clean footage.",
+      "audio_cues": "Ticking clock sound fades into BGM."
     },
     {
       "scene_id": 8,
       "section_type": "cta",
-      "duration_sec": 2,
-      "narration_text": "",
-      "screen_text": "",
-      "visual_prompt": "Wealth Navigator logo with tagline.",
-      "audio_cues": ""
+      "duration_sec": 7.5,
+      "narration_text": "あなたは狩られる側か、狩る側か。あなたの物件の『真の現在価値』を今すぐ診断してください。詳細はプロフから。",
+      "screen_text": "無料：物件診断は\nプロフィールから",
+      "visual_prompt": "The consultant closes a leather-bound notebook and looks into the lens with a slight smile. Cinematic soft focus background. No text, no UI.",
+      "audio_cues": "BGM swells and ends with a clean finish."
     }
   ],
   "metadata": {
     "total_duration": 60,
     "bgm_style": "Smart Lo-fi / Modern Jazz",
-    "voice_tone": "Trustworthy, Professional"
+    "voice_tone": "Trustworthy, Professional, Calm yet Sharp",
+    "generation_note": "Optimized for 8s Manual Video Generation. Focus on high-end textures and lighting."
   }
 }
