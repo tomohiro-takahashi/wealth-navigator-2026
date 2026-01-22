@@ -1,5 +1,6 @@
 import { Composition } from 'remotion';
 import { MyVideo } from './MyVideo';
+import { ClipEditor } from './ClipEditor';
 import scriptData from './video-script.json';
 import './style.css'; // Optional styling
 
@@ -14,6 +15,14 @@ export const RemotionRoot: React.FC = () => {
                 id="MyVideo"
                 component={MyVideo}
                 durationInFrames={Math.ceil(durationInSeconds * fps)}
+                fps={fps}
+                width={1080}
+                height={1920}
+            />
+            <Composition
+                id="ClipEditor"
+                component={ClipEditor}
+                durationInFrames={Math.ceil(durationInSeconds * fps)} // This is a default, can be overridden by CLI
                 fps={fps}
                 width={1080}
                 height={1920}

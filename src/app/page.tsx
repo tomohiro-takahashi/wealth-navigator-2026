@@ -95,16 +95,13 @@ export default async function Home() {
               </div>
 
               <div className="flex flex-col items-center w-full gap-6">
-                <Link href="/simulation" className="group relative flex h-16 w-full max-w-md mx-auto items-center justify-center gap-3 rounded-md bg-gradient-to-r from-[#c59f59] to-[#b88f45] px-4 md:px-8 text-base md:text-lg font-bold text-[#161410] transition-all hover:brightness-110 active:scale-[0.98] shadow-[0_0_25px_rgba(197,159,89,0.3)]">
-                  <span className="">「信用力」と「最適戦略」を診断する (無料)</span>
+                <Link href="/diagnosis" className="group relative flex h-16 w-full max-w-md mx-auto items-center justify-center gap-3 rounded-md bg-gradient-to-r from-[#c59f59] to-[#b88f45] px-8 text-lg font-bold text-[#161410] transition-all hover:brightness-110 active:scale-[0.98] shadow-[0_0_25px_rgba(197,159,89,0.3)]">
+                  <span>資産ポートフォリオを診断する</span>
+                  <span className="material-symbols-outlined text-2xl transition-transform group-hover:translate-x-1">arrow_forward</span>
                   <div className="absolute inset-0 rounded-md ring-1 ring-inset ring-white/20 pointer-events-none"></div>
                 </Link>
                 <Link href="/about" className="flex h-14 w-full max-w-md mx-auto items-center justify-center gap-2 rounded-md border border-[#c59f59] bg-transparent px-8 text-base font-medium text-white transition-all duration-300 hover:bg-[#c59f59] hover:text-[#161410] active:scale-[0.98]">
                   <span>About us 私たちについて</span>
-                </Link>
-
-                <Link href="/inquiry" className="mt-2 text-sm text-gray-400 hover:text-[#c59f59] border-b border-gray-600 hover:border-[#c59f59] transition-colors pb-0.5">
-                  セカンドオピニオン・個別相談はこちら
                 </Link>
               </div>
             </div>
@@ -276,41 +273,6 @@ export default async function Home() {
               知識こそが、最強の防衛策。<br />
               そして、真の自由への最短距離である。
             </p>
-          </div>
-        </section>
-
-        {/* Bottom CTA (The Bridge Banner) */}
-        <section className="bg-[#F8F9FA] pb-20 px-4">
-          {/* Banner Container */}
-          <div
-            className="max-w-5xl mx-auto rounded-2xl shadow-2xl overflow-hidden relative bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: "url('/images/wealth_lounge.jpg')" }}
-          >
-
-            {/* 1. Dark Overlay */}
-            <div className="absolute inset-0 bg-black/80 z-0"></div>
-
-            {/* 2. Content */}
-            <div className="relative z-10 p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="md:w-3/5 text-center md:text-left">
-                <h2 className="text-2xl md:text-3xl font-serif text-white mb-4 leading-tight drop-shadow-md">
-                  「孤独な決断」から、<br className="md:hidden" />「確信ある選択」へ
-                </h2>
-                <p className="text-gray-300 text-sm md:text-base leading-relaxed">
-                  資産運用は情報戦です。30年の実績を持つプロフェッショナルを、<br className="hidden md:block" />
-                  あなた専属の<span className="text-[#c59f59] font-bold">「プライベート・顧問」</span>に迎え入れる。<br />
-                  それが、資産を守る最強の防衛策です。
-                </p>
-              </div>
-              <div className="md:w-2/5 flex flex-col items-center w-full">
-                <Link href="/inquiry" className="block w-full max-w-sm bg-gradient-to-r from-[#c59f59] to-[#b88f45] text-[#161410] text-center font-bold py-4 rounded-lg shadow-[0_0_25px_rgba(197,159,89,0.3)] hover:shadow-xl transition-all transform hover:-translate-y-1 hover:brightness-110">
-                  資産防衛・個別相談を予約する
-                </Link>
-                <p className="text-xs text-[#c59f59] mt-3 tracking-wider opacity-90">
-                  ※審査制・毎月10名様限定
-                </p>
-              </div>
-            </div>
           </div>
         </section>
 
