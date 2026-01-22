@@ -1,16 +1,16 @@
 import { createClient } from 'microcms-js-sdk';
-import dna from '../../src/dna.config.json'; // Direct import from src
+import { siteConfig } from '@/site.config';
 
 export const client = createClient({
     serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN || "service-domain-placeholder",
     apiKey: process.env.MICROCMS_API_KEY || "api-key-placeholder",
 });
 
-const SITE_ID = dna.identity.siteId || 'wealth_navigator';
+const SITE_ID = siteConfig.site_id || 'wealth';
 
 // Helper to merge filters
 const mergeFilters = (existingFilters?: string) => {
-    const siteFilter = `site_id[equals]${SITE_ID}`;
+    const siteFilter = `site_id[contains]${SITE_ID}`;
     if (!existingFilters) return siteFilter;
     return `(${existingFilters})[and]${siteFilter}`;
 };

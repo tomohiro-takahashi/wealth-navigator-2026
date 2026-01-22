@@ -4,6 +4,8 @@ export const siteConfig: SiteConfig = {
     name: "親の家、どうする？",
     tagline: "実家を'負担'から'資産'に変える、たったひとつの選択。",
     description: "実家じまい、相続不動産の売却・活用、遺品整理、家族信託の専門サイト。",
+    email: "consult@legacy-guard.jp",
+    site_id: "legacy",
 
     theme: {
         colors: {

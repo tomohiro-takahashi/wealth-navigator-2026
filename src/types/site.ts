@@ -74,6 +74,8 @@ export type SiteConfig = {
     name: string;
     tagline: string;
     description: string;
+    email: string;
+    site_id: string;
     theme: SiteTheme;
     hero: SiteHero;
     premium: {

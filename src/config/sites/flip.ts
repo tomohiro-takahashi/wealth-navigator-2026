@@ -4,6 +4,8 @@ export const siteConfig: SiteConfig = {
     name: "Flip Logic",
     tagline: "Speed is Cash. The logic of Real Estate Flipping.",
     description: "不動産買取再販（フリップ）の専門サイト。仕入れ、バリューアップ、短期売却のロジック。",
+    email: "contact@flip-logic.jp",
+    site_id: "flip",
 
     theme: {
         colors: {

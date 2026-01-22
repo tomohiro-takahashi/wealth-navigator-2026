@@ -4,6 +4,8 @@ export const siteConfig: SiteConfig = {
     name: "おうちの補助金相談室",
     tagline: "おばあちゃんでもわかる、補助金でお得にリフォーム。",
     description: "窓、お風呂、給湯器のリフォームに使える補助金を、日本一やさしく解説。相談から申請、工事までワンストップ。",
+    email: "info@subsidy-nav.jp",
+    site_id: "subsidy",
 
     theme: {
         colors: {

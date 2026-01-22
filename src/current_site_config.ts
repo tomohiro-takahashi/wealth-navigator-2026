@@ -4,6 +4,8 @@ export const siteConfig: SiteConfig = {
     name: "空き家錬金術",
     tagline: "放置された空き家を、年間利回り15%の資産に変える。",
     description: "眠れる古民家に、新たな命と価値を。夢を語れる建築家と、数字に厳しい投資家の視点を融合した、古民家再生投資の決定版。",
+    email: "contact@kominka.jp",
+    site_id: "kominka",
 
     theme: {
         colors: {
