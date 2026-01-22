@@ -81,10 +81,22 @@ async function run() {
         execSync(`npm run generate:images`, { stdio: 'inherit' });
 
         // 5. Video Director Assets (動画プロンプト生成)
-        console.log(`\n[5/5] Generating Video Prompts...`);
+        console.log(`\n[5/7] Generating Video Prompts...`);
         execSync(`node scripts/brain_architect.js "${slug}" --type video`, { stdio: 'inherit' });
 
-        console.log(`\n✅ Published successfully: ${slug}`);
+        // 5.5 Video Seed Images (動画用シード画像生成)
+        console.log(`\n[5.5/7] Generating Video Seed Images...`);
+        execSync(`npx tsx scripts/generate-video-seeds.ts`, { stdio: 'inherit' });
+
+        // 6. Social Media Strategy (SNS投稿案生成)
+        console.log(`\n[6/7] Generating Social Media Posts...`);
+        execSync(`python3 scripts/generate_social_posts.py "${slug}"`, { stdio: 'inherit' });
+
+        // 7. Google Drive Backup
+        console.log(`\n[7/7] Backing up to Google Drive...`);
+        execSync(`python3 scripts/upload_to_drive.py "${slug}"`, { stdio: 'inherit' });
+
+        console.log(`\n✅ Published and Backed up successfully: ${slug}`);
 
     } catch (error) {
         console.error(`\n❌ Publication Failed:`, error.message);
