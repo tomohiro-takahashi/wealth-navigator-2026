@@ -100,6 +100,8 @@ def upload_file(service, file_path, folder_id):
     elif name.endswith(".md"):
         # Fallback for other MD files
         display_name = f"【資料】{name}"
+    elif name.endswith("_seed.png"):
+        display_name = f"【種画像】{name}"
     elif name.endswith(".mp4"):
         display_name = f"【動画】{name}"
 
@@ -194,6 +196,12 @@ def main():
         cover_path = f"public/images/articles/{slug}.webp"
         if os.path.exists(cover_path):
             assets.append(cover_path)
+
+    # 5. Video Seed Images
+    seed_pattern = f"projects/{slug}/images/*.png"
+    seeds = glob.glob(seed_pattern)
+    if seeds:
+        assets.extend(seeds)
 
     for asset in assets:
         if os.path.exists(asset):

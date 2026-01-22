@@ -77,8 +77,21 @@ async function run() {
         execSync(`node scripts/import_articles.js --file content_draft.html --title "Auto Generated" --category "${category}" --slug "${slug}" --expert_tip "$(cat expert_tip.txt)"`, { stdio: 'inherit' });
 
         // 4. Image Generation (画像生成)
-        console.log(`\n[4/5] Generating Background Images...`);
+        console.log(`\n[4/7] Generating Background Images...`);
         execSync(`npm run generate:images`, { stdio: 'inherit' });
+
+        // 4.5 V3 Video Render (自動生成動画のレンダリング - 当日分)
+        console.log(`\n[4.5/7] Rendering V3 Automated Video...`);
+        try {
+            execSync(`cd video-generator && npm run render`, { stdio: 'inherit' });
+            // 必要に応じてリネームして保存
+            const videoDest = path.join('public/videos', `${slug}.mp4`);
+            if (!fs.existsSync('public/videos')) fs.mkdirSync('public/videos', { recursive: true });
+            fs.copyFileSync('video-generator/out/video.mp4', videoDest);
+            console.log(`   -> V3 Video Ready: ${videoDest}`);
+        } catch (e) {
+            console.warn(`   [WARN] V3 Video Render Failed: ${e.message}`);
+        }
 
         // 5. Video Director Assets (動画プロンプト生成)
         console.log(`\n[5/7] Generating Video Prompts...`);
@@ -94,6 +107,10 @@ async function run() {
 
         // 7. Google Drive Backup
         console.log(`\n[7/7] Backing up to Google Drive...`);
+        // プレミアム用のクリップ格納フォルダも念のため作成しておく
+        const clipsDir = path.join(`projects/${slug}`, 'clips');
+        if (!fs.existsSync(clipsDir)) fs.mkdirSync(clipsDir, { recursive: true });
+        
         execSync(`python3 scripts/upload_to_drive.py "${slug}"`, { stdio: 'inherit' });
 
         console.log(`\n✅ Published and Backed up successfully: ${slug}`);
