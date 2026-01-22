@@ -1,17 +1,18 @@
-import dna from './dna.config.json';
+import { SiteConfig } from './types/site';
+import { siteConfig as wealth } from './config/sites/wealth';
+import { siteConfig as kominka } from './config/sites/kominka';
+import { siteConfig as flip } from './config/sites/flip';
+import { siteConfig as legacy } from './config/sites/legacy';
+import { siteConfig as subsidy } from './config/sites/subsidy';
 
-export const siteConfig = {
-    name: process.env.NEXT_PUBLIC_SITE_NAME || dna.identity.name,
-    description: dna.identity.description,
-    url: process.env.NEXT_PUBLIC_BASE_URL || `https://${dna.identity.domain}`,
-    domain: dna.identity.domain,
-    email: dna.identity.email,
-    author: dna.identity.author,
-    social: {
-        line: process.env.NEXT_PUBLIC_LINE_URL || dna.identity.social.line,
-    },
-    theme: {
-        primaryColor: dna.theme.primaryColor,
-        accentColor: dna.theme.accentColor,
-    }
+const brand = process.env.NEXT_PUBLIC_BRAND || 'wealth';
+
+const configs: Record<string, SiteConfig> = {
+    wealth,
+    kominka,
+    flip,
+    legacy,
+    subsidy
 };
+
+export const siteConfig = configs[brand] || wealth;

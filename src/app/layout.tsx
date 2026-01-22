@@ -37,7 +37,22 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`${notoSansJP.variable} ${shipporiMincho.variable} antialiased bg-[#F8F9FA] text-[#1A1A1B] pt-0 flex flex-col min-h-screen font-sans`}
+        className={`${notoSansJP.variable} ${shipporiMincho.variable} antialiased bg-[var(--color-background)] text-[var(--color-text-main)] pt-0 flex flex-col min-h-screen font-sans`}
+        style={
+          {
+            '--color-primary': siteConfig.theme.colors.primary,
+            '--color-background': siteConfig.theme.colors.background,
+            '--color-accent': siteConfig.theme.colors.accent,
+            '--color-text-main': siteConfig.theme.colors.text.main,
+            '--color-text-sub': siteConfig.theme.colors.text.sub,
+            '--color-text-inverse': siteConfig.theme.colors.text.inverse,
+            '--color-link': siteConfig.theme.colors.link,
+            '--color-border': siteConfig.theme.colors.border,
+            '--font-radius': siteConfig.theme.rounded === 'none' ? '0px' : siteConfig.theme.rounded === 'sm' ? '0.125rem' : siteConfig.theme.rounded === 'md' ? '0.375rem' : siteConfig.theme.rounded === 'lg' ? '0.5rem' : '1rem',
+          } as React.CSSProperties
+        }
+        data-theme-font={siteConfig.theme.typography.fontFamily}
+        data-theme-rounded={siteConfig.theme.rounded}
       >
         <MenuProvider>
           {/* pt-0 because Hero often goes under header or handles its own spacing. Resetting default top padding. */}
@@ -49,6 +64,6 @@ export default function RootLayout({
           <BottomNav />
         </MenuProvider>
       </body>
-    </html>
+    </html >
   );
 }
