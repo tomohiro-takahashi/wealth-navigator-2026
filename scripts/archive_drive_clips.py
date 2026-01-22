@@ -15,44 +15,50 @@ PARENT_FOLDER_ID = os.getenv("GOOGLE_DRIVE_FOLDER_ID")
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
 def authenticate():
-    """Authenticates using Service Account (Cloud) or User OAuth (Local)."""
+    """Authenticates using User OAuth Token (Cloud/Local) or Service Account."""
     creds = None
     
-    # 1. Try Service Account (Cloud / Preferred for Unattended)
-    service_account_path = 'service_account_key.json'
-    # GitHub Actions can pass the JSON as an env var
-    service_account_info = os.getenv("GOOGLE_SERVICE_ACCOUNT_INFO")
-    
-    if service_account_info:
-        print("🔐 Authenticating via Service Account (Env Var)...")
-        info = json.loads(service_account_info)
-        creds = service_account.Credentials.from_service_account_info(info, scopes=SCOPES)
-    elif os.path.exists(service_account_path):
-        print("🔐 Authenticating via Service Account (Key File)...")
-        creds = service_account.Credentials.from_service_account_file(service_account_path, scopes=SCOPES)
-    
-    if creds:
+    # 1. Try User OAuth Token from Environment Variable (GitHub Actions / Cloud)
+    token_info = os.getenv("GOOGLE_DRIVE_TOKEN_JSON")
+    if token_info:
+        print("🔐 Authenticating via User OAuth Token (Env Var)...")
+        info = json.loads(token_info)
+        creds = Credentials.from_authorized_user_info(info, SCOPES)
         return build('drive', 'v3', credentials=creds)
 
-    # 2. Fallback to User OAuth (Local)
-    print("👤 Service Account not found. Falling back to User OAuth...")
+    # 2. Try Local token.json
     if os.path.exists('token.json'):
+        print("👤 Authenticating via Local token.json...")
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
+    # Refresh if expired
+    if creds and creds.expired and creds.refresh_token:
+        print("🔄 Refreshing expired token...")
+        try:
             creds.refresh(Request())
-        else:
-            if not os.path.exists('credentials.json'):
-                print("❌ Error: credentials.json not found.")
-                sys.exit(1)
-                
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
+            with open('token.json', 'w') as token:
+                token.write(creds.to_json())
+        except Exception as e:
+            print(f"⚠️ Failed to refresh token: {e}")
+            creds = None
 
+    if creds and creds.valid:
+        return build('drive', 'v3', credentials=creds)
+
+    # 3. Try Service Account (Fallback)
+    service_account_info = os.getenv("GOOGLE_SERVICE_ACCOUNT_INFO")
+    if service_account_info:
+        print("🤖 Authenticating via Service Account (Env Var)...")
+        info = json.loads(service_account_info)
+        creds = service_account.Credentials.from_service_account_info(info, scopes=SCOPES)
+        return build('drive', 'v3', credentials=creds)
+
+    # 4. Final Fallback: Full Interactive Login (Local Only)
+    print("❌ No valid credentials found. Starting interactive login...")
+    flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+    creds = flow.run_local_server(port=0)
+    with open('token.json', 'w') as token:
+        token.write(creds.to_json())
     return build('drive', 'v3', credentials=creds)
 
 def create_folder(service, name, parent_id):

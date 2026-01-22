@@ -39,6 +39,7 @@ jobs:
           MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
           GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
           GOOGLE_SERVICE_ACCOUNT_INFO: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_INFO }}
+          GOOGLE_DRIVE_TOKEN_JSON: ${{ secrets.GOOGLE_DRIVE_TOKEN_JSON }}
         run: npm run publish:all
 
       - name: Commit and Push Changes
