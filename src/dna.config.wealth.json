@@ -22,5 +22,65 @@
             "Inflation",
             "Legacy Preservation"
         ]
+    },
+    "categories": {
+        "domestic": {
+            "id": "domestic",
+            "name": "国内不動産",
+            "description": "都心中古マンション、J-REIT、金利戦略。",
+            "context": "Focus on 'Deny New Build Premium', 'Vintage Superiority', and 'Selection/Replacement Period'."
+        },
+        "overseas": {
+            "id": "overseas",
+            "name": "海外不動産",
+            "description": "成長国投資、通貨分散、タックスメリット。",
+            "context": "Focus on 'Yen Depreciation Risk', 'Ray Dalio Diversification', and 'Shelter for Assets'."
+        },
+        "column": {
+            "id": "column",
+            "name": "ストラテジー",
+            "description": "投資家心理、市場サイクル、マクロ経済。",
+            "context": "Focus on 'Howard Marks Market Cycle', 'Contrarian Courage', and 'Investor Psychology'."
+        }
+    },
+    "hero": {
+        "title": "一流を、<br />再定義する。",
+        "subTitle": "現代のビジョナリーへ贈る、<br />至高のインサイト。",
+        "primaryButton": {
+            "text": "「信用力」と「最適戦略」を診断する (無料)",
+            "url": "/simulation"
+        },
+        "secondaryButton": {
+            "text": "About us 私たちについて",
+            "url": "/about"
+        }
+    },
+    "premium": {
+        "title": "厳選された物件",
+        "btnText": "すべての物件を見る"
+    },
+    "philosophy": {
+        "title": "真の豊かさとは、<br />選択肢を持つこと。",
+        "description": "資産とは、数字の羅列ではない。それは、選択肢である。<br />望む場所に住み、望む時間を生き、望む人々と過ごす。<br />その自由を手にするための、静かなる力である。<br /><br />知識こそが、最強の防衛策。<br />そして、真の自由への最短距離である。"
+    },
+    "bridge": {
+        "title": "「孤独な決断」から、<br />「確信ある選択」へ",
+        "description": "資産運用は情報戦です。30年の実績を持つプロフェッショナルを、<br class=\"hidden md:block\" />あなた専属の<span class=\"text-[#c59f59] font-bold\">「プライベート・顧問」</span>に迎え入れる。<br />それが、資産を守る最強の防衛策です。",
+        "buttonText": "資産防衛・個別相談を予約する",
+        "url": "/inquiry"
+    },
+    "bible_path": "libs/brain/titans_knowledge.md",
+    "strategy_path": "libs/brain/strategies/wealth_strategy.md",
+    "cta": {
+        "label": "Members Only Intelligence",
+        "title": "Webでは書けない<br />「裏情報」がある。",
+        "description": "この記事で公開したのは、氷山の一角です。<br class=\"hidden md:block\" />具体的な金融機関名、市場に出ない非公開物件、税務の核心...<br />不特定多数には公開できない「資産防衛の真実」を、<br class=\"hidden md:block\" />LINEメンバー限定で配信します。",
+        "buttonText": "LINEで「極秘情報」を受け取る",
+        "url": "https://line.me/R/ti/p/@wealth-navigator",
+        "image": "/images/wealth_lounge.jpg"
+    },
+    "theme": {
+        "primaryColor": "#1A1A1A",
+        "accentColor": "#C9A962"
     }
 }

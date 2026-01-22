@@ -22,5 +22,71 @@
             "手続きが不明",
             "税金への不安"
         ]
+    },
+    "categories": {
+        "mindset": {
+            "id": "mindset",
+            "name": "心の準備",
+            "description": "感情の整理・罪悪感の解消。",
+            "context": "Focus on 'Guilt Relief', 'Family Discussions', 'Mental Preparation'."
+        },
+        "options": {
+            "id": "options",
+            "name": "選択肢を知る",
+            "description": "売る・貸す・活かす、どれが正解か。",
+            "context": "Focus on 'Selling vs Renting', 'Utilization Options', 'Decision Framework'."
+        },
+        "procedure": {
+            "id": "procedure",
+            "name": "手続き・税金",
+            "description": "具体的な手続き・税金を知りたい。",
+            "context": "Focus on 'Inheritance Tax', 'Registration', 'Legal Steps'."
+        },
+        "case": {
+            "id": "case",
+            "name": "活用事例",
+            "description": "実際にどうしたか事例を見たい。",
+            "context": "Focus on 'Success Stories', 'Real Life Examples', 'User Voices'."
+        }
+    },
+    "bible_path": "libs/brain/bibles/legacy_bible.md",
+    "strategy_path": "libs/brain/strategies/legacy_strategy.md",
+    "cta": {
+        "label": "Legacy Consultation",
+        "title": "実家の悩み、<br />ひとりで抱えていませんか？",
+        "description": "「親になんて切り出そう…」「兄弟と揉めたくない…」<br class=\"hidden md:block\" />相続のプロが、あなたの家族にぴったりの<br />「円満な実家じまい」の進め方をアドバイスします。",
+        "buttonText": "無料相談を予約する",
+        "url": "https://line.me/R/ti/p/@legacy_guard",
+        "image": "/images/legacy_lounge.jpg"
+    },
+    "hero": {
+        "title": "実家を、<br />負担から資産へ。",
+        "subTitle": "思い出はそのままに、<br />家族みんなが笑顔になれる選択を。",
+        "primaryButton": {
+            "text": "実家診断を始める (無料)",
+            "url": "/simulation"
+        },
+        "secondaryButton": {
+            "text": "About us 私たちについて",
+            "url": "/about"
+        }
+    },
+    "premium": {
+        "title": "実家活用の成功事例",
+        "btnText": "すべての事例を見る"
+    },
+    "philosophy": {
+        "title": "実家じまいは、<br />家族の新しい出発。",
+        "description": "実家をどうするか。それは単なる不動産の問題ではありません。<br />親の想い、子供の事情、それぞれの人生が交差する場所です。<br />私たちは、不動産のプロである前に、<br /><br />家族の想いに寄り添う、良き相談相手でありたい。"
+    },
+    "bridge": {
+        "title": "「罪悪感」から、<br />「前向きな解決」へ",
+        "description": "相続や空き家問題はデリケートです。<br class=\"hidden md:block\" />経験豊富な専門家と、<br class=\"text-[#B1A7A6] font-bold\">「家族の代理人」</span>として話し合う。<br />それが、後悔しない実家じまいの第一歩です。",
+        "buttonText": "相続・個別相談を予約する",
+        "url": "/inquiry"
+    },
+    "theme": {
+        "primaryColor": "#1a1a1a",
+        "accentColor": "#A68966"
     }
 }
