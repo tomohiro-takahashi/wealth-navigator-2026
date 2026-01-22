@@ -163,51 +163,45 @@ def main():
         print("Error: GOOGLE_DRIVE_FOLDER_ID not found in environment.")
         sys.exit(1)
         
-    folder_id = create_folder(service, folder_name, PARENT_FOLDER_ID)
+    project_folder_id = create_folder(service, folder_name, PARENT_FOLDER_ID)
     
+    # Standard Subfolders
+    clips_folder_id = create_folder(service, "clips", project_folder_id)
+    images_folder_id = create_folder(service, "images", project_folder_id)
+
+    # Placeholder for clips
+    placeholder_path = "DROP_VEO_CLIPS_HERE.txt"
+    if not os.path.exists(placeholder_path):
+        with open(placeholder_path, "w") as f:
+            f.write("スマホからVeoで生成した動画（mp4）を、ファイル名の先頭を数字にしてここにアップロードしてください。\n例: 1.mp4, 2_bridge.mp4 ...")
+    upload_file(service, placeholder_path, clips_folder_id)
+
     # 3. Upload Assets
-    # 1. Video Script (.md) -> Google Doc
-    # 2. Video Prompts (.md) -> Google Doc
-    # 3. Video File (.mp4) -> Raw
-    # 4. Article Images (.webp) -> Raw
-    
     assets = [
-        f"public/videos/{slug}.mp4",            # Video
-        f"content/scripts/{slug}.md",           # Script
-        f"content/prompts/{slug}_prompts.md",   # Prompts
-        f"content/social/{slug}_posts.md",      # Social Posts
-        f"content/social/【自動生成動画テロップ】{slug}.txt", # Subtitles
-        f"content/articles/{slug}.md"           # Article (Final Content)
+        (f"public/videos/{slug}.mp4", project_folder_id),            # V3 Video
+        (f"content/scripts/{slug}.md", project_folder_id),           # Script
+        (f"content/prompts/{slug}_prompts.md", project_folder_id),   # Prompts
+        (f"content/social/{slug}_posts.md", project_folder_id),      # Social Posts
+        (f"content/articles/{slug}.md", project_folder_id)           # Article Draft
     ]
     
-    # Image (Cover)
-    # Check for images in subfolder first (new structure)
-    image_pattern = f"public/images/articles/{slug}/*.webp"
-    images = glob.glob(image_pattern)
-    if not images:
-        # Fallback to old flat structure
-        image_pattern = f"public/images/articles/{slug}*.webp"
-        images = glob.glob(image_pattern)
-
-    if images:
-        assets.extend(images)
-    else:
-        # Fallback for cover if named differently (e.g. just slug.webp)
-        cover_path = f"public/images/articles/{slug}.webp"
-        if os.path.exists(cover_path):
-            assets.append(cover_path)
-
-    # 5. Video Seed Images
+    # Sync Seed Images to images/ folder
     seed_pattern = f"projects/{slug}/images/*.png"
     seeds = glob.glob(seed_pattern)
-    if seeds:
-        assets.extend(seeds)
+    for seed in seeds:
+        assets.append((seed, images_folder_id))
 
-    for asset in assets:
-        if os.path.exists(asset):
-            upload_file(service, asset, folder_id)
+    # Sync Article WebP to images/ folder
+    image_pattern = f"public/images/articles/{slug}/*.webp"
+    articles_images = glob.glob(image_pattern)
+    for img in articles_images:
+        assets.append((img, images_folder_id))
+
+    for asset_path, target_id in assets:
+        if os.path.exists(asset_path):
+            upload_file(service, asset_path, target_id)
         else:
-            print(f"⚠️ Skipping missing asset: {asset}")
+            print(f"⚠️ Skipping missing asset: {asset_path}")
 
 if __name__ == '__main__':
     try:

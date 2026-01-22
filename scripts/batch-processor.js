@@ -15,8 +15,16 @@ const OUTPUT_DIR = './out';
 
 async function processPendingProjects() {
   console.log('='.repeat(60));
-  console.log('Batch Video Processor v1.0');
+  console.log('Batch Video Processor v1.1 (Cloud-First)');
   console.log('='.repeat(60));
+
+  // --- Step 0: Cloud Sync (Google Drive -> Local) ---
+  console.log('🔄 Syncing new material from Google Drive...');
+  try {
+    execSync('python3 scripts/sync_clips_from_drive.py', { stdio: 'inherit' });
+  } catch (e) {
+    console.warn(`⚠️ Cloud sync failed: ${e.message}. Continuing with local files...`);
+  }
 
   if (!fs.existsSync(PROJECTS_DIR)) {
     console.log('No projects directory found.');
@@ -68,15 +76,15 @@ async function processPendingProjects() {
 
     // --- Step 3: レンダリング ---
     if (config.status === 'captions_ready') {
-      console.log(`  🎥 Rendering final video...`);
-      const outputVideo = path.join(OUTPUT_DIR, `${projectId}_final.mp4`);
+      console.log(`  🎥 Rendering final video (Premium)...`);
+      const outputVideo = path.join(OUTPUT_DIR, `${projectId}_premium.mp4`);
       
       try {
         // Remotionにconfigを直接渡してレンダリング
         // 注意: inputProps経由でconfigを渡す
         const props = JSON.stringify({ config });
         execSync(
-          `cd video-generator && npx remotion render ClipEditor "../out/${projectId}_final.mp4" --props='${props}'`,
+          `cd video-generator && npx remotion render ClipEditor "../out/${projectId}_premium.mp4" --props='${props}'`,
           { stdio: 'inherit' }
         );
 
@@ -84,6 +92,21 @@ async function processPendingProjects() {
         config.updated_at = new Date().toISOString();
         fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
         console.log(`  ✅ Successfully rendered: ${outputVideo}`);
+
+        // --- Step 4: Cleanup (Drive Archive & Local Delete) ---
+        console.log(`  🧹 Cleaning up materials...`);
+        try {
+          // Drive側: archived フォルダへ移動
+          execSync(`python3 scripts/archive_drive_clips.py ${projectId}`, { stdio: 'inherit' });
+          
+          // ローカル側: clips フォルダ内のmp4を削除（容量節約）
+          const clipsDir = path.join(projectPath, 'clips');
+          const clips = fs.readdirSync(clipsDir).filter(f => f.endsWith('.mp4'));
+          clips.forEach(clip => fs.unlinkSync(path.join(clipsDir, clip)));
+          console.log(`  🗑️ Local clips cleared.`);
+        } catch (cleanupErr) {
+          console.warn(`  ⚠️ Cleanup failed/partially completed: ${cleanupErr.message}`);
+        }
       } catch (e) {
         console.error(`  ❌ Rendering failed: ${e.message}`);
         config.status = 'error';
