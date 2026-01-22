@@ -16,7 +16,8 @@
     "captions:generate": "node scripts/caption-generator.js",
     "batch:process": "node scripts/batch-processor.js",
     "publish:all": "node scripts/publish-all.js",
-    "clip:render": "cd video-generator && npx remotion render ClipEditor ../out/final_video.mp4"
+    "clip:render": "cd video-generator && npx remotion render ClipEditor ../out/final_video.mp4",
+    "agent:start": "node scripts/local-agent.js"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
