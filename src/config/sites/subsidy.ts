@@ -31,15 +31,15 @@ export const siteConfig: SiteConfig = {
     },
 
     hero: {
-        title: "Unlock the Subsidies Your Home Deserves.",
-        subtitle: "Expert guidance to navigate wealth benefits and government grants. Our personalized consultants ensure you don't leave money on the table.",
+        title: "知らないと、<br />損してます。",
+        subtitle: "リフォームおばちゃんが教える。<br />補助金活用術",
         heroImage: "/assets/hero-subsidy.jpg",
         primaryButton: {
-            text: "Get Started Now",
+            text: "補助金を無料診断する",
             url: "/simulation"
         },
         secondaryButton: {
-            text: "View Success Stories",
+            text: "活用事例を見る",
             url: "/cases"
         }
     },
@@ -89,5 +89,6 @@ export const siteConfig: SiteConfig = {
         { id: 'guide', label: 'ガイド', icon: 'explore' },
         { id: 'howto', label: '流れ', icon: 'steps' },
         { id: 'case', label: '事例', icon: 'history_edu' }
-    ]
+    ],
+    homepageLayout: 'grid'
 };

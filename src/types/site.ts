@@ -89,4 +89,5 @@ export type SiteConfig = {
     cta: SiteCTA;
     categoryNav: SiteCategory[];
     filters?: string[]; // article filters
+    homepageLayout?: 'list' | 'grid';
 };

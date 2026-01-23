@@ -29,15 +29,15 @@ export const siteConfig: SiteConfig = {
     },
 
     hero: {
-        title: "Your parents' home is a <span class=\"italic\">lifetime of memories.</span>",
-        subtitle: "Honoring your family's legacy through thoughtful real estate inheritance consulting. We provide clarity and peace of mind.",
+        title: "実家問題、<br />終わらせよう。",
+        subtitle: "「いつかやらなきゃ」を、<br />「今日、解決」に。",
         heroImage: "/assets/hero-legacy.jpg",
         primaryButton: {
-            text: "Start Diagnosis",
+            text: "診断を開始する",
             url: "/simulation"
         },
         secondaryButton: {
-            text: "View Stories",
+            text: "解決事例を見る",
             url: "/about"
         }
     },
@@ -88,5 +88,6 @@ export const siteConfig: SiteConfig = {
         buttonText: "LINEで無料査定を依頼する",
         lineUrl: "https://line.me/R/ti/p/@legacy_guard",
         image: "/images/legacy_lounge.jpg"
-    }
+    },
+    homepageLayout: 'grid'
 };

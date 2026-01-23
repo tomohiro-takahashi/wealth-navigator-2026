@@ -29,15 +29,15 @@ export const siteConfig: SiteConfig = {
     },
 
     hero: {
-        title: "Preserving Heritage,<br />Engineering Value",
-        subtitle: "Transforming centuries-old Japanese timber estates into high-yield, luxury architectural masterpieces for global investors.",
+        title: "眠れる資産を、<br />叩き起こせ。",
+        subtitle: "900万戸の空き家に眠る、<br />年利15%の可能性。",
         heroImage: "/assets/hero-kominka.jpg",
         primaryButton: {
-            text: "Explore Investments",
+            text: "利回りをシミュレーションする",
             url: "/simulation"
         },
         secondaryButton: {
-            text: "The Process",
+            text: "再生のプロセスを知る",
             url: "/about"
         }
     },
@@ -88,5 +88,6 @@ export const siteConfig: SiteConfig = {
         buttonText: "LINEで非公開物件を受け取る",
         lineUrl: "https://line.me/R/ti/p/@kominka",
         image: "/images/kominka_lounge.jpg"
-    }
+    },
+    homepageLayout: 'grid'
 };

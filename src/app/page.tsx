@@ -126,17 +126,25 @@ export default async function Home() {
           <div className="bg-transparent px-6 pt-12 pb-16">
             <div className="w-full max-w-md mx-auto">
 
-              {/* Navigation Menu (Domestic/Overseas/Column) */}
-              <div className="flex flex-col gap-4 mb-14">
+              {/* Navigation Menu (Dynamic Layout) */}
+              <div className={siteConfig.homepageLayout === 'grid' ? "grid grid-cols-2 gap-3 mb-14" : "flex flex-col gap-4 mb-14"}>
                 {categoryNavs.map((nav) => (
-                  <Link key={nav.id} href={`/articles?category=${nav.id}`} className="flex w-full items-center justify-between rounded-lg bg-white/5 border border-white/5 px-6 py-5 shadow-sm transition-all hover:bg-white/10 hover:border-[var(--color-accent)]/50 group active:scale-[0.99]">
-                    <div className="flex items-center gap-4">
+                  <Link 
+                    key={nav.id} 
+                    href={`/articles?category=${nav.id}`} 
+                    className={`flex items-center justify-between rounded-lg bg-white/5 border border-white/5 shadow-sm transition-all hover:bg-white/10 hover:border-[var(--color-accent)]/50 group active:scale-[0.99] ${
+                      siteConfig.homepageLayout === 'grid' ? "flex-col gap-2 p-4 text-center" : "px-6 py-5"
+                    }`}
+                  >
+                    <div className={`flex items-center gap-4 ${siteConfig.homepageLayout === 'grid' ? "flex-col gap-2" : ""}`}>
                       <span className="material-symbols-outlined text-[var(--color-accent)] text-[28px]">
                         {nav.icon}
                       </span>
-                      <span className="text-[19px] font-bold tracking-wide text-[#f2f0ed]">{nav.label}</span>
+                      <span className={`${siteConfig.homepageLayout === 'grid' ? "text-sm" : "text-[19px]"} font-bold tracking-wide text-[#f2f0ed]`}>{nav.label}</span>
                     </div>
-                    <span className="material-symbols-outlined text-white/20 group-hover:text-[#c59f59] transition-colors">chevron_right</span>
+                    {siteConfig.homepageLayout !== 'grid' && (
+                      <span className="material-symbols-outlined text-white/20 group-hover:text-[#c59f59] transition-colors">chevron_right</span>
+                    )}
                   </Link>
                 ))}
               </div>

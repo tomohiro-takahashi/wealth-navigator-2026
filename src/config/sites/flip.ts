@@ -29,15 +29,15 @@ export const siteConfig: SiteConfig = {
     },
 
     hero: {
-        title: "Execute Buy. <br />Maximize Margin.",
-        subtitle: "Real Estate Flipping Dashboard: High-yield asset analysis and logic-driven exit strategies for professional traders.",
+        title: "感情を捨てよ。<br />数字だけが全て",
+        subtitle: "不動産フリッピング、<br />冷徹な論理の教科書。",
         heroImage: "/assets/hero-flip.jpg",
         primaryButton: {
-            text: "Execute Buy",
+            text: "案件の収益性を分析する",
             url: "/simulation"
         },
         secondaryButton: {
-            text: "View Portfolio",
+            text: "取引実績を見る",
             url: "/about"
         }
     },
@@ -88,5 +88,6 @@ export const siteConfig: SiteConfig = {
         buttonText: "LINEで仕入れ情報を受け取る",
         lineUrl: "https://line.me/R/ti/p/@flip_logic",
         image: "/images/flip_lounge.jpg"
-    }
+    },
+    homepageLayout: 'grid'
 };
