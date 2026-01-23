@@ -10,32 +10,32 @@ export const siteConfig: SiteConfig = {
 
     theme: {
         colors: {
-            primary: "#E67E22",
-            background: "#141414",
-            accent: "#E67E22",
+            primary: "#E87A00",
+            background: "#FFFBF7",
+            accent: "#FF9D2E",
             text: {
-                main: "#FDFBF7",
-                sub: "#A0A0A0",
+                main: "#4A3F35",
+                sub: "#888888",
                 inverse: "#FFFFFF"
             },
-            link: "#E67E22",
-            border: "#2A2A2A"
+            link: "#E87A00",
+            border: "#F0E5D8"
         },
 
         typography: {
             fontFamily: "sans",
-            h2: "text-4xl md:text-5xl font-black tracking-tight text-white"
+            h2: "text-4xl md:text-5xl font-black tracking-tight text-[#4A3F35]"
         },
 
         rounded: "2xl"
     },
 
     hero: {
-        title: "知らないと、<br />損してます。",
-        subtitle: "リフォームおばちゃんが教える。<br />補助金活用術",
+        title: "知らないだけで、<br />損してます",
+        subtitle: "リフォームおばちゃんが教える<br />誰でもかんたん補助金活用術",
         heroImage: "/assets/hero-subsidy.jpg",
         primaryButton: {
-            text: "使える補助金を1分で診断",
+            text: "使える補助金を30秒で診断",
             url: "/simulation"
         },
         secondaryButton: {
@@ -45,34 +45,34 @@ export const siteConfig: SiteConfig = {
     },
 
     premium: {
-        title: "人気の補助金活用術",
+        title: "2026年 人気の補助金活用事例",
         btnText: "すべての活用事例を見る"
     },
 
     features: [
         {
             title: "申請は業者がやってくれます",
-            description: "「手続きが面倒そう…」と思っていませんか？住宅省エネ補助金は、リフォーム会社が申請を代行。あなたがやることは「使いたい」と伝えるだけ。"
+            description: "2026年度の住宅省エネ補助金は、リフォーム会社が申請を代行。あなたがやることは、補助対象の工事を選ぶだけ。"
         },
         {
             title: "窓・お風呂・給湯器、全部対象です",
-            description: "先進的窓リノベで最大200万円、子育てグリーンで最大60万円、給湯省エネで約20万円。組み合わせればさらにお得。"
+            description: "先進的窓リノベ2026で最大200万円、子育てエコホームで最大60万円、給湯省エネで約20万円。組み合わせればさらにお得。"
         },
         {
-            title: "100件以上の申請実績",
-            description: "私たちはリフォーム会社として、補助金申請を100件以上対応してきました。情報提供だけでなく、工事まで責任を持ちます。"
+            title: "実績豊富なアドバイザー",
+            description: "最新の補助金制度を熟知した専門家が、あなたの工事内容に合わせた最適な組み合わせを提案します。"
         }
     ],
 
     philosophy: {
         title: "快適な暮らしを、負担なく。",
-        description: "国は今、省エネや耐震リフォームを全力で応援しています。制度を正しく使えば、自己負担はぐっと減らせます。"
+        description: "国は今、省エネやバリアフリー改修を強力に支援しています。2026年の制度を正しく使えば、自己負担はぐっと減らせます。"
     },
 
     bridge: {
         title: "「よくわからない」から「任せて安心」へ",
-        description: "補助金制度は毎年変わります。最新情報を熟知したプロと、相談できるパートナーとして繋がりましょう。",
-        buttonText: "無料で相談予約する",
+        description: "補助金制度は毎年アップデートされます。2026年度の最新情報を熟知したプロに、まずは相談しましょう。",
+        buttonText: "無料で診断・相談する",
         url: "/inquiry"
     },
 

@@ -60,17 +60,19 @@ export default async function Home() {
   // Category Navigation Data
   const categoryNavs = siteConfig.categoryNav;
 
+  const isWealth = siteConfig.site_id === 'wealth';
+
   return (
-    <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-[var(--color-primary)] font-sans">
+    <div className={`relative flex min-h-screen w-full flex-col overflow-x-hidden font-sans ${isWealth ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-background)]'}`}>
 
       {/* =======================================================================
           DARK ZONE: Header, Hero, Articles
       ======================================================================== */}
-      <div className="text-[#f2f0ed]">
+      <div className={isWealth ? "text-[#f2f0ed]" : "text-[var(--color-text-main)]"}>
 
         {/* Header & Hero Section */}
         {/* HomeHeader removed to use Global Header */}
-        <header className="relative bg-[var(--color-primary)] text-white">
+        <header className={`relative text-white ${isWealth ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-background)]'}`}>
           {/* spacer for fixed header if needed, or just let Hero padding handle it */}
           {/* Key Visual Area */}
 // ...
@@ -86,10 +88,14 @@ export default async function Home() {
                   src={siteConfig.hero.heroImage}
                   alt="Hero Background"
                   fill
-                  className="object-cover opacity-60"
+                  className={`object-cover ${isWealth ? 'opacity-60' : 'opacity-100'}`}
                   priority
                 />
-                <div className="absolute inset-0 bg-black/40" />
+                {isWealth ? (
+                  <div className="absolute inset-0 bg-black/40" />
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/30" />
+                )}
               </div>
             ) : (
               <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/10 via-[var(--color-primary)] to-[var(--color-primary)] opacity-60 pointer-events-none"></div>
@@ -98,12 +104,12 @@ export default async function Home() {
             <div className="relative z-10 flex flex-col items-center text-center gap-12 w-full max-w-2xl mx-auto">
               <div className="space-y-8">
                 <h2
-                  className={`${siteConfig.theme.typography.h2} text-white drop-shadow-2xl`}
+                  className={`${siteConfig.theme.typography.h2} text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]`}
                   style={{ fontSize: '40px' }}
                   dangerouslySetInnerHTML={{ __html: siteConfig.hero.title }}
                 />
                 <p
-                  className="text-lg font-light leading-relaxed tracking-wide text-gray-300 font-serif"
+                  className={`text-lg font-bold leading-relaxed tracking-wide font-serif drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] ${isWealth ? 'text-gray-300' : 'text-white'}`}
                   dangerouslySetInnerHTML={{ __html: siteConfig.hero.subtitle }}
                 />
               </div>
@@ -113,7 +119,9 @@ export default async function Home() {
                   <span className="">{siteConfig.hero.primaryButton.text}</span>
                   <div className="absolute inset-0 rounded-md ring-1 ring-inset ring-white/20 pointer-events-none"></div>
                 </Link>
-                <Link href={siteConfig.hero.secondaryButton.url} className="flex h-14 w-full max-w-md mx-auto items-center justify-center gap-2 rounded-md border border-[var(--color-accent)] bg-transparent px-8 text-base font-medium text-white transition-all duration-300 hover:bg-[var(--color-accent)] hover:text-[#161410] active:scale-[0.98]">
+                <Link href={siteConfig.hero.secondaryButton.url} className={`flex h-14 w-full max-w-md mx-auto items-center justify-center gap-2 rounded-md border border-[var(--color-accent)] px-8 text-base font-medium transition-all duration-300 hover:bg-[var(--color-accent)] hover:text-[#161410] active:scale-[0.98] ${
+                  isWealth ? 'bg-transparent text-white' : 'text-white bg-black/40 backdrop-blur-sm'
+                }`}>
                   <span>{siteConfig.hero.secondaryButton.text}</span>
                 </Link>
               </div>
@@ -122,7 +130,11 @@ export default async function Home() {
         </header>
 
         {/* Main Content Wrapper (Overlapping Card Style) */}
-        <main className="rounded-t-[2.5rem] bg-white/5 relative z-20 shadow-[0_-16px_40px_rgba(0,0,0,0.6)] border-t border-white/5 overflow-hidden -mt-12">
+        <main className={`rounded-t-[2.5rem] relative z-20 overflow-hidden ${
+          isWealth 
+            ? 'bg-white/5 shadow-[0_-16px_40px_rgba(0,0,0,0.6)] border-t border-white/5 -mt-12' 
+            : 'bg-[var(--color-background)] mt-0 border-t border-[var(--color-border)]/10'
+        }`}>
           <div className="bg-transparent px-6 pt-12 pb-16">
             <div className="w-full max-w-md mx-auto">
 
@@ -132,7 +144,9 @@ export default async function Home() {
                   <Link 
                     key={nav.id} 
                     href={`/articles?category=${nav.id}`} 
-                    className={`flex items-center justify-between rounded-lg bg-white/5 border border-white/5 shadow-sm transition-all hover:bg-white/10 hover:border-[var(--color-accent)]/50 group active:scale-[0.99] ${
+                    className={`flex items-center justify-between rounded-lg border shadow-sm transition-all group active:scale-[0.99] ${
+                      isWealth ? 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-[var(--color-accent)]/50' : 'bg-white border-[var(--color-border)] hover:shadow-md'
+                    } ${
                       siteConfig.homepageLayout === 'grid' ? "flex-col gap-2 p-4 text-center" : "px-6 py-5"
                     }`}
                   >
@@ -140,10 +154,10 @@ export default async function Home() {
                       <span className="material-symbols-outlined text-[var(--color-accent)] text-[28px]">
                         {nav.icon}
                       </span>
-                      <span className={`${siteConfig.homepageLayout === 'grid' ? "text-sm" : "text-[19px]"} font-bold tracking-wide text-[#f2f0ed]`}>{nav.label}</span>
+                      <span className={`${siteConfig.homepageLayout === 'grid' ? "text-sm" : "text-[19px]"} font-bold tracking-wide ${isWealth ? 'text-[#f2f0ed]' : 'text-[var(--color-text-main)]'}`}>{nav.label}</span>
                     </div>
                     {siteConfig.homepageLayout !== 'grid' && (
-                      <span className="material-symbols-outlined text-white/20 group-hover:text-[#c59f59] transition-colors">chevron_right</span>
+                      <span className={`material-symbols-outlined transition-colors ${isWealth ? 'text-white/20 group-hover:text-[#c59f59]' : 'text-[var(--color-border)] group-hover:text-[var(--color-accent)]'}`}>chevron_right</span>
                     )}
                   </Link>
                 ))}
@@ -174,10 +188,10 @@ export default async function Home() {
                         <span className="size-1 rounded-full bg-[var(--color-accent)]/50"></span>
                         <span>{calculateReadTime(featuredArticle.content)}</span>
                       </div>
-                      <h3 className="font-serif text-[28px] font-bold leading-[1.4] tracking-tight text-white group-hover:text-[var(--color-accent)] transition-colors">
+                      <h3 className={`font-serif text-[28px] font-bold leading-[1.4] tracking-tight group-hover:text-[var(--color-accent)] transition-colors ${isWealth ? 'text-white' : 'text-[var(--color-text-main)]'}`}>
                         {featuredArticle.title}
                       </h3>
-                      <p className="line-clamp-3 text-[17px] leading-[1.8] text-gray-400">
+                      <p className={`line-clamp-3 text-[17px] leading-[1.8] ${isWealth ? 'text-gray-400' : 'text-[var(--color-text-sub)]'}`}>
                         {getSummary(featuredArticle.content)}
                       </p>
                     </div>
@@ -188,7 +202,7 @@ export default async function Home() {
                   {/* Latest Articles Header */}
                   <div className="flex items-center gap-3 mb-2">
                     <span className="h-6 w-1 bg-[var(--color-accent)] rounded-full"></span>
-                    <h3 className="text-xl font-bold text-white tracking-wide">Latest Articles</h3>
+                    <h3 className={`text-xl font-bold tracking-wide ${isWealth ? 'text-white' : 'text-[var(--color-text-main)]'}`}>Latest Articles</h3>
                   </div>
 
                   {/* Article List */}
@@ -196,7 +210,7 @@ export default async function Home() {
                     {listArticles.map((article) => (
                       <Link key={article.id} href={`/articles/${article.slug}`} className="group flex flex-col gap-4 cursor-pointer">
                         <div className="flex gap-5 items-start">
-                          <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-lg bg-[#2c2822] shadow-lg ring-1 ring-white/5">
+                          <div className={`relative h-28 w-28 shrink-0 overflow-hidden rounded-lg shadow-lg ring-1 ring-white/5 ${isWealth ? 'bg-[#2c2822]' : 'bg-gray-100'}`}>
                             <div
                               className="h-full w-full bg-gray-700 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
                               style={{ backgroundImage: `url(${article.eyecatch?.url || '/luxury-apartment.png'})` }}
@@ -208,17 +222,19 @@ export default async function Home() {
                                 ? getCategoryLabelSync(article.category[0], siteConfig)
                                 : 'Update'}
                             </span>
-                            <h4 className="line-clamp-3 text-[19px] font-bold leading-[1.5] text-[#f2f0ed] group-hover:text-[var(--color-accent)] transition-colors font-serif">
+                            <h4 className={`line-clamp-3 text-[19px] font-bold leading-[1.5] group-hover:text-[var(--color-accent)] transition-colors font-serif ${isWealth ? 'text-[#f2f0ed]' : 'text-[var(--color-text-main)]'}`}>
                               {article.title}
                             </h4>
                           </div>
                         </div>
-                        <div className="h-px w-full bg-white/5 last:hidden"></div>
+                        <div className={`h-px w-full last:hidden ${isWealth ? 'bg-white/5' : 'bg-[var(--color-border)]/10'}`}></div>
                       </Link>
                     ))}
                   </div>
 
-                  <Link href="/articles" className="mt-4 w-full text-center rounded-md border border-white/10 bg-white/5 py-5 text-[17px] font-bold text-gray-300 transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] hover:bg-white/10">
+                  <Link href="/articles" className={`mt-4 w-full text-center rounded-md border py-5 text-[17px] font-bold transition-all hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] ${
+                    isWealth ? 'border-white/10 bg-white/5 text-gray-300 hover:bg-white/10' : 'border-[var(--color-border)] bg-transparent text-[var(--color-text-main)]'
+                  }`}>
                     記事一覧を見る
                   </Link>
                 </div>
@@ -231,7 +247,7 @@ export default async function Home() {
       {/* =======================================================================
           LIGHT ZONE: Premium Selection, Philosophy, Footer
       ======================================================================== */}
-      <div className="bg-[var(--color-background)] text-gray-900 relative z-20">
+      <div className={`bg-[var(--color-background)] relative z-20 ${isWealth ? 'text-gray-900' : 'text-[var(--color-text-main)]'}`}>
 
         {/* Premium Selection */}
         <section className="px-6 py-20">

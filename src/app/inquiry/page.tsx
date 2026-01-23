@@ -1,5 +1,6 @@
 import { InquiryForm } from "@/components/inquiry/InquiryForm";
 import { FlipInquiryForm } from "@/components/inquiry/FlipInquiryForm";
+import SubsidyInquiryForm from "@/components/inquiry/SubsidyInquiryForm";
 import { Metadata } from "next";
 import { getSiteConfig } from '@/site.config';
 import { getBrandId } from "@/lib/brand";
@@ -16,9 +17,10 @@ export default async function InquiryPage() {
     const siteConfig = await getSiteConfig();
     const brandId = await getBrandId();
     const isFlip = brandId === 'flip';
+    const isSubsidy = brandId === 'subsidy';
 
     return (
-        <div className={`min-h-screen pt-20 pb-20 transition-colors duration-500 ${isFlip ? 'bg-[#0B0E14]' : 'bg-[var(--color-background)]'}`}>
+        <div className={`min-h-screen pt-20 pb-20 transition-colors duration-500 bg-[var(--color-background)]`}>
             <div className="container mx-auto px-4">
                 {/* Header Section */}
                 <div className="text-center mb-10 max-w-2xl mx-auto">
@@ -27,12 +29,31 @@ export default async function InquiryPage() {
                             <div className="inline-block px-2 py-0.5 mb-4 bg-[#00eeff]/10 border border-[#00eeff]/30 text-[#00eeff] text-[10px] uppercase tracking-[0.2em] font-bold">
                                 Proposal Request
                             </div>
-                            <h1 className="text-white tracking-tight text-[32px] md:text-5xl font-black italic mt-2 tracking-tighter uppercase mb-6">
+                            <h1 className="text-white text-[32px] md:text-5xl font-black italic mt-2 tracking-tighter uppercase mb-6">
                                 仕入れ提案の依頼
                             </h1>
                             <p className="text-gray-400 text-sm leading-relaxed border-l-2 border-[#00eeff] pl-6 max-w-md mx-auto text-left">
                                 Flip Logicの専門エージェントが非公開案件から貴殿の基準にマッチする物件を抽出・提案します。
                             </p>
+                        </>
+                    ) : isSubsidy ? (
+                        <>
+                            <span className="text-[var(--color-primary)] text-sm tracking-widest font-bold block mb-3 uppercase">2026年度版 Subsidy Support</span>
+                            <h1 className="text-3xl md:text-5xl font-black text-[var(--color-text-main)] mb-10">
+                                無料サポートのお申し込み
+                            </h1>
+                            <div className="max-w-3xl mx-auto text-center mb-10 px-4">
+                                <div className="w-20 h-px bg-[var(--color-primary)]/30 mx-auto mb-6"></div>
+                                <h2 className="text-xl md:text-2xl font-bold text-[var(--color-text-main)] leading-snug mb-4">
+                                    あなたの「大切なお家」に、<br />
+                                    今なら使える<span className="text-[var(--color-primary)]">特別な補助金</span>があります。
+                                </h2>
+                                <p className="text-sm md:text-[15px] text-[var(--color-text-sub)] font-normal leading-relaxed tracking-wide">
+                                    リフォームのプロが、最新の補助金制度の中から<br className="hidden md:block" />
+                                    あなたに最適なプランを無料で診断・アドバイスします。
+                                </p>
+                                <div className="w-20 h-px bg-[var(--color-primary)]/30 mx-auto mt-6"></div>
+                            </div>
                         </>
                     ) : (
                         <>
@@ -59,16 +80,28 @@ export default async function InquiryPage() {
 
                 {/* Inquiry Form */}
                 <div className="max-w-xl mx-auto">
-                    {isFlip ? <FlipInquiryForm /> : <InquiryForm />}
+                    {isFlip ? (
+                        <FlipInquiryForm />
+                    ) : isSubsidy ? (
+                        <SubsidyInquiryForm />
+                    ) : (
+                        <InquiryForm />
+                    )}
                 </div>
             </div>
 
-            {/* Flip specific background overlay */}
+            {/* Background decorations */}
             {isFlip && (
                 <div className="fixed inset-0 pointer-events-none opacity-5 overflow-hidden -z-10">
                     <div className="absolute top-20 -right-20 w-80 h-80 rounded-full bg-[#00eeff] blur-[100px]"></div>
                     <div className="absolute bottom-40 -left-20 w-60 h-60 rounded-full bg-[#00eeff] blur-[80px]"></div>
                     <div className="absolute inset-0" style={{ backgroundImage: 'radial-gradient(rgba(0, 238, 255, 0.1) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+                </div>
+            )}
+            {isSubsidy && (
+                <div className="fixed inset-0 pointer-events-none opacity-5 overflow-hidden -z-10">
+                    <div className="absolute top-20 -right-20 w-80 h-80 rounded-full bg-[var(--color-accent)] blur-[100px]"></div>
+                    <div className="absolute bottom-40 -left-20 w-60 h-60 rounded-full bg-[var(--color-primary)] blur-[80px]"></div>
                 </div>
             )}
         </div>

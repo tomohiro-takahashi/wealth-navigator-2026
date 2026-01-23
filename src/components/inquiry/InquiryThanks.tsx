@@ -12,9 +12,32 @@ type Props = {
 export const InquiryThanks = ({ brandId }: Props) => {
     const isFlip = brandId === 'flip';
 
+    if (brandId === 'subsidy') {
+        return (
+            <div className="min-h-[60vh] flex flex-col items-center justify-center px-6 py-12 text-center bg-[var(--color-background)]">
+                <div className="w-full max-w-lg">
+                    <motion.div
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="w-24 h-24 bg-[var(--color-primary)]/10 rounded-full flex items-center justify-center mx-auto mb-8"
+                    >
+                        <CheckCircle size={48} className="text-[var(--color-primary)]" />
+                    </motion.div>
+                    <h1 className="text-3xl font-black text-[var(--color-text-main)] mb-6">お申し込み完了</h1>
+                    <p className="text-[var(--color-text-sub)] mb-10 leading-relaxed text-lg">
+                        この度は「おうちの補助金相談室」へお申し込みいただき、誠にありがとうございます。内容を確認次第、担当アドバイザーより順次ご連絡させていただきます。
+                    </p>
+                    <Link href="/" className="inline-flex items-center gap-2 bg-[var(--color-primary)] text-white px-10 py-4 rounded-full font-bold shadow-lg hover:scale-105 transition-transform">
+                        トップページへ戻る
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className={`min-h-[60vh] flex flex-col items-center justify-center px-6 py-12 text-center animate-fade-in`}>
-            {isFlip ? (
+            {brandId === 'flip' ? (
                 /* Flip Logic Cyber Thanks */
                 <div className="w-full max-w-md">
                     {/* Status Indicator */}

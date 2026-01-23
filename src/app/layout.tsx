@@ -76,7 +76,7 @@ export default async function RootLayout({
             {children}
           </main>
           <Footer config={siteConfig} />
-          <BottomNav />
+          <BottomNav config={siteConfig} />
         </MenuProvider>
       </body>
     </html>
