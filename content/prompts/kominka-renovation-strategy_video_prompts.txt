@@ -1,0 +1,44 @@
+# Video Construction Prompts for Generative AI
+Project: 2026年・都心マンション投資の終焉と古民家錬金術
+Description: Use these prompts in tools like Sora, Runway Gen-2, or Pika to generate short clips for each scene.
+
+## Scene 1 (HOOK) - 7.5s
+**Prompt**: Cinematic shot of Tokyo skyline at dusk, slow zoom out, moody lighting, sharp focus on luxury skyscrapers. No text, no UI, clean footage.
+**Context**: 都心マンション投資の終焉
+利回り3%は「負債」
+
+## Scene 2 (TRUTH) - 7.5s
+**Prompt**: Drone shot flying over a traditional Japanese village, mist in the mountains, focusing on an abandoned traditional house with a tiled roof. No text, clean footage.
+**Context**: 空き家900万戸の衝撃
+市場に溢れる「負の遺産」
+
+## Scene 3 (TRUTH) - 7.5s
+**Prompt**: Extreme close-up of thick, aged wooden beams (Hari) inside a dim farmhouse, light rays hitting the wood grain. No text, cine-style.
+**Context**: 仕入れ値は実質タダ？
+高級建材の宝庫としての古民家
+
+## Scene 4 (SOLUTION) - 7.5s
+**Prompt**: A person in a sharp suit looking at a blueprint on a tablet, overlaying a 3D model of a renovated house. No text, tech-noir lighting.
+**Context**: 補助金によるレバレッジ
+初期投資を国が肩代わり
+
+## Scene 5 (SOLUTION) - 7.5s
+**Prompt**: High-end interior of a renovated Kominka, traditional paper lanterns (Andon), luxurious bedding, steam rising from a cypress bath. No text.
+**Context**: 利回り15%超の衝撃
+1泊10万円の「体験」を提供
+
+## Scene 6 (SOLUTION) - 7.5s
+**Prompt**: Split screen: one side a craftsman working on wood, the other side a stylish investor checking a smartphone. No text.
+**Context**: ハイブリッド施工の極意
+インフレに強い実物資産
+
+## Scene 7 (CTA) - 7.5s
+**Prompt**: A silhouette of a man looking out of a modern window at a traditional garden, contemplative pose, slow camera movement. No text.
+**Context**: 先行者利益を確保せよ
+まずは物件のポテンシャル診断
+
+## Scene 8 (CTA) - 7.5s
+**Prompt**: Close-up of a smartphone screen showing a professional LINE profile (blurred), finger tapping the screen. Clean, high-key lighting. No text.
+**Context**: 公式LINEで無料診断
+プロが直接ポテンシャル判定
+

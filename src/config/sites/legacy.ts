@@ -6,6 +6,7 @@ export const siteConfig: SiteConfig = {
     description: "実家じまい、相続不動産の売却・活用、遺品整理、家族信託の専門サイト。",
     email: "consult@legacy-guard.jp",
     site_id: "legacy",
+    pinnedSlug: "real-estate-legacy-options",
 
     theme: {
         colors: {

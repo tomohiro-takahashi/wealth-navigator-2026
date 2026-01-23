@@ -135,14 +135,54 @@ async function main() {
             content: content, // Content is always updated from file
         };
 
-        if (args.category) payload.category = [args.category];
+        if (args.category) {
+            let category = args.category;
+
+            // DNA Category Mapping (Rich Object Support)
+            try {
+                const dnaPath = path.resolve(__dirname, '../src/dna.config.json');
+                const dna = require(dnaPath);
+
+                // Check new structure: categories[key].id
+                if (dna.categories && dna.categories[category]) {
+                    const catObj = dna.categories[category];
+                    console.log(`🧬 DNA Category Mapping: ${category} -> ${catObj.id} (${catObj.name})`);
+                    category = catObj.id;
+                }
+                // Check legacy map (just in case)
+                else if (dna.category_map && dna.category_map[category]) {
+                    category = dna.category_map[category];
+                }
+            } catch (e) {
+                // Ignore if DNA config issue
+            }
+
+            payload.category = [category];
+        }
         if (args.slug) payload.slug = args.slug;
         if (args.target_yield) payload.target_yield = args.target_yield;
         if (args.expert_tip) payload.expert_tip = args.expert_tip;
         if (args.meta_title) payload.meta_title = args.meta_title;
         if (args.meta_description) payload.meta_description = args.meta_description;
         if (args.keywords) payload.keywords = args.keywords;
-        if (args.site_id) payload.site_id = [args.site_id]; // Treat as Array (Multi-Select/Tag pattern)
+        // Site ID Logic: CLI Arg > DNA Config > Default
+        let siteId = args.site_id;
+        if (!siteId) {
+            try {
+                const dnaPath = path.resolve(__dirname, '../src/dna.config.json');
+                if (fs.existsSync(dnaPath)) {
+                    const dna = require(dnaPath);
+                    // Support both camelCase and snake_case in DNA
+                    siteId = dna.identity?.siteId || dna.identity?.site_id;
+                    if (siteId) {
+                        console.log(`🧬 DNA Site ID Detected: ${siteId}`);
+                    }
+                }
+            } catch (e) {
+                // Ignore
+            }
+        }
+        if (siteId) payload.site_id = [siteId]; // Treat as Array (Multi-Select/Tag pattern)
 
         // Check for existing article with same title
         console.log(`Checking for existing article with title: "${args.title}"...`);

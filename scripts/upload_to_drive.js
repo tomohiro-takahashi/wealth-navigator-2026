@@ -109,13 +109,30 @@ async function uploadFile() {
         // Determine File Name
         const uploadName = targetFileName || path.basename(filePath);
 
+        // Determine MIME Types for Conversion
+        const ext = path.extname(filePath).toLowerCase();
+        let mediaMimeType = 'application/octet-stream'; // Default
+        let targetMimeType = null; // Default: same as media (no conversion)
+
+        if (ext === '.mp4') mediaMimeType = 'video/mp4';
+        else if (ext === '.png') mediaMimeType = 'image/png';
+        else if (ext === '.jpg' || ext === '.jpeg') mediaMimeType = 'image/jpeg';
+        else if (ext === '.txt') {
+            mediaMimeType = 'text/plain';
+            targetMimeType = 'application/vnd.google-apps.document'; // Convert to Doc
+        } else if (ext === '.md') {
+            mediaMimeType = 'text/markdown';
+            targetMimeType = 'application/vnd.google-apps.document'; // Convert to Doc
+        }
+
         const res = await drive.files.create({
             requestBody: {
                 name: uploadName,
                 parents: [parentId],
+                mimeType: targetMimeType || undefined, // Set ONLY if converting
             },
             media: {
-                mimeType: 'video/mp4',
+                mimeType: mediaMimeType,
                 body: fs.createReadStream(filePath),
             },
             fields: 'id, name, webViewLink',

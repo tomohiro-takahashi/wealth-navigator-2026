@@ -1,6 +1,6 @@
-import { siteConfig } from "@/site.config";
+import { SiteConfig } from "@/types/site";
 
-export const Philosophy = () => {
+export const Philosophy = ({ config }: { config: SiteConfig }) => {
     return (
         <section className="py-24 bg-[#F8F9FA] relative flex flex-col items-center justify-center text-center overflow-hidden">
             {/* Subtle Background Pattern or Decoration could go here */}
@@ -29,7 +29,7 @@ export const Philosophy = () => {
 
             <div className="mt-16">
                 <span className="font-display font-bold text-xl tracking-widest text-primary">
-                    {siteConfig.name}
+                    {config.name}
                 </span>
             </div>
         </section>

@@ -1,0 +1,20 @@
+# Video Construction Prompts for Generative AI
+Project: Don't Miss Out on Renovation Subsidies in 2025
+Description: Use these prompts in tools like Sora, Runway Gen-2, or Pika to generate short clips for each scene.
+
+## Scene 1 (THE PROTAGONIST) - 10s
+**Prompt**: No text, no subtitles, no words, clean footage. Establish a warm, senior-friendly visual of an older man considering home renovation plans.
+**Context**: Takeshi, 65-year-old retiree
+
+## Scene 2 (THE CONFLICT) - 20s
+**Prompt**: No text, no subtitles, no words, clean footage. Depict a stressed, worried older man dealing with renovation-related financial difficulties, such as comparing construction estimates, looking at mortgage statements, and expressing concern over the situation.
+**Context**: Renovation costs soar, home value plummets
+
+## Scene 3 (THE TURNAROUND) - 20s
+**Prompt**: No text, no subtitles, no words, clean footage. Show Takeshi having a thoughtful, regretful expression as he reviews documents and realizes where he went wrong in the renovation process.
+**Context**: Missed the fine print, didn't consult experts
+
+## Scene 4 (THE CTA) - 10s
+**Prompt**: No text, no subtitles, no words, clean footage. Show a confident, reassuring consultant offering guidance and support to the viewer.
+**Context**: Get a free consultation today
+

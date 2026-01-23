@@ -4,9 +4,9 @@ import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
 import { useMenu } from '@/context/MenuContext';
-import { siteConfig } from '@/site.config';
+import { SiteConfig } from '@/types/site';
 
-export const Header = () => {
+export const Header = ({ config }: { config: SiteConfig }) => {
     const { isMenuOpen, toggleMenu } = useMenu();
 
     // Prevent scrolling when menu is open
@@ -21,11 +21,12 @@ export const Header = () => {
         };
     }, [isMenuOpen]);
 
+    // Hardcoded Menu Items to match Production Environment
+    // Production has: ARTICLES, PROPERTIES, ABOUT (plus Logo and Inquiry button)
     const menuItems: { label: string; href: string; external?: boolean }[] = [
-        { label: 'HOME', href: '/' },
-        { label: '国内不動産コラム', href: '/articles?category=domestic' },
-        { label: '海外不動産コラム', href: '/articles?category=overseas' },
-        { label: '資産運用コラム', href: '/columns' },
+        { label: 'ARTICLES', href: '/articles' },
+        { label: 'PROPERTIES', href: '/properties' },
+        { label: 'ABOUT', href: '/about' },
     ];
 
     return (
@@ -42,22 +43,18 @@ export const Header = () => {
                             <Menu size={24} />
                         </button>
 
-                        <Link href="/" className="font-display text-2xl tracking-wider hover:text-accent transition-colors">
-                            {siteConfig.name}
-                        </Link>
+                            <Link href="/" className="font-display text-2xl tracking-wider hover:text-accent transition-colors">
+                                {config.name}
+                            </Link>
                     </div>
 
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex space-x-8">
-                        <Link href="/articles" className="text-sm tracking-widest hover:text-accent transition-colors">
-                            ARTICLES
-                        </Link>
-                        <Link href="/properties" className="text-sm tracking-widest hover:text-accent transition-colors">
-                            PROPERTIES
-                        </Link>
-                        <Link href="/about" className="text-sm tracking-widest hover:text-accent transition-colors">
-                            ABOUT
-                        </Link>
+                        {menuItems.map((item) => (
+                            <Link key={item.label} href={item.href} className="text-sm tracking-widest hover:text-accent transition-colors uppercase">
+                                {item.label}
+                            </Link>
+                        ))}
                     </nav>
 
                     {/* Desktop Contact Button */}
@@ -82,9 +79,9 @@ export const Header = () => {
                     />
 
                     {/* Drawer Panel */}
-                    <div className="absolute left-0 top-0 w-80 h-fit bg-[#1a1a1a] shadow-2xl flex flex-col rounded-br-xl overflow-hidden pb-6 transform transition-transform duration-300 ease-in-out">
+                    <div className="absolute left-0 top-0 w-80 h-fit bg-primary shadow-2xl flex flex-col rounded-br-xl overflow-hidden pb-6 transform transition-transform duration-300 ease-in-out">
                         {/* Drawer Header */}
-                        <div className="flex items-center justify-between px-6 h-16 border-b border-white/10 bg-[#1a1a1a]">
+                        <div className="flex items-center justify-between px-6 h-16 border-b border-white/10 bg-primary">
                             <span className="font-display text-lg tracking-wider text-white">MENU</span>
                             <button
                                 onClick={toggleMenu}
@@ -96,7 +93,7 @@ export const Header = () => {
                         </div>
 
                         {/* Drawer Links */}
-                        <nav className="flex-grow flex flex-col p-6 space-y-4 bg-[#1a1a1a]">
+                        <nav className="flex-grow flex flex-col p-6 space-y-4 bg-primary">
                             {menuItems.map((item) => (
                                 <Link
                                     key={item.label}
@@ -112,13 +109,13 @@ export const Header = () => {
                         </nav>
 
                         {/* Bottom CTA Area */}
-                        <div className="px-6 pt-2 bg-[#1a1a1a] flex flex-col gap-4">
+                        <div className="px-6 pt-2 bg-primary flex flex-col gap-4">
                             {/* LINE Button (Sub Action) */}
-                            <a
-                                href="https://line.me/R/ti/p/@wealth-navigator"
+                             <a
+                                href={config.cta?.lineUrl || config.cta?.assetUrl || "https://line.me/R/ti/p/@wealth-navigator"}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="block w-full py-3 border border-[#c59f59] text-[#c59f59] text-sm text-center font-bold tracking-widest rounded transition-colors hover:bg-[#c59f59] hover:text-white"
+                                className="block w-full py-3 border border-accent text-accent text-sm text-center font-bold tracking-widest rounded transition-colors hover:bg-accent hover:text-white"
                                 onClick={toggleMenu}
                             >
                                 無料相談 (LINE)
@@ -127,7 +124,7 @@ export const Header = () => {
                             {/* Diagnosis Button (Main Action) */}
                             <a
                                 href="/simulation"
-                                className="block w-full py-3 bg-[#c59f59] text-white text-sm text-center font-bold tracking-widest rounded shadow-md hover:bg-[#b08d4b] transition-all"
+                                className="block w-full py-3 bg-accent text-white text-sm text-center font-bold tracking-widest rounded shadow-md hover:brightness-90 transition-all"
                                 onClick={toggleMenu}
                             >
                                 最適戦略を診断

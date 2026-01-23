@@ -151,9 +151,6 @@ async function architectVideo(slugKeyword) {
 async function architectArticle(topic, category) {
     console.log(`🏗️  Architecting Article Blueprint for: ${topic} (${category})`);
 
-    const strategistKnowledge = fs.readFileSync(STRATEGIST_BRAIN_PATH, 'utf8');
-    const editorBible = fs.readFileSync(EDITOR_BRAIN_PATH, 'utf8');
-
     // --- STRATEGY: RESILIENT ARCHITECT ---
     // Primary: Gemini 3 Flash (Cost/Speed)
     // Fallback: Claude 3.5 Sonnet (Quality/Reliability)
@@ -241,6 +238,13 @@ async function architectArticle(topic, category) {
         console.warn("⚠️ DNA config not found, using defaults.");
     }
 
+    // Load Strategy from DNA Bible Path or Fallback
+    const biblePath = dna.bible_path ? path.join(process.cwd(), dna.bible_path) : STRATEGIST_BRAIN_PATH;
+    console.log(`📖 Utilizing Bible: ${path.basename(biblePath)}`);
+    const strategistKnowledge = fs.readFileSync(biblePath, 'utf8');
+    const editorBible = fs.readFileSync(EDITOR_BRAIN_PATH, 'utf8');
+
+
     const prompt = `
     ${editorBible}
 
@@ -259,7 +263,8 @@ async function architectArticle(topic, category) {
 
     ## Category Specific Logic
     Category: ${category}
-    (Reference the logic appropriate for this category from the knowledge base)
+    Context/Focus: ${dna.categories?.[category]?.context || 'Apply general logic for this category based on the bible.'}
+    (Reference the above Context/Focus to determine the angle)
 
     ## Requirements
     - Output strictly valid JSON matching the schema in the Bible (Chapter 4).
@@ -316,7 +321,7 @@ async function architectArticle(topic, category) {
         const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
         const outputPath = path.join(ARTIFACTS_DIR, `${slug}_blueprint.json`);
 
-        blueprint.site_id = dna.identity?.siteId || 'wealth_navigator';
+        blueprint.site_id = dna.identity?.siteId || dna.identity?.site_id || 'wealth_navigator';
 
         fs.writeFileSync(outputPath, JSON.stringify(blueprint, null, 2));
         console.log(`✅ Blueprint saved to: ${outputPath}`);

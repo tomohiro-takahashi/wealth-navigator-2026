@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP, Shippori_Mincho } from "next/font/google"; // Removed Geist as per new design
-import { siteConfig } from "@/site.config";
+export const dynamic = 'force-dynamic';
 import "./styles.css";
 
 const notoSansJP = Noto_Sans_JP({
@@ -15,21 +15,36 @@ const shipporiMincho = Shippori_Mincho({
   weight: ["400", "500", "700"],
 });
 
-export const metadata: Metadata = {
-  title: siteConfig.name,
-  description: siteConfig.description,
-};
-
 import { Header } from "@/components/common/Header";
 import { Footer } from "@/components/common/Footer";
 import { BottomNav } from "@/components/common/BottomNav";
 import { MenuProvider } from "@/context/MenuContext";
+import { getSiteConfig } from "@/site.config";
+import { getBrandIdFromHost } from "@/lib/brand";
+import { headers } from "next/headers";
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers();
+  const host = headersList.get('host');
+  const brandId = getBrandIdFromHost(host);
+  const config = await getSiteConfig(brandId);
+  
+  return {
+    title: config.name,
+    description: config.description,
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const host = headersList.get('host');
+  const brandId = getBrandIdFromHost(host);
+  const siteConfig = await getSiteConfig(brandId);
+
   return (
     <html lang="ja">
       <head>
@@ -56,14 +71,14 @@ export default function RootLayout({
       >
         <MenuProvider>
           {/* pt-0 because Hero often goes under header or handles its own spacing. Resetting default top padding. */}
-          <Header />
-          <main className="flex-grow pb-24 md:pb-0">
+          <Header config={siteConfig} />
+          <main className="flex-grow grow pb-24 md:pb-0">
             {children}
           </main>
-          <Footer />
+          <Footer config={siteConfig} />
           <BottomNav />
         </MenuProvider>
       </body>
-    </html >
+    </html>
   );
 }

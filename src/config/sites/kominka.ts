@@ -6,6 +6,7 @@ export const siteConfig: SiteConfig = {
     description: "古民家投資の極意。物件探し、リノベーション、客付け、出口戦略まで。",
     email: "contact@kominka.jp",
     site_id: "kominka",
+    pinnedSlug: "akiyabank-complete-guide",
 
     theme: {
         colors: {

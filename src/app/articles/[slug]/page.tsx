@@ -6,17 +6,18 @@ import { ExpertTip } from '@/components/articles/ExpertTip';
 import { ArticleTOC } from '@/components/articles/ArticleTOC';
 import { injectTOCIds, processArticleContent } from '@/lib/html-utils';
 import { Metadata } from 'next';
-import { getCategoryLabel, cn } from '@/lib/utils';
+import { getCategoryLabelSync, cn } from '@/lib/utils';
 import Image from 'next/image';
 import parse, { Element, domToReact as domNodeToReact } from 'html-react-parser';
 import { ImageWithPlaceholder } from '@/components/articles/ImageWithPlaceholder';
-import { siteConfig } from '@/site.config';
+import { getSiteConfig } from '@/site.config';
 
 // キャッシュの設定: ISR (60秒)
-export const revalidate = 60;
+// キャッシュの設定: ISR 無効化
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
     const { slug } = await params;
+    const siteConfig = await getSiteConfig();
     try {
         const article = await getDetailBySlug(slug, 'articles') as Article;
         if (!article) return { title: `Not Found | ${siteConfig.name}` };
@@ -35,6 +36,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
+    const siteConfig = await getSiteConfig();
 
     let article: Article | null = null;
     try {
@@ -85,7 +87,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     };
 
     return (
-        <article className="min-h-screen bg-[#1A1A1B] text-white selection:bg-accent selection:text-white">
+        <article className="min-h-screen bg-[var(--color-background)] text-[var(--color-text-main)] selection:bg-[var(--color-accent)] selection:text-white">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
@@ -98,8 +100,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
             {/* Dark Hero Section */}
             <div className="relative h-[60vh] w-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/60 via-primary/40 to-primary z-10" />
-                <div className="absolute inset-0 bg-gradient-to-b from-primary/60 via-primary/40 to-primary z-10" />
+                <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/60 via-[var(--color-primary)]/40 to-[var(--color-primary)] z-10" />
+                <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/60 via-[var(--color-primary)]/40 to-[var(--color-primary)] z-10" />
                 <Image
                     src={article.eyecatch?.url || `/images/articles/${article.slug}/01.webp`}
                     alt={article.title}
@@ -110,15 +112,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 <div className="absolute bottom-0 left-0 w-full max-w-4xl mx-auto px-4 pb-12 z-20">
                     <div className="flex gap-3 mb-6">
                         {article.category?.map((cat) => (
-                            <span key={cat} className="bg-accent/90 text-primary text-xs font-bold px-3 py-1 tracking-widest uppercase rounded-sm">
-                                {getCategoryLabel(cat)}
+                            <span key={cat} className="bg-[var(--color-accent)]/90 text-white text-xs font-bold px-3 py-1 tracking-widest uppercase rounded-sm">
+                                {getCategoryLabelSync(cat, siteConfig)}
                             </span>
                         ))}
                     </div>
-                    <h1 className="text-3xl md:text-5xl font-serif font-bold leading-tight mb-6 text-shadow-lg">
+                    <h1 className={`${siteConfig.theme.typography.h2 || "text-3xl md:text-5xl font-serif"} font-bold leading-tight mb-6 text-white text-shadow-lg`}>
                         {article.title}
                     </h1>
-                    <div className="flex items-center text-sm text-gray-300 font-sans tracking-wide">
+                    <div className="flex items-center text-sm text-gray-200 font-sans tracking-wide">
                         <time dateTime={article.publishedAt} className="mr-6 border-r border-gray-500 pr-6">
                             {formattedDate}
                         </time>
@@ -145,26 +147,34 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
                     {/* Body */}
                     <div className={cn(
-                        "prose prose-lg prose-invert max-w-none font-sans leading-loose",
-                        "prose-headings:font-serif prose-headings:font-bold prose-headings:text-white",
-                        // H1 Style: Reduce size on mobile
+                        "prose prose-lg max-w-none font-sans leading-loose",
+                        // Headings
+                        "prose-headings:text-[var(--color-text-main)]",
+                        `${siteConfig.theme.typography.fontFamily === 'serif' ? 'prose-headings:font-serif' : 'prose-headings:font-sans'}`,
+
+                        // H1 Style
                         "prose-h1:text-2xl md:prose-h1:text-4xl prose-h1:leading-tight",
-                        // H2 Style: Gold vertical bar
-                        "prose-h2:text-2xl prose-h2:mt-16 prose-h2:mb-8 prose-h2:pl-6 prose-h2:border-l-4 prose-h2:border-accent",
+
+                        // H2 Style: Dynamic border color
+                        "prose-h2:text-2xl prose-h2:mt-16 prose-h2:mb-8 prose-h2:pl-6 prose-h2:border-l-4 prose-h2:border-[var(--color-accent)]",
+
                         // H3 Style
-                        "prose-h3:text-xl prose-h3:mt-12 prose-h3:mb-6 prose-h3:text-accent",
-                        "prose-p:text-gray-300 prose-p:mb-8",
-                        "prose-a:text-accent prose-a:no-underline hover:prose-a:underline",
-                        "prose-blockquote:border-l-accent prose-blockquote:bg-white/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:not-italic prose-blockquote:text-gray-200",
-                        "prose-strong:text-white prose-strong:font-bold",
-                        "prose-img:rounded-xl prose-img:shadow-2xl prose-img:border prose-img:border-white/10",
-                        "prose-li:text-gray-300",
-                        // Table styles (Dark)
-                        "prose-table:w-full prose-table:border-collapse prose-table:my-10 prose-table:border prose-table:border-white/10 prose-table:rounded-lg prose-table:overflow-hidden",
-                        "prose-thead:bg-white/5 prose-thead:text-accent prose-thead:border-b prose-thead:border-white/10",
+                        "prose-h3:text-xl prose-h3:mt-12 prose-h3:mb-6 prose-h3:text-[var(--color-accent)]",
+
+                        // Text Elements
+                        "prose-p:text-[var(--color-text-main)] prose-p:mb-8",
+                        "prose-a:text-[var(--color-link)] prose-a:no-underline hover:prose-a:underline",
+                        "prose-blockquote:border-l-[var(--color-accent)] prose-blockquote:bg-[var(--color-primary)]/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:not-italic prose-blockquote:text-[var(--color-text-sub)]",
+                        "prose-strong:text-[var(--color-text-main)] prose-strong:font-bold",
+                        "prose-img:rounded-xl prose-img:shadow-2xl prose-img:border prose-img:border-black/5",
+                        "prose-li:text-[var(--color-text-main)]",
+
+                        // Table styles
+                        "prose-table:w-full prose-table:border-collapse prose-table:my-10 prose-table:border prose-table:border-[var(--color-border)] prose-table:rounded-lg prose-table:overflow-hidden",
+                        "prose-thead:bg-[var(--color-primary)]/5 prose-thead:text-[var(--color-text-main)] prose-thead:border-b prose-thead:border-[var(--color-border)]",
                         "prose-th:py-4 prose-th:px-6 prose-th:text-left prose-th:font-serif prose-th:font-bold prose-th:tracking-wider prose-th:text-sm",
-                        "prose-td:py-4 prose-td:px-6 prose-td:border-b prose-td:border-white/5 prose-td:text-gray-300 prose-td:text-sm",
-                        "prose-tr:hover:bg-white/5 prose-tr:transition-colors",
+                        "prose-td:py-4 prose-td:px-6 prose-td:border-b prose-td:border-[var(--color-border)] prose-td:text-[var(--color-text-main)] prose-td:text-sm",
+                        "prose-tr:hover:bg-[var(--color-primary)]/5 prose-tr:transition-colors",
                         article.math_enabled && "math-enabled"
                     )}>
                         {parse(contentWithIds, {
@@ -243,7 +253,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
                     {/* Dynamic CTA */}
                     <div className="mt-20">
-                        <DynamicCTA mode={article.cta_mode} />
+                        <DynamicCTA mode={article.cta_mode} config={siteConfig} />
                     </div>
 
                     {/* Target Yield Info */}

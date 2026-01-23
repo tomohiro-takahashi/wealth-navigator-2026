@@ -6,6 +6,7 @@ export const siteConfig: SiteConfig = {
     description: "不動産買取再販（フリップ）の専門サイト。仕入れ、バリューアップ、短期売却のロジック。",
     email: "contact@flip-logic.jp",
     site_id: "flip",
+    pinnedSlug: "70-percent-rule",
 
     theme: {
         colors: {

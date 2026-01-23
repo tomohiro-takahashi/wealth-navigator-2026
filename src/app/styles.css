@@ -13,12 +13,12 @@
 
   --color-primary: #1A1A1B;
   /* Charcoal */
-  --color-primary-light: #2C2C2E;
+  --color-primary-light: color-mix(in srgb, var(--color-primary), white 20%);
 
   --color-accent: #C5A059;
   /* Gold */
-  --color-accent-light: #D4AF37;
-  --color-accent-dark: #A08035;
+  --color-accent-light: color-mix(in srgb, var(--color-accent), white 20%);
+  --color-accent-dark: color-mix(in srgb, var(--color-accent), black 20%);
 
   --color-muted: #8892B0;
   --color-muted-light: #E0E0E0;

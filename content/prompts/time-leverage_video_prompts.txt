@@ -1,0 +1,44 @@
+# Video Construction Prompts for Generative AI
+Project: 不動産投資の本質：年収3000万の奴隷から脱出する『時間のレバレッジ』
+Description: Use these prompts in tools like Sora, Runway Gen-2, or Pika to generate short clips for each scene.
+
+## Scene 1 (HOOK) - 7.5s
+**Prompt**: Cinematic shot, a successful man in a tailor-made suit looking out of a luxury high-rise window at night, reflection in glass, somber but thoughtful expression. No text, no UI, clean footage.
+**Context**: あなたは年収いくらの
+「奴隷」ですか？
+
+## Scene 2 (TRUTH_1) - 7.5s
+**Prompt**: Fast-paced time-lapse of a busy city intersection at night, blurred lights of moving cars, transition to a luxury watch on a wrist. No text, no subtitles, cine-style.
+**Context**: 労働収入 ＝
+時間の切り売り
+
+## Scene 3 (TRUTH_2) - 7.5s
+**Prompt**: Close-up of a fountain pen signing a high-quality document, slow motion, elegant office setting. No text, no UI, professional lighting.
+**Context**: 「不労所得」ではない
+「時間のレバレッジ」だ
+
+## Scene 4 (SOLUTION_1) - 7.5s
+**Prompt**: A modern, high-end apartment interior, morning sun streaming through windows, dust dancing in light, peaceful atmosphere. No text, clean footage.
+**Context**: あなたの代わりに
+24時間働く「資産」
+
+## Scene 5 (SOLUTION_2) - 7.5s
+**Prompt**: Slow zoom into a glowing hourglass, the sand moving upwards or frozen, conceptual and artistic. No text, no subtitles, cine-style.
+**Context**: ローンは
+「未来の時間」の前借り
+
+## Scene 6 (SOLUTION_3) - 7.5s
+**Prompt**: A man playing with his child in a park, sunset light, warm and emotional but high-end look. No text, no UI, clean footage.
+**Context**: 過去の自分が
+未来の自分を自由にする
+
+## Scene 7 (CONSULTANT_ADVICE) - 7.5s
+**Prompt**: The man from Scene 1, now relaxed, sitting in a lounge with a tablet, looking confident. No text, no subtitles, cinematic lighting.
+**Context**: 自由とは
+「ノー」と言える力
+
+## Scene 8 (CTA) - 7.5s
+**Prompt**: Close up of a smart phone screen showing a sleek professional dashboard (blurred), then a fade to a dark premium background. No text on screen from AI.
+**Context**: 時間の主導権を握る
+詳細はプロフィールへ
+

@@ -48,6 +48,8 @@ yarn-error.log*
 next-env.d.ts
 mcp-server/node_modules
 service_account.json
+service-account.json
+service-account*.json
 token.json
 credentials.json
 .env*.local

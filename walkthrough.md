@@ -1,6 +1,24 @@
-# Video Director Upgrade Walkthrough
+# Video Director Upgrade# Walkthrough - Multi-Tenant Media Factory
 
-## Overview
+## Verification Results (Frontend & Content Logic)
+
+### 1. Dynamic Frontend Theming
+- **Colors**: `src/app/layout.tsx` now injects `--color-primary` and `--color-accent` from the active DNA.
+- **CTA**: `DynamicCTA.tsx` dynamically renders the brand-specific offer (Title, Text, Link) defined in `dna.config.json`.
+
+### 2. Multi-Tenant Content Pipeline
+We verified the end-to-end flow for all 4 new brands:
+- **Kominka**: Imported "Kominka Test: Find" (Category: `find`)
+- **Legacy**: Imported "Legacy Test: Mindset" (Category: `mindset`)
+- **Flip**: Imported "Flip Test: Source" (Category: `source`)
+- **Subsidy**: Imported "Subsidy Test: Learn" (Category: `learn`)
+
+All brands successfully map their CLI categories to the correct CMS setup.
+**Update**: Verified that `site_id` is correctly auto-detected from `dna.config` and applied to articles (e.g., `kominka_frontier`, `legacy_guard`).
+
+## Next Steps
+- Verify Frontend visually at `localhost:3000`.
+- Verify Video Generation pipeline for new brands.
 Web記事（Article）からショート動画用の台本を自動生成し、ナレーション音声を合成・尺合わせまで行う一連のフロー「Video Director」を実装しました。
 また、**「Wealth Navigator Manifesto」** の完全納品と、**「Malaysia JS-SEZ Tax Scheme」** の記事公開完了を行いました。
 

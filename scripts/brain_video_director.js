@@ -6,9 +6,35 @@ require('dotenv').config({ path: '.env.local' });
 // Configuration
 const API_KEY = process.env.GOOGLE_API_KEY;
 const MODEL_NAME = "gemini-3-flash-preview";
+const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
 
-if (!API_KEY) {
-    console.error("❌ GOOGLE_API_KEY is missing in .env.local");
+async function callClaude(prompt) {
+    const response = await fetch(ANTHROPIC_API_URL, {
+        method: 'POST',
+        headers: {
+            'x-api-key': ANTHROPIC_API_KEY,
+            'anthropic-version': '2023-06-01',
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            model: 'claude-3-haiku-20240307',
+            max_tokens: 4096,
+            messages: [{ role: 'user', content: prompt }]
+        })
+    });
+
+    if (!response.ok) {
+        const err = await response.text();
+        throw new Error(`Claude API Error: ${response.status} - ${err}`);
+    }
+
+    const data = await response.json();
+    return data.content[0].text;
+}
+
+if (!API_KEY && !ANTHROPIC_API_KEY) {
+    console.error("❌ GOOGLE_API_KEY or ANTHROPIC_API_KEY are required in .env.local");
     process.exit(1);
 }
 
@@ -85,35 +111,42 @@ Ensure the output is strictly valid JSON inside \`\`\`json\`\`\` blocks.
 
     for (let attempt = 1; attempt <= 3; attempt++) {
         try {
-            console.log(`🎬 Video Director Attempt ${attempt}...`);
+            console.log(`🎬 Video Director Attempt ${attempt} (Gemini)...`);
             const model = genAI.getGenerativeModel({ model: MODEL_NAME });
             const result = await model.generateContent(prompt);
             const response = await result.response;
             const text = response.text();
 
-            // Clean and Extract JSON
-            let jsonStr = text;
-            if (text.includes('```json')) {
-                jsonStr = text.split('```json')[1].split('```')[0];
-            } else if (text.includes('```')) {
-                jsonStr = text.split('```')[1].split('```')[0];
-            }
-            jsonStr = jsonStr.trim();
-
-            const scriptJson = JSON.parse(jsonStr);
-
-            console.log("✅ Video Script Generated Successfully!");
-            return scriptJson;
+            return parseAndCleanJson(text);
 
         } catch (error) {
             console.warn(`⚠️ Video Director Attempt ${attempt} Failed: ${error.message}`);
             if (attempt < 3) await new Promise(r => setTimeout(r, 4000));
-            else {
-                console.error("❌ Generation Failed:", error);
-                process.exit(1);
-            }
         }
     }
+
+    // Fallback to Claude
+    console.log("🛡️ All Gemini attempts failed. Activating Fallback (Claude)...");
+    try {
+        const text = await callClaude(prompt);
+        return parseAndCleanJson(text);
+    } catch (error) {
+        console.error("❌ Video Director Fallback Failed:", error);
+        process.exit(1);
+    }
+}
+
+function parseAndCleanJson(text) {
+    let jsonStr = text;
+    if (text.includes('```json')) {
+        jsonStr = text.split('```json')[1].split('```')[0];
+    } else if (text.includes('```')) {
+        jsonStr = text.split('```')[1].split('```')[0];
+    }
+    jsonStr = jsonStr.trim();
+    const scriptJson = JSON.parse(jsonStr);
+    console.log("✅ Video Script Generated Successfully!");
+    return scriptJson;
 }
 
 

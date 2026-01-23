@@ -6,6 +6,7 @@ export const siteConfig: SiteConfig = {
     description: "窓、お風呂、給湯器のリフォームに使える補助金を、日本一やさしく解説。相談から申請、工事までワンストップ。",
     email: "info@subsidy-nav.jp",
     site_id: "subsidy",
+    pinnedSlug: "2026-renovation-subsidy-guide",
 
     theme: {
         colors: {

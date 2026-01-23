@@ -1,15 +1,15 @@
 import Link from 'next/link';
-import { siteConfig } from '@/site.config';
+import { SiteConfig } from '@/types/site';
 
-export const Footer = () => {
+export const Footer = ({ config }: { config: SiteConfig }) => {
     return (
         <footer className="bg-primary text-white pt-16 pb-8">
             <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
                     <div className="col-span-1 md:col-span-2">
-                        <h2 className="font-display text-2xl mb-4">{siteConfig.name}</h2>
+                        <h2 className="font-display text-2xl mb-4">{config.name}</h2>
                         <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
-                            {siteConfig.description}
+                            {config.description}
                         </p>
                     </div>
                     <div>
@@ -36,7 +36,7 @@ export const Footer = () => {
                         本サイトの運営者は、宅地建物取引業法に基づく『媒介』行為は行っておりません。<br />
                         お客様のニーズに基づき、提携する専門業者への紹介サービスです。
                     </p>
-                    <p className="text-muted text-xs font-serif">&copy; {new Date().getFullYear()} {siteConfig.name}. All Rights Reserved.</p>
+                    <p className="text-muted text-xs font-serif">&copy; {new Date().getFullYear()} {config.name}. All Rights Reserved.</p>
                 </div>
             </div>
         </footer>

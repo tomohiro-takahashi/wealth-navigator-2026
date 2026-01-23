@@ -1,0 +1,20 @@
+# Video Construction Prompts for Generative AI
+Project: Protect Your Assets: Shift from New Towers to Vintage Condos
+Description: Use these prompts in tools like Sora, Runway Gen-2, or Pika to generate short clips for each scene.
+
+## Scene 1 (THE PROTAGONIST) - 10s
+**Prompt**: No text, no subtitles, no words, clean footage. Slow pan over a modern high-rise condo building.
+**Context**: Aoki-san, 15M Yearly Income
+
+## Scene 2 (THE CONFLICT) - 20s
+**Prompt**: No text, no subtitles, no words, clean footage. Slow zoom out from a stack of bills and financial documents, revealing a stressed-looking Aoki-san.
+**Context**: Mortgage Payments +17% | Fees Soaring
+
+## Scene 3 (THE TURNAROUND) - 20s
+**Prompt**: No text, no subtitles, no words, clean footage. Time-lapse footage of Aoki-san meeting with a financial advisor, reviewing documents, and shaking his head in regret.
+**Context**: Lesson Learned: Trust Experts, Not Developers
+
+## Scene 4 (THE CTA) - 10s
+**Prompt**: No text, no subtitles, no words, clean footage. Slow zoom out from Aoki-san's concerned expression to reveal a modern cityscape out the window.
+**Context**: Get a Free Portfolio Assessment
+

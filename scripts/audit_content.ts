@@ -54,6 +54,13 @@ async function main() {
     });
 
     if (contents.length > 0) {
+        const target = contents.find((c: any) => c.slug === 'time-leverage');
+        if (target) {
+            console.log('\n[TARGET ARTICLE]');
+            console.log('Title:', target.title);
+            console.log('Slug:', target.slug);
+        }
+
         console.log('\n[DEBUG KEY TYPES]');
         console.log('cta_mode type:', typeof contents[0].cta_mode, 'value:', contents[0].cta_mode);
         console.log('target_yield type:', typeof contents[0].target_yield, 'value:', contents[0].target_yield);

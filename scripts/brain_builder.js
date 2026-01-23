@@ -111,8 +111,13 @@ async function builderArticle() {
             console.log(`🤖 Using Engine: Claude (High Quality) for ${siteId}`);
             result = await callClaude(prompt);
         } else {
-            console.log(`⚡ Using Engine: Gemini (High Speed/Low Cost) for ${siteId}`);
-            result = await callGemini(prompt);
+            try {
+                console.log(`⚡ Using Engine: Gemini (High Speed/Low Cost) for ${siteId}`);
+                result = await callGemini(prompt);
+            } catch (e) {
+                console.warn(`⚠️ Gemini Failed: ${e.message}. Falling back to Claude...`);
+                result = await callClaude(prompt);
+            }
         }
 
         // Clean result

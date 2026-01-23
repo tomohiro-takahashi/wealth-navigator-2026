@@ -1,0 +1,56 @@
+{
+  "project_title": "2026年最新住宅省エネキャンペーン常識破壊",
+  "brand_id": "subsidy",
+  "pattern": "Type_A_Myth_Buster",
+  "scenes": [
+    {
+      "scene_id": 1,
+      "section_type": "hook",
+      "duration_target_sec": 6,
+      "narration_text": "省エネリフォームは高いって思ってませんか？",
+      "screen_text": "省エネリフォーム\n＝高い？",
+      "visual_prompt": "confused senior couple looking at expensive renovation bills, worried expressions, Japanese home interior background"
+    },
+    {
+      "scene_id": 2,
+      "section_type": "truth",
+      "duration_target_sec": 15,
+      "narration_text": "実は2026年の住宅省エネキャンペーンなら、最大245万円の補助金が出るんです。エアコン交換だけでも15万円、窓の断熱で最大200万円もらえます。",
+      "screen_text": "最大245万円\n補助金GET！",
+      "visual_prompt": "large golden numbers showing 2,450,000 yen floating above modern energy-efficient home, bright and celebratory atmosphere"
+    },
+    {
+      "scene_id": 3,
+      "section_type": "truth",
+      "duration_target_sec": 12,
+      "narration_text": "つまり実質負担はほぼゼロ。むしろ電気代が下がって年間10万円も節約できるから、プラスになっちゃうんです。",
+      "screen_text": "実質負担\nほぼ0円！",
+      "visual_prompt": "calculator showing zero cost, with energy bills decreasing dramatically, green energy savings icons floating around"
+    },
+    {
+      "scene_id": 4,
+      "section_type": "solution",
+      "duration_target_sec": 18,
+      "narration_text": "でも注意してください。この予算は先着順で、すでに多くの地域で締切間近です。私たちは過去3年で800件以上の補助金申請をサポートしてきました。申請書類も全部代行するので安心してください。",
+      "screen_text": "申請800件以上\nサポート実績",
+      "visual_prompt": "professional consultant helping elderly couple with paperwork, successful application stamps and documents, trustworthy office setting"
+    },
+    {
+      "scene_id": 5,
+      "section_type": "cta",
+      "duration_target_sec": 9,
+      "narration_text": "まずは無料のLINE補助金診断で、あなたの家がいくらもらえるかチェックしてみてください。",
+      "screen_text": "LINE診断\n無料でチェック！",
+      "visual_prompt": "smartphone showing LINE app with subsidy diagnosis interface, green checkmarks and money symbols, encouraging call-to-action design"
+    }
+  ],
+  "metadata": {
+    "total_duration": 60,
+    "fps": 30,
+    "voice_config": {
+      "language": "ja-JP",
+      "gender": "male",
+      "speaking_rate": 0.95
+    }
+  }
+}

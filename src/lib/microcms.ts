@@ -1,26 +1,39 @@
 import { createClient } from 'microcms-js-sdk';
-import { siteConfig } from '@/site.config';
+import { getSiteConfig } from '@/site.config';
 
 export const client = createClient({
     serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN || "service-domain-placeholder",
     apiKey: process.env.MICROCMS_API_KEY || "api-key-placeholder",
 });
 
-const SITE_ID = siteConfig.site_id || 'wealth';
-
 // Helper to merge filters
-const mergeFilters = (existingFilters?: string) => {
-    const siteFilter = `site_id[contains]${SITE_ID}`;
+const mergeFilters = (siteId: string, existingFilters?: string) => {
+    const siteFilter = `site_id[contains]${siteId}`;
     if (!existingFilters) return siteFilter;
     return `(${existingFilters})[and]${siteFilter}`;
+};
+
+/**
+ * Get the current site_id dynamically.
+ * This can only be called in Server Components/Server Actions.
+ */
+const getCurrentSiteId = async () => {
+    try {
+        const config = await getSiteConfig();
+        return config.site_id || 'wealth';
+    } catch (e) {
+        // Fallback for build time or non-server contexts
+        return process.env.NEXT_PUBLIC_BRAND || 'wealth';
+    }
 };
 
 // ブログ一覧を取得
 export const getList = async (endpoint: string = "articles", queries?: Record<string, unknown>) => {
     try {
+        const siteId = await getCurrentSiteId();
         const mergedQueries = {
             ...queries,
-            filters: mergeFilters(queries?.filters as string),
+            filters: mergeFilters(siteId, queries?.filters as string),
         };
 
         const listData = await client.getList({
@@ -40,9 +53,10 @@ export const getDetail = async (
     endpoint: string = "articles",
     queries?: Record<string, unknown>
 ) => {
+    const siteId = await getCurrentSiteId();
     const mergedQueries = {
         ...queries,
-        filters: mergeFilters(queries?.filters as string),
+        filters: mergeFilters(siteId, queries?.filters as string),
     };
     const detailData = await client.getListDetail({
         endpoint,
@@ -58,10 +72,11 @@ export const getDetailBySlug = async (
     endpoint: string = "articles"
 ) => {
     try {
+        const siteId = await getCurrentSiteId();
         const listData = await client.getList({
             endpoint,
             queries: {
-                filters: mergeFilters(`slug[equals]${slug}`),
+                filters: mergeFilters(siteId, `slug[equals]${slug}`),
                 limit: 1
             },
         });
@@ -71,6 +86,6 @@ export const getDetailBySlug = async (
         return listData.contents[0];
     } catch (error) {
         console.error("MicroCMS getDetailBySlug error:", error);
-        return null; // notFound() needs to be handled by caller
+        return null;
     }
 };

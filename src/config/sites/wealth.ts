@@ -6,6 +6,7 @@ export const siteConfig: SiteConfig = {
     description: "富裕層のための資産防衛・運用戦略。国内・海外不動産、タックスプランニング、ポートフォリオ構築。",
     email: "contact@wealth-navigator.com",
     site_id: "wealth",
+    pinnedSlug: "wealth-navigator-manifesto",
 
     theme: {
         colors: {
