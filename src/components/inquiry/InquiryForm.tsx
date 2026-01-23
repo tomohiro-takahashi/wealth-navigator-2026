@@ -37,7 +37,7 @@ export const InquiryForm = () => {
             }
 
             console.log("Form Submitted Successfully");
-            setIsComplete(true);
+            window.location.href = "/inquiry/thanks";
         } catch (error) {
             console.error("Submission Error:", error);
             alert("送信中にエラーが発生しました。時間をおいて再度お試しください。");
@@ -45,27 +45,6 @@ export const InquiryForm = () => {
             setIsSubmitting(false);
         }
     };
-
-    if (isComplete) {
-        return (
-            <div className="w-full max-w-lg mx-auto bg-[#1f1f20] rounded-2xl p-10 text-center border border-accent/20 shadow-2xl animate-fade-in-up">
-                <div className="w-20 h-20 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-6 text-accent">
-                    <CheckCircle size={40} />
-                </div>
-                <h3 className="text-2xl font-serif font-bold text-white mb-4">お問い合わせ完了</h3>
-                <p className="text-gray-400 mb-8 leading-relaxed">
-                    内容を確認の上、担当コンサルタントより<br />24時間以内にご連絡いたします。
-                </p>
-                <div className="p-4 bg-white/5 rounded-lg border border-white/10 text-left">
-                    <p className="text-xs text-gray-500 mb-2 uppercase tracking-widest">NEXT ACTION</p>
-                    <p className="text-sm text-gray-300">
-                        お急ぎの場合は、自動返信メールに記載の<br />
-                        <span className="text-accent font-bold">「オーナー直通LINE」</span>からもご連絡いただけます。
-                    </p>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <div className="w-full max-w-xl mx-auto">

@@ -1,14 +1,13 @@
-import { DiagnosisResult } from "@/components/diagnosis/DiagnosisResult";
-import { FlipResult } from "@/components/diagnosis/FlipResult";
+import { InquiryThanks } from "@/components/inquiry/InquiryThanks";
 import { getBrandId } from "@/lib/brand";
 
-export default async function ResultPage() {
+export default async function ThanksPage() {
     const brandId = await getBrandId();
     const isFlip = brandId === 'flip';
 
     return (
-        <div className={`min-h-screen ${isFlip ? 'bg-[#0B0E14]' : 'bg-[#1A1A1B]'}`}>
-            {isFlip ? <FlipResult /> : <DiagnosisResult />}
+        <div className={`min-h-screen pt-20 pb-20 transition-colors duration-500 ${isFlip ? 'bg-[#0B0E14]' : 'bg-[var(--color-background)]'}`}>
+            <InquiryThanks brandId={brandId} />
             
             {/* Flip specific background overlay */}
             {isFlip && (
