@@ -1,92 +1,92 @@
 import { SiteConfig } from '@/types/site';
 
 export const siteConfig: SiteConfig = {
-    name: "Wealth Navigator",
-    tagline: "Global Investment Strategies for High Net Worth Individuals.",
-    description: "富裕層のための資産防衛・運用戦略。国内・海外不動産、タックスプランニング、ポートフォリオ構築。",
-    email: "contact@wealth-navigator.com",
-    site_id: "wealth",
-    pinnedSlug: "wealth-navigator-manifesto",
+    name: "親の家、どうする？",
+    tagline: "実家を'負担'から'資産'に変える、たったひとつの選択。",
+    description: "実家じまい、相続不動産の売却・活用、遺品整理、家族信託の専門サイト。",
+    email: "consult@legacy-guard.jp",
+    site_id: "legacy",
+    pinnedSlug: "real-estate-legacy-options",
 
     theme: {
         colors: {
-            primary: "#1A1A1B",
-            background: "#F8F9FA",
-            accent: "#C5A059",
+            primary: "#1a1a1a",
+            background: "#191919",
+            accent: "#A68966",
             text: {
-                main: "#1A1A1B",
-                sub: "#4B5563",
+                main: "#FFFFFF",
+                sub: "#8D8675",
                 inverse: "#FFFFFF"
             },
-            link: "#C5A059",
-            border: "#E5E7EB"
+            link: "#A68966",
+            border: "#8D8675"
         },
         typography: {
-            fontFamily: "serif",
-            h2: "text-[40px] md:text-[44px] font-medium leading-[1.2] tracking-wide font-serif"
+            fontFamily: "sans",
+            h2: "text-4xl md:text-6xl font-light italic text-[#A68966]"
         },
-        rounded: "md",
+        rounded: "lg"
     },
 
     hero: {
-        title: "一流を、<br />再定義する。",
-        subtitle: "現代のビジョナリーへ贈る、<br />至高のインサイト。",
+        title: "Your parents' home is a <span class=\"italic\">lifetime of memories.</span>",
+        subtitle: "Honoring your family's legacy through thoughtful real estate inheritance consulting. We provide clarity and peace of mind.",
+        heroImage: "/assets/hero-legacy.jpg",
         primaryButton: {
-            text: "「信用力」と「最適戦略」を診断する (無料)",
+            text: "Start Diagnosis",
             url: "/simulation"
         },
         secondaryButton: {
-            text: "About us 私たちについて",
+            text: "View Stories",
             url: "/about"
-        },
-        imageQuery: "luxury modern architecture gold finance abstract"
+        }
     },
 
     premium: {
-        title: "厳選された物件",
-        btnText: "すべての物件を見る"
+        title: "解決事例",
+        btnText: "すべての事例を見る"
     },
 
     features: [
         {
-            title: "国内不動産",
-            description: "都心プライムエリアの中古マンション、一棟収益物件。流動性と資産価値を重視した選定眼。"
+            title: "心の準備",
+            description: "感情の整理・罪悪感の解消。実家じまいは親不孝ではない。"
         },
         {
-            title: "海外不動産",
-            description: "成長著しい新興国から、安定した先進国まで。通貨分散としての海外不動産投資戦略。"
+            title: "選択肢を知る",
+            description: "売る・貸す・活かす、どれが正解か。家族会議の進め方。"
         },
         {
-            title: "タックスマネジメント",
-            description: "法人活用、減価償却、相続対策。税引き後の手残りキャッシュフローを最大化する。"
+            title: "手続き・税金",
+            description: "具体的な手続き・税金を知りたい。相続登記、譲渡所得税、特例活用。"
         }
     ],
 
     philosophy: {
-        title: "真の豊かさとは、<br />選択肢を持つこと。",
-        description: "資産とは、数字の羅列ではない。それは、選択肢である。<br />望む場所に住み、望む時間を生き、望む人々と過ごす。<br />その自由を手にするための、静かなる力である。<br /><br />知識こそが、最強の防衛策。<br />そして、真の自由への最短距離である。"
+        title: "「先送り」が、<br />最も高くつく。",
+        description: "親の家を相続したけれど、どうすればいいかわからない。売るのは親不孝な気がする。でも維持するのも大変。そんな気持ち、よくわかります。ただ、知っておいてほしいのです。空き家は放置するほど、価値が下がり、リスクが増える。相続登記の義務化、固定資産税の増額、近隣トラブル…。「いつかやる」の「いつか」は、永遠に来ません。一人で抱え込まなくて大丈夫。一緒に、最適な選択肢を見つけましょう。"
     },
 
     bridge: {
-        title: "「孤独な決断」から、<br />「確信ある選択」へ",
-        description: "資産運用は情報戦です。30年の実績を持つプロフェッショナルを、<br class=\"hidden md:block\" />あなた専属の<span class=\"text-[#c59f59] font-bold\">「プライベート・顧問」</span>に迎え入れる。<br />それが、資産を守る最強の防衛策です。",
-        buttonText: "資産防衛・個別相談を予約する",
-        url: "/inquiry",
-        image: "/images/wealth_lounge.jpg"
+        title: "「どうすればいいかわからない」<br />その状態で大丈夫です。",
+        description: "売るべきか、貸すべきか、まだ決まっていなくてOK。まずは現状を整理するところから。相続・不動産の専門スタッフが、あなたのペースに合わせてお手伝いします。",
+        buttonText: "無料で相談予約する",
+        url: "/inquiry"
     },
 
     categoryNav: [
-        { id: 'domestic', label: '国内不動産', icon: 'apartment' },
-        { id: 'overseas', label: '海外不動産', icon: 'public' },
-        { id: 'column', label: '資産コラム', icon: 'article' }
+        { id: 'mindset', label: '心の準備', icon: 'favorite' },
+        { id: 'options', label: '選択肢', icon: 'list_alt' },
+        { id: 'procedure', label: '手続き', icon: 'gavel' },
+        { id: 'case', label: '活用事例', icon: 'history_edu' }
     ],
     cta: {
         type: "consultation",
-        label: "Members Only Intelligence",
-        title: "Webでは書けない<br />「裏情報」がある。",
-        description: "この記事で公開したのは、氷山の一角です。<br class=\"hidden md:block\" />具体的な金融機関名、市場に出ない非公開物件、税務の核心...<br />不特定多数には公開できない「資産防衛の真実」を、<br class=\"hidden md:block\" />LINEメンバー限定で配信します。",
-        buttonText: "LINEで「極秘情報」を受け取る",
-        lineUrl: "https://line.me/R/ti/p/@wealth-navigator",
-        image: "/images/wealth_lounge.jpg"
+        label: "Legacy Consultation",
+        title: "「実家の価値」<br />知っておきませんか？",
+        description: "売るかどうかは別として、今の実家がいくらで売れるのか。それを知っておくだけで、選択肢が見えてきます。もちろん、査定したからといって売る必要はありません。",
+        buttonText: "LINEで無料査定を依頼する",
+        lineUrl: "https://line.me/R/ti/p/@legacy_guard",
+        image: "/images/legacy_lounge.jpg"
     }
 };

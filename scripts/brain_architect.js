@@ -123,19 +123,58 @@ async function architectVideo(slugKeyword) {
     ## Output JSON
     `;
 
+    async function generateVideoScriptResilient(prompt) {
+        // 1. Try Gemini 2.0 Flash (Fastest/Best for Video)
+        const MAX_RETRIES = 5;
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+            try {
+                console.log(`🌐 Video Strategy: Attempting Gemini 2.0 Flash... [Attempt ${attempt}/${MAX_RETRIES}]`);
+                const result = await model.generateContent(prompt);
+                const response = await result.response;
+                return JSON.parse(response.text());
+            } catch (e) {
+                console.warn(`⚠️ Gemini Video Attempt ${attempt} Failed: ${e.message}`);
+                if (attempt < MAX_RETRIES) {
+                    const waitSec = 60; 
+                    console.log(`⏳ Quota may be exceeded. Waiting ${waitSec}s before retry ${attempt + 1}/${MAX_RETRIES}...`);
+                    await new Promise(r => setTimeout(r, waitSec * 1000));
+                }
+            }
+        }
+        throw new Error(`❌ Video Script Generation failed after ${MAX_RETRIES} attempts. Gemini quota might be exhausted. Try again later.`);
+    }
+
     try {
-        console.log("🤖 Generating Script with Gemini...");
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const jsonText = response.text();
-        let scriptJson = JSON.parse(jsonText);
+        console.log("🤖 Generating Script...");
+        let scriptJson = await generateVideoScriptResilient(prompt);
         if (Array.isArray(scriptJson)) {
             scriptJson = scriptJson[0];
         }
 
-        // Save Script
+        const slug = slugKeyword; // Ensure slug is defined for MD generation
+
+        // Save Script (JSON for Remotion)
         fs.writeFileSync(VIDEO_SCRIPT_PATH, JSON.stringify(scriptJson, null, 2));
-        console.log(`✅ Video Script saved to: ${VIDEO_SCRIPT_PATH}`);
+        console.log(`✅ Video Script (JSON) saved to: ${VIDEO_SCRIPT_PATH}`);
+
+        // 3.5 Save Markdown versions for Drive/Human Review
+        console.log("📝 Generating Markdown versions of Video Script & Prompts...");
+        const scriptMd = `# 動画台本: ${scriptJson.project_title || slug}\n\n` + 
+            scriptJson.scenes.map(s => `## Scene ${s.scene_id} (${s.section_type})\n**ナレーション:**\n${s.narration_text}\n\n**画面テキスト:**\n${s.screen_text}`).join('\n\n');
+        
+        const promptsMd = `# 動画生成プロンプト: ${scriptJson.project_title || slug}\n\n` + 
+            scriptJson.scenes.map(s => `## Scene ${s.scene_id}\n**Visual Prompt:**\n${s.visual_prompt}`).join('\n\n');
+
+        const scriptPath = path.join(process.cwd(), 'content/scripts', `${slug}.md`);
+        const promptsPath = path.join(process.cwd(), 'content/prompts', `${slug}_prompts.md`);
+
+        if (!fs.existsSync(path.dirname(scriptPath))) fs.mkdirSync(path.dirname(scriptPath), { recursive: true });
+        if (!fs.existsSync(path.dirname(promptsPath))) fs.mkdirSync(path.dirname(promptsPath), { recursive: true });
+
+        fs.writeFileSync(scriptPath, scriptMd);
+        fs.writeFileSync(promptsPath, promptsMd);
+        console.log(`✅ Script MD: ${scriptPath}`);
+        console.log(`✅ Prompts MD: ${promptsPath}`);
 
         // 4. Process Audio (Generate Voice & Sync Duration)
         console.log("🔊 Generating Audio & Syncing Duration...");
@@ -186,7 +225,7 @@ async function architectArticle(topic, category) {
         };
 
         // 1. Try Gemini (Primary) with Retries
-        const MAX_RETRIES = 3;
+        const MAX_RETRIES = 5;
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
                 console.log(`🌐 Architect Strategy: Attempting Primary (Gemini 3 Flash)... [Attempt ${attempt}/${MAX_RETRIES}]`);
@@ -209,24 +248,16 @@ async function architectArticle(topic, category) {
                 console.warn(`⚠️ Gemini Attempt ${attempt} Failed: ${geminiError.message}`);
 
                 if (attempt < MAX_RETRIES) {
-                    const waitTime = attempt * 3000; // 3s, 6s...
-                    console.log(`⏳ Waiting ${waitTime / 1000}s before retry...`);
-                    await new Promise(r => setTimeout(r, waitTime));
+                    const waitSec = 60;
+                    console.log(`⏳ Quota may be exceeded. Waiting ${waitSec}s before retry ${attempt + 1}/${MAX_RETRIES}...`);
+                    await new Promise(r => setTimeout(r, waitSec * 1000));
                 } else {
-                    console.error(`❌ All Gemini attempts failed. Moving to Fallback.`);
+                    console.error(`❌ All Gemini attempts failed.`);
                 }
             }
         }
 
-        console.log("🛡️ Architect Strategy: Activating Fallback (Claude 3.5 Sonnet)...");
-
-        // 2. Try Claude (Fallback)
-        try {
-            const claudeText = await callClaude(prompt);
-            return cleanAndParse(claudeText);
-        } catch (claudeError) {
-            throw new Error(`CRITICAL: All AI Engines Failed. Claude Error: ${claudeError.message}`);
-        }
+        throw new Error(`❌ Article Architecture failed after ${MAX_RETRIES} attempts. Gemini quota might be exhausted. Try again later.`);
     }
 
     const dnaPath = path.join(process.cwd(), 'src/dna.config.json');

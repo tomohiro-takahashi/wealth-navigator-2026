@@ -30,7 +30,9 @@ function parseFrontmatter(text) {
     frontmatterBlock.split('\n').forEach(line => {
         const [key, ...values] = line.split(':');
         if (key && values.length) {
-            frontmatter[key.trim()] = values.join(':').trim();
+            const value = values.join(':').trim();
+            // Strip leading/trailing quotes
+            frontmatter[key.trim()] = value.replace(/^["']|["']$/g, '');
         }
     });
 
@@ -92,26 +94,26 @@ async function main() {
     // Ensure category is an array
     let categories = ['overseas']; // Default
     if (frontmatter.category) {
-        // Handle comma separated values if necessary, though usually it's single in frontmatter here
-        // Also strip quotes if they exist (e.g. "column" -> column)
         categories = frontmatter.category.split(',').map(c => c.trim().replace(/^["']|["']$/g, ''));
     }
 
-    // Note: The MicroCMS schema appears to have a field named 'slug' which is used for routing.
-    // We must send this.
-    // We also use the slug as the MicroCMS ContentID if possible to ensure clean dashboard URLs,
-    // though the SDK 'create' usually assigns a random ID.
-    // To enforcing the slug as ID would require using 'set' (PUT) with the slug as ID,
-    // but the Schema might auto-generate IDs.
-    // The safest fix for the 404 is to populate the 'slug' field in the content payload.
+    // Handle site_id (should be array of strings)
+    let siteId = [];
+    if (frontmatter.site_id) {
+        siteId = frontmatter.site_id.split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
+    }
 
     const payload = {
         title: title,
         content: finalBody,
         category: categories,
+        site_id: siteId,
+        meta_title: frontmatter.meta_title || title,
+        meta_description: frontmatter.meta_description || "",
+        keywords: frontmatter.keywords || "",
         target_yield: frontmatter.target_yield || "0",
         expert_tip: expertTip,
-        slug: slug, // CRITICAL FIX: Send the slug field
+        slug: slug,
     };
 
     console.log('Deploying to MicroCMS...');

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useMenu } from '@/context/MenuContext';
-import { siteConfig } from '@/site.config';
+import { FALLBACK_SITE_CONFIG } from '@/site.config';
 
 export const HomeHeader = () => {
     const { toggleMenu } = useMenu();
@@ -17,7 +17,7 @@ export const HomeHeader = () => {
                 <span className="material-symbols-outlined text-[32px]">menu</span>
             </button>
             <h1 className="flex-1 text-center text-lg font-bold tracking-wide text-white/90">
-                {siteConfig.name}
+                {FALLBACK_SITE_CONFIG.name}
             </h1>
             {/* Placeholder to balance the centered logo, same width as menu button */}
             <div className="w-12 h-12"></div>

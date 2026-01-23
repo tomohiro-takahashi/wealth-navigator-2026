@@ -107,16 +107,23 @@ async function builderArticle() {
         const siteId = blueprintObj.site_id || "wealth_navigator";
         let result;
 
-        if (siteId === 'wealth_navigator' || siteId === 'legacy_exit') {
-            console.log(`🤖 Using Engine: Claude (High Quality) for ${siteId}`);
-            result = await callClaude(prompt);
-        } else {
+        // Patient Gemini strategy (Cost effective)
+        const MAX_RETRIES = 5;
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
-                console.log(`⚡ Using Engine: Gemini (High Speed/Low Cost) for ${siteId}`);
+                console.log(`⚡ Using Engine: Gemini (Attempt ${attempt}/${MAX_RETRIES}) for ${siteId}`);
                 result = await callGemini(prompt);
+                break; // Success!
             } catch (e) {
-                console.warn(`⚠️ Gemini Failed: ${e.message}. Falling back to Claude...`);
-                result = await callClaude(prompt);
+                console.warn(`⚠️ Gemini Attempt ${attempt} Failed: ${e.message}`);
+                if (attempt < MAX_RETRIES) {
+                    const waitSec = 60;
+                    console.log(`⏳ Quota may be exceeded. Waiting ${waitSec}s before retry...`);
+                    await new Promise(r => setTimeout(r, waitSec * 1000));
+                } else {
+                    console.error("❌ All Gemini attempts failed. To avoid Claude costs, stopping here.");
+                    throw e;
+                }
             }
         }
 
@@ -143,7 +150,7 @@ async function builderArticle() {
 
         // --- Assembler Logic (Immediate Integration) ---
         console.log("🧩 Assembling Final Artifacts...");
-        convertToArtifacts(contentJson);
+        convertToArtifacts(contentJson, slug);
 
     } catch (error) {
         console.error("❌ Build Failed:", error);
@@ -151,7 +158,7 @@ async function builderArticle() {
     }
 }
 
-function convertToArtifacts(json) {
+function convertToArtifacts(json, slug) {
     // 1. Construct HTML Body
     let htmlLines = [];
 
@@ -176,14 +183,25 @@ function convertToArtifacts(json) {
     fs.writeFileSync('content_draft.html', fullHtml);
     console.log("   -> Saved: content_draft.html");
 
-    // 2. Extract Expert Tip
-    // We need to parse the HTML to find the expert-box div content
-    const expertMatch = fullHtml.match(/<div class="expert-box">([\s\S]*?)<\/div>/);
-    const expertTip = expertMatch ? expertMatch[1].replace(/【.*?】/, '').trim() : "No expert tip found";
-    fs.writeFileSync('expert_tip.txt', expertTip);
-    console.log("   -> Saved: expert_tip.txt");
+        // 2. Extract Expert Tip
+        // We need to parse the HTML to find the expert-box div content
+        const expertMatch = fullHtml.match(/<div class="expert-box">([\s\S]*?)<\/div>/);
+        const expertTip = expertMatch ? expertMatch[1].replace(/【.*?】/, '').trim() : "No expert tip found";
+        fs.writeFileSync('expert_tip.txt', expertTip);
+        console.log("   -> Saved: expert_tip.txt");
 
-    // 3. Metadata
+        // 3. Save Markdown Draft for Article (Critical for Video Director & Drive)
+        const articleMd = `---\ntitle: "${json.h1_title}"\nsite_id: "${json.site_id || 'wealth_navigator'}"\ncategory: "${json.target_keyword || ''}"\n---\n\n` + 
+            `# ${json.h1_title}\n\n${json.intro_hook}\n\n` + 
+            (json.sections ? json.sections.map(sec => `## ${sec.h2_heading}\n\n${sec.content_html}`).join('\n\n') : '') + 
+            `\n\n## まとめ\n\n${json.conclusion}`;
+        
+        const articlePath = path.join(process.cwd(), 'content/articles', `${slug}.md`);
+        if (!fs.existsSync(path.dirname(articlePath))) fs.mkdirSync(path.dirname(articlePath), { recursive: true });
+        fs.writeFileSync(articlePath, articleMd);
+        console.log(`   -> Saved: ${articlePath}`);
+
+        // 4. Metadata
     const metaPayload = {
         meta_title: json.h1_title,
         meta_description: json.meta_description,

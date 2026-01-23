@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { google } from 'googleapis';
-import { siteConfig } from '@/site.config';
+import { getSiteConfig } from '@/site.config';
 
 
 export async function POST(request: Request) {
     const resendApiKey = process.env.RESEND_API_KEY;
     const resend = resendApiKey ? new Resend(resendApiKey) : null;
+    const siteConfig = await getSiteConfig();
 
     try {
         console.log("[API] Start processing inquiry");

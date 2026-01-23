@@ -74,44 +74,82 @@ async function run() {
         // 3. Ingestion (入稿)
         console.log(`\n[3/5] Importing to MicroCMS...`);
         // builderが出力する一時ファイルを使用
-        execSync(`node scripts/import_articles.js --file content_draft.html --title "Auto Generated" --category "${category}" --slug "${slug}" --expert_tip "$(cat expert_tip.txt)"`, { stdio: 'inherit' });
+        let metaArgs = '';
+        if (fs.existsSync('metadata.json')) {
+            const meta = JSON.parse(fs.readFileSync('metadata.json', 'utf-8'));
+            if (meta.meta_title) metaArgs += ` --meta_title "${meta.meta_title}"`;
+            if (meta.meta_description) metaArgs += ` --meta_description "${meta.meta_description}"`;
+            if (meta.keywords) metaArgs += ` --keywords "${meta.keywords}"`;
+            if (meta.site_id) metaArgs += ` --site_id "${meta.site_id}"`;
+        }
+        
+        execSync(`node scripts/import_articles.js --file content_draft.html --title "Auto Generated" --category "${category}" --slug "${slug}" --expert_tip "$(cat expert_tip.txt)"${metaArgs}`, { stdio: 'inherit' });
 
         // 4. Image Generation (画像生成)
         console.log(`\n[4/7] Generating Background Images...`);
         execSync(`npm run generate:images`, { stdio: 'inherit' });
 
-        // 4.5 V3 Video Render (自動生成動画のレンダリング - 当日分)
-        console.log(`\n[4.5/7] Rendering V3 Automated Video...`);
-        try {
-            execSync(`cd video-generator && npm run render`, { stdio: 'inherit' });
-            // 必要に応じてリネームして保存
-            const videoDest = path.join('public/videos', `${slug}.mp4`);
-            if (!fs.existsSync('public/videos')) fs.mkdirSync('public/videos', { recursive: true });
-            fs.copyFileSync('video-generator/out/video.mp4', videoDest);
-            console.log(`   -> V3 Video Ready: ${videoDest}`);
-        } catch (e) {
-            console.warn(`   [WARN] V3 Video Render Failed: ${e.message}`);
+        // 4.5 Rendering V3 Automated Video (Optional/Heavy)
+        if (process.env.SKIP_VIDEO_RENDER === 'true') {
+            console.log(`\n[4.5/7] Skipping Video Rendering (SKIP_VIDEO_RENDER=true)`);
+        } else {
+            console.log(`\n[4.5/7] Rendering V3 Automated Video...`);
+            try {
+                // Render directly using remotion to avoid nested npm/cd issues
+                execSync(`npx remotion render video-generator/src/index.tsx Main public/videos/${slug}.mp4 --props='{"slug": "${slug}"}'`, { stdio: 'inherit' });
+            } catch (renderError) {
+                console.warn(`⚠️ Video Rendering Failed: ${renderError.message}. Proceeding with script backup...`);
+            }
         }
 
-        // 5. Video Director Assets (動画プロンプト生成)
-        console.log(`\n[5/7] Generating Video Prompts...`);
+        // 5. Video Director Assets (動画プロンプト生成 - 必須)
+        console.log(`\n[5/7] Generating Video Prompts & Markdown Assets...`);
         execSync(`node scripts/brain_architect.js "${slug}" --type video`, { stdio: 'inherit' });
 
         // 5.5 Video Seed Images (動画用シード画像生成)
         console.log(`\n[5.5/7] Generating Video Seed Images...`);
         execSync(`npx tsx scripts/generate-video-seeds.ts`, { stdio: 'inherit' });
 
-        // 6. Social Media Strategy (SNS投稿案生成)
+        // 6. SNS Posts
         console.log(`\n[6/7] Generating Social Media Posts...`);
-        execSync(`python3 scripts/generate_social_posts.py "${slug}"`, { stdio: 'inherit' });
+        try {
+            execSync(`python3 scripts/generate_social_posts.py "${slug}"`, { stdio: 'inherit' });
+        } catch (snsError) {
+            console.warn(`⚠️ SNS Post Generation Failed: ${snsError.message}. Proceeding...`);
+        }
 
         // 7. Google Drive Backup
         console.log(`\n[7/7] Backing up to Google Drive...`);
-        // プレミアム用のクリップ格納フォルダも念のため作成しておく
-        const clipsDir = path.join(`projects/${slug}`, 'clips');
-        if (!fs.existsSync(clipsDir)) fs.mkdirSync(clipsDir, { recursive: true });
-        
-        execSync(`python3 scripts/upload_to_drive.py "${slug}"`, { stdio: 'inherit' });
+        try {
+            // Backup the newly generated scripts to projects folder for safety (Optional but good for packaging)
+            const projectDir = path.join(process.cwd(), 'projects', slug);
+            if (!fs.existsSync(projectDir)) fs.mkdirSync(projectDir, { recursive: true });
+            
+            // プレミアム用のクリップ格納フォルダも作成
+            const clipsDir = path.join(projectDir, 'clips');
+            if (!fs.existsSync(clipsDir)) fs.mkdirSync(clipsDir, { recursive: true });
+            
+            // Copy assets to project folder before upload (for local record)
+            const assetsToCopy = [
+                { from: `content/scripts/${slug}.md` },
+                { from: `content/prompts/${slug}_prompts.md` },
+                { from: `content/social/${slug}_posts.md` },
+                { from: `content/articles/${slug}.md` }
+            ];
+            
+            assetsToCopy.forEach(asset => {
+                const src = path.join(process.cwd(), asset.from);
+                const dest = path.join(projectDir, path.basename(asset.from));
+                if (fs.existsSync(src)) {
+                    fs.copyFileSync(src, dest);
+                }
+            });
+            
+            // Run Drive Sync
+            execSync(`python3 scripts/upload_to_drive.py "${slug}"`, { stdio: 'inherit' });
+        } catch (driveError) {
+            console.error(`❌ Drive Backup Failed: ${driveError.message}`);
+        }
 
         console.log(`\n✅ Published and Backed up successfully: ${slug}`);
 

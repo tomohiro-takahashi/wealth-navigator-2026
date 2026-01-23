@@ -1,12 +1,16 @@
 import Link from 'next/link';
 import { Article } from '@/types';
-import { getCategoryLabel } from "@/lib/utils";
+import { getCategoryLabel } from "@/lib/cms-utils";
 
 type ArticleCardProps = {
     article: Article;
 };
 
-export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
+export const ArticleCard = async ({ article }: ArticleCardProps) => {
+    const labels = await Promise.all(
+        (article.category || []).map(cat => getCategoryLabel(cat))
+    );
+
     return (
         <Link href={`/articles/${article.id}`} className="group block h-full">
             <div className="bg-white h-full shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-100">
@@ -25,9 +29,9 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
                     )}
                     {/* Categories */}
                     <div className="flex flex-wrap gap-1 mb-2">
-                        {article.category?.map((cat) => (
-                            <span key={cat} className="text-[10px] font-bold tracking-widest uppercase text-accent border border-accent/20 px-2 py-0.5 rounded-sm">
-                                {getCategoryLabel(cat)}
+                        {labels.map((label, i) => (
+                            <span key={i} className="text-[10px] font-bold tracking-widest uppercase text-accent border border-accent/20 px-2 py-0.5 rounded-sm">
+                                {label}
                             </span>
                         ))}
                     </div>

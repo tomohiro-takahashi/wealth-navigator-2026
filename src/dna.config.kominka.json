@@ -4,7 +4,7 @@
         "description": "放置された空き家を、年間利回り15%の資産に変える。",
         "domain": "kominka-frontier.vercel.app",
         "email": "info@kominka-frontier.com",
-        "siteId": "kominka_frontier",
+        "site_id": "kominka",
         "author": "Kominka Frontier Team",
         "social": {
             "line": "https://lin.ee/xxxxxx"
