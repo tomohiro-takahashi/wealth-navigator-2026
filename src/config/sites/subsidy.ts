@@ -35,12 +35,12 @@ export const siteConfig: SiteConfig = {
         subtitle: "リフォームおばちゃんが教える。<br />補助金活用術",
         heroImage: "/assets/hero-subsidy.jpg",
         primaryButton: {
-            text: "補助金を無料診断する",
+            text: "使える補助金を1分で診断",
             url: "/simulation"
         },
         secondaryButton: {
-            text: "活用事例を見る",
-            url: "/cases"
+            text: "はじめての方へ",
+            url: "/about"
         }
     },
 

@@ -33,11 +33,11 @@ export const siteConfig: SiteConfig = {
         subtitle: "「いつかやらなきゃ」を、<br />「今日、解決」に。",
         heroImage: "/assets/hero-legacy.jpg",
         primaryButton: {
-            text: "診断を開始する",
+            text: "選択肢を診断してみる",
             url: "/simulation"
         },
         secondaryButton: {
-            text: "解決事例を見る",
+            text: "はじめての方へ",
             url: "/about"
         }
     },

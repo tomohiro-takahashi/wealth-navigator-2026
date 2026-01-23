@@ -33,11 +33,11 @@ export const siteConfig: SiteConfig = {
         subtitle: "900万戸の空き家に眠る、<br />年利15%の可能性。",
         heroImage: "/assets/hero-kominka.jpg",
         primaryButton: {
-            text: "利回りをシミュレーションする",
+            text: "利回りを10秒でシミュレーション",
             url: "/simulation"
         },
         secondaryButton: {
-            text: "再生のプロセスを知る",
+            text: "空き家錬金術とは？",
             url: "/about"
         }
     },

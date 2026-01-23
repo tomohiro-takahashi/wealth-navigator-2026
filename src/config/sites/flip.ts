@@ -33,11 +33,11 @@ export const siteConfig: SiteConfig = {
         subtitle: "不動産フリッピング、<br />冷徹な論理の教科書。",
         heroImage: "/assets/hero-flip.jpg",
         primaryButton: {
-            text: "案件の収益性を分析する",
+            text: "MAOを30秒で算出する",
             url: "/simulation"
         },
         secondaryButton: {
-            text: "取引実績を見る",
+            text: "Flip Logicとは？",
             url: "/about"
         }
     },
