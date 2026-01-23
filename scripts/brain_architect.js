@@ -318,7 +318,13 @@ async function architectArticle(topic, category) {
         const blueprint = JSON.parse(fixedJson);
         */
 
-        const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        let slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        
+        // Fallback for non-ASCII topics (like Japanese)
+        if (!slug || slug === '-') {
+            slug = `article-${Date.now()}`;
+        }
+        
         const outputPath = path.join(ARTIFACTS_DIR, `${slug}_blueprint.json`);
 
         blueprint.site_id = dna.identity?.siteId || dna.identity?.site_id || 'wealth_navigator';
