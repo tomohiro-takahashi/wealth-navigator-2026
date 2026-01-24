@@ -29,22 +29,27 @@ export function getLocalArticles(): Article[] {
             const date = dateMatch ? dateMatch[1] : new Date().toISOString();
 
             // Combine the data with the id
+            let categories = matterResult.data.category || [];
+            if (typeof categories === 'string') {
+                categories = [categories];
+            }
+
             return {
                 id,
-                slug: id, // Use filename as slug for now
-                title: matterResult.data.title || 'No Title',
+                slug: id, 
+                title: matterResult.data.title || matterResult.content.match(/^# (.*)/m)?.[1] || 'No Title',
                 content: matterResult.content,
                 eyecatch: {
-                    url: matterResult.data.coverImage || '/luxury-apartment.png',
+                    url: matterResult.data.coverImage || `/images/articles/${id}/01.webp`,
                     height: 600,
                     width: 800
                 },
-                category: matterResult.data.category || [],
+                category: categories,
                 publishedAt: date,
                 updatedAt: date,
                 badge_text: matterResult.data.badge_text,
                 is_featured: matterResult.data.is_featured,
-                site_id: matterResult.data.site_id,
+                site_id: matterResult.data.site_id || (fileName.includes('wealth') ? 'wealth' : 'subsidy'),
             } as Article;
         });
 
