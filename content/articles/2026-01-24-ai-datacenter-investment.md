@@ -1,7 +1,9 @@
 ---
 title: "【2026年版】AIデータセンター投資の正体：資産防衛の「最終結論」"
+publishedAt: "2026-01-24"
 site_id: "wealth"
 category: "AIデータセンター 不動産投資"
+coverImage: "/images/articles/2026-01-24-ai-datacenter-investment/01.webp"
 ---
 
 # 【2026年版】AIデータセンター投資の正体：資産防衛の「最終結論」

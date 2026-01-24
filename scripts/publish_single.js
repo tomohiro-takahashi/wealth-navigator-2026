@@ -137,15 +137,18 @@ async function run() {
                 { from: `content/articles/${slug}.md` }
             ];
             
-            assetsToCopy.forEach(asset => {
-                const src = path.join(process.cwd(), asset.from);
-                const dest = path.join(projectDir, path.basename(asset.from));
-                if (fs.existsSync(src)) {
-                    fs.copyFileSync(src, dest);
-                }
-            });
-            
+            // Ensure images are copied as well
+            const imagesDir = path.join(process.cwd(), 'public/images/articles', slug);
+            const projectImagesDir = path.join(projectDir, 'images');
+            if (fs.existsSync(imagesDir)) {
+                if (!fs.existsSync(projectImagesDir)) fs.mkdirSync(projectImagesDir, { recursive: true });
+                fs.readdirSync(imagesDir).forEach(img => {
+                    fs.copyFileSync(path.join(imagesDir, img), path.join(projectImagesDir, img));
+                });
+            }
+
             // Run Drive Sync
+            console.log(`   -> Uploading to Drive (Slug: ${slug})...`);
             execSync(`python3 scripts/upload_to_drive.py "${slug}"`, { stdio: 'inherit' });
         } catch (driveError) {
             console.error(`❌ Drive Backup Failed: ${driveError.message}`);

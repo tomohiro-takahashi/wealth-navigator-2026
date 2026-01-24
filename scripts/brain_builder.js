@@ -220,7 +220,8 @@ function convertToArtifacts(json, slug) {
         console.log("   -> Saved: expert_tip.txt");
 
         // 3. Save Markdown Draft for Article (Critical for Video Director & Drive)
-        const articleMd = `---\ntitle: "${json.h1_title}"\nsite_id: "${json.site_id || 'wealth_navigator'}"\ncategory: "${json.target_keyword || ''}"\n---\n\n` + 
+        const today = new Date().toISOString().split('T')[0];
+        const articleMd = `---\ntitle: "${json.h1_title}"\npublishedAt: "${today}"\nsite_id: "${json.site_id || 'wealth_navigator'}"\ncategory: "${json.target_keyword || ''}"\ncoverImage: "/images/articles/${slug}/01.webp"\n---\n\n` + 
             `# ${json.h1_title}\n\n${json.intro_hook}\n\n` + 
             (json.sections ? json.sections.map(sec => `## ${sec.h2_heading}\n\n${sec.content_html}`).join('\n\n') : '') + 
             `\n\n## まとめ\n\n${json.conclusion}`;

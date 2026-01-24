@@ -1,54 +1,54 @@
 {
-  "project_title": "Recycle or Sell? The Optimal Solution for Your Inherited Property",
+  "project_title": "【必読】「70%ルール」で確実に利益を出す",
   "target_persona": {
-    "income_range": "High-Income (15M+ JPY/year)",
+    "income_range": "高所得",
     "pain_points": [
-      "Can't save money despite high income",
-      "High taxes"
+      "「稼いでいるのに貯まらない」",
+      "「税金が高い」"
     ],
-    "knowledge_level": "Knowledgeable"
+    "knowledge_level": "初級"
   },
-  "script_type": "Type B: The Story / The Warning",
+  "script_type": "B",
   "scenes": [
     {
       "scene_id": 1,
-      "section_type": "The Protagonist",
-      "duration_sec": 11.6,
-      "narration_text": "Meet Aさん, a high-earner who thought keeping his parents' house was a wise decision. But his dream quickly turned into a nightmare.",
-      "screen_text": "Mr. A, Annual Income: 15M JPY",
-      "visual_prompt": "No text, no UI, no subtitles. Cinematic shot of a luxurious modern home, slowly panning to reveal a 'For Sale' sign on the lawn.",
-      "audio_cues": "Somber piano melody"
+      "section_type": "the_protagonist",
+      "duration_sec": 6.9,
+      "narration_text": "年収1500万円のAさんは、節税目的で新築ワンルームを購入しました。",
+      "screen_text": "年収1500万の投資家・Aさん",
+      "visual_prompt": "Slow push-in on a well-dressed professional looking concerned. No text, no UI, no subtitles.",
+      "audio_cues": "Somber piano notes"
     },
     {
       "scene_id": 2,
-      "section_type": "The Conflict",
-      "duration_sec": 18.099999999999998,
-      "narration_text": "With rising interest rates, the property slipped into the red. Mr. A couldn't sell it, as it was worth less than the remaining mortgage. Trapped in a financial nightmare, he faced the prospect of losing everything.",
-      "screen_text": "Mortgage Debt > Property Value",
-      "visual_prompt": "No text, no UI, no subtitles. Time-lapse footage of the house deteriorating, with weeds growing and the 'For Sale' sign becoming weathered.",
-      "audio_cues": "Ominous string section"
+      "section_type": "the_conflict",
+      "duration_sec": 8.2,
+      "narration_text": "しかし、金利上昇で赤字に。そして、物件を売却しようにも売れ残ってしまいました。",
+      "screen_text": "金利上昇で赤字に。売れ残り...",
+      "visual_prompt": "Slow pan right revealing a distressed Aさん staring at financial documents. No text, no UI, no subtitles.",
+      "audio_cues": "Tense strings"
     },
     {
       "scene_id": 3,
-      "section_type": "The Turnaround",
-      "duration_sec": 18.3,
-      "narration_text": "Mr. A realized his mistake too late. He should have consulted a professional asset management firm instead of blindly trusting the real estate agent. Now, he wishes he had made the tough but wise decision to sell the property earlier.",
-      "screen_text": "Lesson Learned: Consult Professionals",
-      "visual_prompt": "No text, no UI, no subtitles. Slow-motion shot of Mr. A contemplating financial documents, intercut with shots of him meeting with a suited financial advisor.",
-      "audio_cues": "Uplifting piano and strings"
+      "section_type": "the_turnaround",
+      "duration_sec": 11.299999999999999,
+      "narration_text": "Aさんの失敗の原因は、業者の話を鵜呑みにし、適切な資産管理ができていなかったこと。事前に専門家のアドバイスを受けるべきでした。",
+      "screen_text": "業者を信じたのが間違い。専門家に相談すべきだった",
+      "visual_prompt": "Aさん深く考え込む表情。業者の名刺や資料が散乱している。No text, no UI, no subtitles.",
+      "audio_cues": "Contemplative piano"
     },
     {
       "scene_id": 4,
-      "section_type": "The CTA",
-      "duration_sec": 18,
-      "narration_text": "Don't let your inherited property become a financial burden. Get a second opinion on your situation before it's too late. Reach out to us for a free consultation - we'll help you find the optimal solution to protect your assets and family.",
-      "screen_text": "Get a Second Opinion Today",
-      "visual_prompt": "No text, no UI, no subtitles. Smooth transition to a modern, well-kept property, followed by a call-to-action graphic with contact information.",
-      "audio_cues": "Upbeat jazz-inspired BGM"
+      "section_type": "the_cta",
+      "duration_sec": 8,
+      "narration_text": "あなたの物件は大丈夫ですか? 私たち専門家が現状をセカンドオピニオンさせていただきます。",
+      "screen_text": "セカンドオピニオンをご検討ください",
+      "visual_prompt": "Aさんが頷き、明るい表情になる。そして画面が切り替わり、鮮やかな不動産物件が映し出される。No text, no UI, no subtitles.",
+      "audio_cues": "Uplifting piano"
     }
   ],
   "metadata": {
-    "total_duration": 66,
+    "total_duration": 35,
     "bgm_style": "Smart Lo-fi / Modern Jazz",
     "voice_tone": "Trustworthy, Professional",
     "generation_note": "Optimized for 8s Manual Video Generation"

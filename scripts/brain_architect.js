@@ -94,6 +94,14 @@ async function architectVideo(slugKeyword) {
     const articleContent = fs.readFileSync(articlePath, 'utf8');
     const videoBrain = fs.readFileSync(VIDEO_DIRECTOR_PATH, 'utf8');
 
+    const dnaPath = path.join(process.cwd(), 'src/dna.config.json');
+    let dna = {};
+    try {
+        dna = require(dnaPath);
+    } catch (e) {
+        console.warn("⚠️ DNA config not found in architectVideo, using defaults.");
+    }
+
     // 2. Initialize Gemini
     const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
     const model = genAI.getGenerativeModel({
@@ -131,8 +139,7 @@ async function architectVideo(slugKeyword) {
         if (useClaudePrimary) {
             console.log("💎 Wealth Brand detected: Using Claude Opus as Primary Engine.");
             try {
-                // For Wealth, we use Opus for high quality
-                const anthropic = require('@anthropic-ai/sdk'); // Dynamic import for safety
+                const anthropic = require('@anthropic-ai/sdk'); 
                 const client = new anthropic.Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
                 const msg = await client.messages.create({
                     model: "claude-3-opus-20240229",
@@ -389,11 +396,17 @@ async function architectArticle(topic, category) {
         const blueprint = JSON.parse(fixedJson);
         */
 
+        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
         let slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
         
         // Fallback for non-ASCII topics (like Japanese)
-        if (!slug || slug === '-') {
-            slug = `article-${Date.now()}`;
+        if (!slug || slug === '-' || /[^\x00-\x7F]/.test(topic)) {
+            slug = `${today}-${Date.now()}`;
+        } else {
+            // Prepend date to slugs for consistency
+            if (!slug.startsWith(today)) {
+                slug = `${today}-${slug}`;
+            }
         }
         
         const outputPath = path.join(ARTIFACTS_DIR, `${slug}_blueprint.json`);
