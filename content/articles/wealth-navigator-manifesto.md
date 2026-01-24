@@ -1,3 +1,11 @@
+---
+title: "Wealth Navigator宣言：大転換期を生き抜く不動産投資の羅針盤"
+publishedAt: "2026-01-20"
+site_id: "wealth"
+category: ["column"]
+coverImage: "/images/articles/wealth-navigator-manifesto/01.webp"
+---
+
 <h1>Wealth Navigator宣言: 大転換期を生き抜く不動産投資の羅針盤</h1>
 
 <p>2026年、不動産市場は大きな転換点を迎えます。金利上昇、インフレ、そして円安。これらはあなたの資産を脅かす三重苦となるでしょう。多くの人々が楽観視する中、私たちは冷徹なリアリズムで未来を見据えます。この記事は、嵐の時代を生き抜くための「ノアの方舟」となるでしょう。あなたの資産を守るための羅針盤、Wealth Navigatorの宣言です。</p>
