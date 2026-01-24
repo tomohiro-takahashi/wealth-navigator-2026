@@ -22,11 +22,19 @@ export async function getUnifiedArticles(siteId: string, options?: { limit?: num
     const localArticles = getLocalArticles().filter(a => a.site_id === siteId);
 
     // 2. Fetch MicroCMS Articles
-    // Note: getList already filters by siteId based on site.config
     const cmsData = await getList('articles', {
         limit: options?.limit || 20,
     });
-    const cmsArticles = cmsData.contents as Article[];
+    // Ensure CMS articles have the same eyecatch fallback logic and category safety
+    const cmsArticles = (cmsData.contents as Article[]).map(a => ({
+        ...a,
+        category: a.category || [],
+        eyecatch: a.eyecatch || {
+            url: `/images/articles/${a.slug}/01.webp`,
+            height: 600,
+            width: 800
+        }
+    }));
 
     // 3. Merge and Sort
     // We use slug as unique identifier to avoid duplicates if mirrored
@@ -42,7 +50,7 @@ export async function getUnifiedArticles(siteId: string, options?: { limit?: num
 
     // 4. Apply Category Filter
     if (options?.category) {
-        allArticles = allArticles.filter(a => a.category?.includes(options.category!));
+        allArticles = allArticles.filter(a => (a.category || []).includes(options.category!));
     }
 
     // 5. Final Sort by Date (publishedAt)
