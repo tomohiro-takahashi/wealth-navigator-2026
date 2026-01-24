@@ -99,7 +99,7 @@ export const LegacySimulator = () => {
     const progress = ((currentStep + 1) / QUESTIONS.length) * 100;
     const currentQuestion = QUESTIONS[currentStep];
     const isLastStep = currentStep === QUESTIONS.length - 1;
-    const isAnswered = !!answers[currentQuestion.id as LegacyQuestionId];
+    const isAnswered = !!answers[currentQuestion.id];
 
     return (
         <div className="flex flex-col gap-8 animate-fade-in relative z-10 font-sans max-w-md mx-auto">

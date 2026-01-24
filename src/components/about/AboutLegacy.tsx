@@ -1,10 +1,10 @@
 "use client";
 
-import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { SiteConfig } from '@/types/site';
 
-export const AboutLegacy = () => {
+export const AboutLegacy = ({ siteConfig }: { siteConfig: SiteConfig }) => {
     return (
         <div className="bg-[#191919] text-[#E5E5E5] selection:bg-[#a68a68] selection:text-white font-sans min-h-screen relative overflow-x-hidden pb-32">
             <style jsx global>{`

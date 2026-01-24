@@ -2,8 +2,9 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { SiteConfig } from '@/types/site';
 
-export const AboutFlip = () => {
+export const AboutFlip = ({ siteConfig }: { siteConfig: SiteConfig }) => {
     return (
         <div className="bg-[#0b0e14] text-white selection:bg-[#00eeff] selection:text-[#0b0e14] font-sans min-h-screen relative overflow-x-hidden">
             <style jsx global>{`

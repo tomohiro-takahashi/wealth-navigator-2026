@@ -14,7 +14,7 @@ export default async function About() {
     // Switch component based on brand for completely unique designs
     switch (brandId) {
         case 'flip':
-            return <AboutFlip />;
+            return <AboutFlip siteConfig={siteConfig} />;
         case 'kominka':
             return <AboutKominka siteConfig={siteConfig} />;
         case 'legacy':

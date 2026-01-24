@@ -1,10 +1,10 @@
 "use client";
 
-import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { SiteConfig } from '@/types/site';
 
-export const AboutKominka = () => {
+export const AboutKominka = ({ siteConfig }: { siteConfig: SiteConfig }) => {
     return (
         <div className="bg-[#191919] font-sans text-white min-h-screen flex flex-col selection:bg-[#A68A56]/30 overflow-x-hidden">
             {/* Fonts & Custom Styles */}

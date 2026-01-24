@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, SupportAgent, Chat, ArrowBack } from "@mui/icons-material"; // Wait, I should use lucide or material symbols as in project
-import { CheckCircle, SupportAgent as SupportAgentIcon, MessageSquare, ArrowLeft, X } from "lucide-react";
+import { CheckCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 export const KominkaThanks = () => {
