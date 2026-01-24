@@ -16,17 +16,14 @@ export const ArticleCard = async ({ article }: ArticleCardProps) => {
             <div className="bg-white h-full shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-100">
                 {/* Image Container */}
                 <div className="relative aspect-[16/9] overflow-hidden bg-gray-200">
-                    {article.eyecatch ? (
-                        <img
-                            src={article.eyecatch.url}
-                            alt={article.title}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                    ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400 font-serif">
-                            No Image
-                        </div>
-                    )}
+                    <img
+                        src={article.eyecatch?.url || `/images/articles/${article.slug}/01.webp`}
+                        alt={article.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        onError={(e) => {
+                            (e.target as HTMLImageElement).src = '/luxury-apartment.png';
+                        }}
+                    />
                     {/* Categories */}
                     <div className="flex flex-wrap gap-1 mb-2">
                         {labels.map((label, i) => (

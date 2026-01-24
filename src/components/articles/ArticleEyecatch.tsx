@@ -8,9 +8,9 @@ type Props = {
     config: SiteConfig;
 };
 
-export const ArticleEyecatch = ({ image, title, config }: Props) => {
+export const ArticleEyecatch = ({ image, title, config, slug }: Props & { slug?: string }) => {
     // 画像がない場合のデフォルト画像
-    const imageUrl = image?.url || '/luxury-apartment.png';
+    const imageUrl = image?.url || (slug ? `/images/articles/${slug}/01.webp` : '/luxury-apartment.png');
     const isDefault = !image?.url;
 
     return (

@@ -12,6 +12,7 @@ import { getCategoryLabelSync, cn } from '@/lib/utils';
 import Image from 'next/image';
 import parse, { Element, domToReact as domNodeToReact } from 'html-react-parser';
 import { ImageWithPlaceholder } from '@/components/articles/ImageWithPlaceholder';
+import { ArticleEyecatch } from '@/components/articles/ArticleEyecatch';
 import { getSiteConfig } from '@/site.config';
 import { marked } from 'marked';
 
@@ -181,6 +182,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                         )}
                     </div>
                 </div>
+            </div>
+
+            <div className="mb-12">
+                <ArticleEyecatch
+                    image={article.eyecatch}
+                    title={article.title}
+                    config={siteConfig}
+                    slug={article.slug}
+                />
             </div>
 
             {/* Content Layout */}
