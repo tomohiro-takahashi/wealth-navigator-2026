@@ -16,7 +16,7 @@ export type Category = {
 // もしPropertyも同様に変更されているならProperty定義も変える必要があるが、指示は「記事」についてのみに見える。
 // ただし、一貫性のためにPropertyも確認したいが、指示通りArticleを優先変更。
 
-export type ArticleCategory = 'domestic' | 'overseas' | 'column';
+export type ArticleCategory = 'domestic' | 'overseas' | 'column' | string;
 
 export type Article = {
     id: string;

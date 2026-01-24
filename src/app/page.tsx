@@ -1,5 +1,6 @@
 // Removing HomeHeader import and usage to fallback to Global Header
 import { getList } from '@/lib/microcms';
+import { getUnifiedArticles } from '@/lib/cms-utils';
 import { Article, Property } from '@/types';
 import { getCategoryLabelSync } from '@/lib/utils';
 import Link from 'next/link';
@@ -27,27 +28,13 @@ export default async function Home() {
   const siteConfig = await getSiteConfig();
 
   // 1. Fetch Data
-  // Switch to MicroCMS for consistency with production deployment
-  const [propertiesData, articlesData] = await Promise.all([
+  // Switch to Unified fetcher to include local and CMS articles
+  const [propertiesData, articles] = await Promise.all([
     getList('properties', { limit: 3 }),
-    getList('articles', { limit: 10 }), // Fetch latest 10 articles
+    getUnifiedArticles(siteConfig.site_id, { limit: 10 }), // Fetch latest 10 merged articles
   ]);
 
-  console.log(`[DEBUG] Current Site: ${siteConfig.site_id}`);
-  console.log('[DEBUG] Articles Payload:', JSON.stringify(articlesData, null, 2));
-  console.log('[DEBUG] Properties Payload:', JSON.stringify(propertiesData, null, 2));
-
   const properties = propertiesData.contents as Property[];
-
-  // Map MicroCMS articles to Article type, adding image fallback
-  const articles = (articlesData.contents as Article[]).map(article => ({
-    ...article,
-    eyecatch: article.eyecatch || {
-      url: `/images/articles/${article.slug}/01.webp`,
-      height: 600,
-      width: 800
-    },
-  }));
 
   // 2. Identify Featured Article
   const featuredArticle = articles.find(a => a.slug === siteConfig.pinnedSlug)

@@ -1,5 +1,6 @@
 
 import { getList } from '@/lib/microcms';
+import { getUnifiedArticles } from '@/lib/cms-utils';
 import Link from 'next/link';
 import { Article } from '@/types';
 import { getCategoryLabelSync } from '@/lib/utils';
@@ -30,13 +31,10 @@ export default async function ArticlesPage({
     const { category } = await searchParams;
     const siteConfig = await getSiteConfig();
 
-    // Filter logic
-    const queries: any = { limit: 20 };
-    if (category) {
-        queries.filters = `category[contains]${category}`;
-    }
-
-    const { contents: articles } = await getList('articles', queries);
+    const articles = await getUnifiedArticles(siteConfig.site_id, {
+        limit: 20,
+        category: category,
+    });
     const safeArticles = articles as Article[];
 
     return (
