@@ -21,9 +21,30 @@ export const Header = ({ config }: { config: SiteConfig }) => {
         };
     }, [isMenuOpen]);
 
-    // Hardcoded Menu Items to match Production Environment
-    // Production has: ARTICLES, PROPERTIES, ABOUT (plus Logo and Inquiry button)
-    const menuItems: { label: string; href: string; external?: boolean }[] = [
+    const isFlip = config.site_id === 'flip';
+    const isSubsidy = config.site_id === 'subsidy';
+    const isKominka = config.site_id === 'kominka';
+
+    const menuItems: { label: string; href: string; external?: boolean }[] = isSubsidy ? [
+        { label: '使える補助金', href: '/articles?category=learn' },
+        { label: '失敗しないコツ', href: '/articles?category=guide' },
+        { label: '申請の流れ', href: '/articles?category=howto' },
+        { label: 'About', href: '/about' },
+    ] : isKominka ? [
+        { label: '空き家の探し方', href: '/articles?category=find' },
+        { label: '空き家の活用方法', href: '/articles?category=operate' },
+        { label: '空き家を高く売る方法', href: '/articles?category=exit' },
+        { label: '空き家錬金術とは？', href: '/about' },
+    ] : config.site_id === 'legacy' ? [
+        { label: '心の準備について', href: '/articles?category=mindset' },
+        { label: '選択肢について', href: '/articles?category=options' },
+        { label: '手続きの仕方', href: '/articles?category=procedure' },
+        { label: '私たちについて', href: '/about' },
+    ] : isFlip ? [
+        { label: 'Home', href: '/' },
+        { label: 'Column', href: '/articles' },
+        { label: 'About', href: '/about' },
+    ] : [
         { label: 'ARTICLES', href: '/articles' },
         { label: 'PROPERTIES', href: '/properties' },
         { label: 'ABOUT', href: '/about' },
@@ -127,7 +148,7 @@ export const Header = ({ config }: { config: SiteConfig }) => {
                                 className="block w-full py-3 bg-accent text-white text-sm text-center font-bold tracking-widest rounded shadow-md hover:brightness-90 transition-all"
                                 onClick={toggleMenu}
                             >
-                                最適戦略を診断
+                                {isSubsidy ? '補助金診断' : isKominka ? '利回りシミュレーション' : isFlip ? '無料相談' : config.site_id === 'legacy' ? '最適な選択肢を診断' : '最適戦略を診断'}
                             </a>
                         </div>
                     </div>

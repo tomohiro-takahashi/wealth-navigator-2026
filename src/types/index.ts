@@ -40,6 +40,7 @@ export type Article = {
     meta_title?: string;
     meta_description?: string;
     keywords?: string;
+    site_id?: string; // 所属ブランドID (flip, subsidy, etc.)
 };
 
 export type Property = {

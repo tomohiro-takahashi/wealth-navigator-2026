@@ -93,6 +93,9 @@ export default async function Home() {
                 />
                 {isWealth ? (
                   <div className="absolute inset-0 bg-black/40" />
+                ) : siteConfig.site_id === 'subsidy' ? (
+                  // Subtle top and bottom shading for text legibility without obscuring the middle photo
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40" />
                 ) : (
                   <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/30" />
                 )}
@@ -109,7 +112,7 @@ export default async function Home() {
                   dangerouslySetInnerHTML={{ __html: siteConfig.hero.title }}
                 />
                 <p
-                  className={`text-lg font-bold leading-relaxed tracking-wide font-serif drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] ${isWealth ? 'text-gray-300' : 'text-white'}`}
+                  className={`text-[20px] font-bold leading-relaxed tracking-wide font-serif drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] ${isWealth ? 'text-gray-300' : 'text-white'}`}
                   dangerouslySetInnerHTML={{ __html: siteConfig.hero.subtitle }}
                 />
               </div>
@@ -120,7 +123,7 @@ export default async function Home() {
                   <div className="absolute inset-0 rounded-md ring-1 ring-inset ring-white/20 pointer-events-none"></div>
                 </Link>
                 <Link href={siteConfig.hero.secondaryButton.url} className={`flex h-14 w-full max-w-md mx-auto items-center justify-center gap-2 rounded-md border border-[var(--color-accent)] px-8 text-base font-medium transition-all duration-300 hover:bg-[var(--color-accent)] hover:text-[#161410] active:scale-[0.98] ${
-                  isWealth ? 'bg-transparent text-white' : 'text-white bg-black/40 backdrop-blur-sm'
+                  isWealth ? 'bg-transparent text-white' : siteConfig.site_id === 'subsidy' ? 'text-white bg-white/10 backdrop-blur-md border-white/30 shadow-lg' : 'text-white bg-black/40 backdrop-blur-sm'
                 }`}>
                   <span>{siteConfig.hero.secondaryButton.text}</span>
                 </Link>
@@ -133,7 +136,9 @@ export default async function Home() {
         <main className={`rounded-t-[2.5rem] relative z-20 overflow-hidden ${
           isWealth 
             ? 'bg-white/5 shadow-[0_-16px_40px_rgba(0,0,0,0.6)] border-t border-white/5 -mt-12' 
-            : 'bg-[var(--color-background)] mt-0 border-t border-[var(--color-border)]/10'
+            : siteConfig.site_id === 'subsidy'
+              ? 'bg-[var(--color-background)] mt-12 border-t border-[var(--color-border)]/20'
+              : 'bg-[var(--color-background)] mt-0 border-t border-[var(--color-border)]/10'
         }`}>
           <div className="bg-transparent px-6 pt-12 pb-16">
             <div className="w-full max-w-md mx-auto">
@@ -145,7 +150,10 @@ export default async function Home() {
                     key={nav.id} 
                     href={`/articles?category=${nav.id}`} 
                     className={`flex items-center justify-between rounded-lg border shadow-sm transition-all group active:scale-[0.99] ${
-                      isWealth ? 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-[var(--color-accent)]/50' : 'bg-white border-[var(--color-border)] hover:shadow-md'
+                      isWealth ? 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-[var(--color-accent)]/50' : 
+                      siteConfig.site_id === 'flip' ? 'bg-[#151921] border-white/5 hover:bg-white/5 hover:border-[var(--color-accent)]/30' :
+                      siteConfig.site_id === 'legacy' ? 'bg-gray-900 border-white/10 hover:bg-gray-800 hover:border-accent/40 text-white' :
+                      'bg-white border-[var(--color-border)] hover:shadow-md'
                     } ${
                       siteConfig.homepageLayout === 'grid' ? "flex-col gap-2 p-4 text-center" : "px-6 py-5"
                     }`}
@@ -154,10 +162,22 @@ export default async function Home() {
                       <span className="material-symbols-outlined text-[var(--color-accent)] text-[28px]">
                         {nav.icon}
                       </span>
-                      <span className={`${siteConfig.homepageLayout === 'grid' ? "text-sm" : "text-[19px]"} font-bold tracking-wide ${isWealth ? 'text-[#f2f0ed]' : 'text-[var(--color-text-main)]'}`}>{nav.label}</span>
+                      {siteConfig.site_id === 'flip' && (
+                        <span className="text-accent text-[16px] font-mono tracking-widest uppercase mb-1 opacity-80 font-bold">knowledge</span>
+                      )}
+                      <span className={`${siteConfig.homepageLayout === 'grid' ? "text-sm" : "text-[19px]"} font-bold tracking-wide ${
+                        isWealth ? 'text-[#f2f0ed]' : 
+                        siteConfig.site_id === 'kominka' ? 'text-[#1a1a1a]' : 
+                        siteConfig.site_id === 'flip' || siteConfig.site_id === 'legacy' ? 'text-white' :
+                        'text-[var(--color-text-main)]'
+                      }`}>{nav.label}</span>
                     </div>
                     {siteConfig.homepageLayout !== 'grid' && (
-                      <span className={`material-symbols-outlined transition-colors ${isWealth ? 'text-white/20 group-hover:text-[#c59f59]' : 'text-[var(--color-border)] group-hover:text-[var(--color-accent)]'}`}>chevron_right</span>
+                      <span className={`material-symbols-outlined transition-colors ${
+                        isWealth ? 'text-white/20 group-hover:text-[#c59f59]' : 
+                        siteConfig.site_id === 'kominka' ? 'text-[#1a1a1a]/20 group-hover:text-[var(--color-accent)]' :
+                        'text-[var(--color-border)] group-hover:text-[var(--color-accent)]'
+                      }`}>chevron_right</span>
                     )}
                   </Link>
                 ))}
@@ -249,57 +269,61 @@ export default async function Home() {
       ======================================================================== */}
       <div className={`bg-[var(--color-background)] relative z-20 ${isWealth ? 'text-gray-900' : 'text-[var(--color-text-main)]'}`}>
 
-        {/* Premium Selection */}
-        <section className="px-6 py-20">
-          <div className="w-full max-w-md mx-auto">
-            <div className="flex flex-col items-center mb-12">
-              <span className="text-[var(--color-accent)] font-bold tracking-widest text-xs uppercase mb-3">Premium Selection</span>
-              <h2 className={`${siteConfig.theme.typography.h2} text-[var(--color-text-main)] text-center`}>{siteConfig.premium.title}</h2>
-              <div className="h-1 w-12 bg-[var(--color-accent)] mt-6"></div>
-            </div>
-            <div className="flex flex-col gap-14">
-              {properties.map((prop) => (
-                <Link key={prop.id} href={`/properties/${prop.id}`} className="group cursor-pointer">
-                  <div className="relative w-full aspect-[3/2] overflow-hidden rounded-md shadow-lg mb-5 ring-1 ring-black/5">
-                    <div
-                      className="absolute inset-0 bg-gray-200 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                      style={{ backgroundImage: `url(${prop.images?.[0]?.url || '/luxury-apartment.png'})` }}
-                    ></div>
+        {/* Premium Selection - Hidden on Kominka as requested */}
+        {siteConfig.site_id !== 'kominka' && (
+          <section className="px-6 py-20">
+            <div className="w-full max-w-md mx-auto">
+              <div className="flex flex-col items-center mb-12">
+                <span className="text-[var(--color-accent)] font-bold tracking-widest text-xs uppercase mb-3">Premium Selection</span>
+                <h2 className={`${siteConfig.theme.typography.h2} text-[var(--color-text-main)] text-center`}>{siteConfig.premium.title}</h2>
+                <div className="h-1 w-12 bg-[var(--color-accent)] mt-6"></div>
+              </div>
+              <div className="flex flex-col gap-14">
+                {properties.map((prop) => (
+                  <Link key={prop.id} href={`/properties/${prop.id}`} className="group cursor-pointer">
+                    <div className="relative w-full aspect-[3/2] overflow-hidden rounded-md shadow-lg mb-5 ring-1 ring-black/5">
+                      <div
+                        className="absolute inset-0 bg-gray-200 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                        style={{ backgroundImage: `url(${prop.images?.[0]?.url || '/luxury-apartment.png'})` }}
+                      ></div>
 
-                    {/* 利回りバッジ */}
-                    {prop.yield && (
-                      <div className="absolute bottom-4 right-4 bg-[#161410]/90 backdrop-blur-sm text-[#c59f59] px-3 py-1.5 rounded-sm border border-[#c59f59]/30 shadow-lg">
-                        <span className="text-[10px] font-medium tracking-wider uppercase block text-center leading-none mb-0.5 text-gray-400">Yield</span>
-                        <span className="text-lg font-bold font-display">{prop.yield}</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-baseline justify-between border-b border-gray-200 pb-2">
-                      <span className="text-xs font-bold text-[var(--color-accent)] tracking-widest uppercase">{prop.location}</span>
-                      <span className="font-bold text-lg text-[var(--color-text-main)]">{prop.price}</span>
+                      {/* 利回りバッジ */}
+                      {prop.yield && (
+                        <div className="absolute bottom-4 right-4 bg-[#161410]/90 backdrop-blur-sm text-[#c59f59] px-3 py-1.5 rounded-sm border border-[#c59f59]/30 shadow-lg">
+                          <span className="text-[10px] font-medium tracking-wider uppercase block text-center leading-none mb-0.5 text-gray-400">Yield</span>
+                          <span className="text-lg font-bold font-display">{prop.yield}</span>
+                        </div>
+                      )}
                     </div>
-                    <h3 className={`${siteConfig.theme.typography.h2} text-2xl leading-snug text-[var(--color-text-main)] group-hover:text-[var(--color-accent)] transition-colors pt-1`}>
-                      {prop.name}
-                    </h3>
-                    <p className="text-[16px] leading-relaxed text-[var(--color-text-sub)] line-clamp-2">
-                      {getSummary(prop.description || '', 60)}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                    <div className="space-y-3">
+                      <div className="flex items-baseline justify-between border-b border-gray-200 pb-2">
+                        <span className="text-xs font-bold text-[var(--color-accent)] tracking-widest uppercase">{prop.location}</span>
+                        <span className="font-bold text-lg text-[var(--color-text-main)]">{prop.price}</span>
+                      </div>
+                      <h3 className={`${siteConfig.theme.typography.h2} text-2xl leading-snug text-[var(--color-text-main)] group-hover:text-[var(--color-accent)] transition-colors pt-1`}>
+                        {prop.name}
+                      </h3>
+                      <p className="text-[16px] leading-relaxed text-[var(--color-text-sub)] line-clamp-2">
+                        {getSummary(prop.description || '', 60)}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
 
-            <Link href="/properties" className="mt-14 block w-full text-center rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-5 text-[17px] font-bold text-[var(--color-text-main)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] shadow-sm hover:shadow-md">
-              {siteConfig.premium.btnText}
-            </Link>
-          </div>
-        </section>
+              <Link href="/properties" className="mt-14 block w-full text-center rounded-md border border-[var(--color-border)] bg-[var(--color-background)] py-5 text-[17px] font-bold text-[var(--color-text-main)] transition-colors hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] shadow-sm hover:shadow-md">
+                {siteConfig.premium.btnText}
+              </Link>
+            </div>
+          </section>
+        )}
 
         {/* Philosophy Section */}
         <section className="px-6 pt-10 pb-20 bg-[var(--color-background)]">
           <div className="w-full max-w-md mx-auto text-center space-y-6">
-            <span className="text-[var(--color-accent)] text-sm font-bold tracking-widest uppercase">Our Philosophy</span>
+            {siteConfig.site_id !== 'kominka' && (
+              <span className="text-[var(--color-accent)] text-sm font-bold tracking-widest uppercase">Our Philosophy</span>
+            )}
             <h3
               className={`${siteConfig.theme.typography.h2} text-2xl text-[var(--color-text-main)]`}
               dangerouslySetInnerHTML={{ __html: siteConfig.philosophy.title }}
@@ -317,12 +341,12 @@ export default async function Home() {
           <div
             className="max-w-5xl mx-auto rounded-2xl shadow-2xl overflow-hidden relative bg-cover bg-center bg-no-repeat"
             style={{
-              backgroundImage: `url('${siteConfig.bridge.image || '/images/wealth_lounge.jpg'}')`
+              backgroundImage: `url('${siteConfig.site_id === 'kominka' ? '/assets/form-kominka.jpg' : siteConfig.site_id === 'flip' ? '/assets/form-flip.jpg' : (siteConfig.cta?.image || siteConfig.bridge.image || '/images/wealth_lounge.jpg')}')`
             }}
           >
 
             {/* 1. Dark Overlay */}
-            <div className="absolute inset-0 bg-black/80 z-0"></div>
+            <div className={`absolute inset-0 ${siteConfig.site_id === 'kominka' ? 'bg-black/60' : 'bg-black/80'} z-0`}></div>
 
             {/* 2. Content */}
             <div className="relative z-10 p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
@@ -340,9 +364,11 @@ export default async function Home() {
                 <Link href={siteConfig.bridge.url} className="block w-full max-w-sm bg-[var(--color-accent)] text-[#161410] text-center font-bold py-4 rounded-lg shadow-[0_0_25px_var(--color-accent)] hover:shadow-xl transition-all transform hover:-translate-y-1 hover:brightness-110">
                   {siteConfig.bridge.buttonText}
                 </Link>
-                <p className="text-xs text-[var(--color-accent)] mt-3 tracking-wider opacity-90">
-                  ※審査制・毎月10名様限定
-                </p>
+                {siteConfig.site_id !== 'kominka' && siteConfig.site_id !== 'flip' && siteConfig.site_id !== 'legacy' && (
+                  <p className="text-xs text-[var(--color-accent)] mt-3 tracking-wider opacity-90">
+                    ※審査制・毎月10名様限定
+                  </p>
+                )}
               </div>
             </div>
           </div>

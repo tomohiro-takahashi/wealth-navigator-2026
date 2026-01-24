@@ -12,22 +12,25 @@ export const DOMAIN_MAP: Record<string, BrandId> = {
 };
 
 export function getBrandIdFromHost(host: string | null): BrandId {
+    // Check for environment variable override (critical for local dev and specific builds)
+    const envBrand = process.env.NEXT_PUBLIC_BRAND as BrandId;
+    if (envBrand && ['wealth', 'flip', 'subsidy', 'kominka', 'legacy'].includes(envBrand)) {
+        return envBrand;
+    }
+
     if (!host) return 'wealth';
     
     // Remove port if present (e.g., localhost:3000 -> localhost)
     const hostname = host.split(':')[0];
     
     if (DOMAIN_MAP[hostname]) return DOMAIN_MAP[hostname];
-    if (DOMAIN_MAP[host]) return DOMAIN_MAP[host]; // Fallback for full strings if needed
+    if (DOMAIN_MAP[host]) return DOMAIN_MAP[host]; 
     
     // Check for subdomains or specific strings in host
     if (host.includes('flip')) return 'flip';
     if (host.includes('subsidy')) return 'subsidy';
     if (host.includes('kominka')) return 'kominka';
     if (host.includes('legacy')) return 'legacy';
-    
-    // If we are on localhost and it's not explicitly mapped to something else, default to 'subsidy' for now
-    if (hostname === 'localhost') return 'subsidy';
     
     return 'wealth';
 }

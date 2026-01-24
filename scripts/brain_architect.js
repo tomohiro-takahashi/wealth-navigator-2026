@@ -123,30 +123,70 @@ async function architectVideo(slugKeyword) {
     ## Output JSON
     `;
 
-    async function generateVideoScriptResilient(prompt) {
-        // 1. Try Gemini 2.0 Flash (Fastest/Best for Video)
-        const MAX_RETRIES = 5;
+    async function generateVideoScriptResilient(prompt, dna) {
+        const siteId = dna.identity?.site_id || dna.identity?.siteId || "wealth";
+        const useClaudePrimary = siteId === "wealth";
+
+        // 1. Primary Strategy
+        if (useClaudePrimary) {
+            console.log("💎 Wealth Brand detected: Using Claude Opus as Primary Engine.");
+            try {
+                // For Wealth, we use Opus for high quality
+                const anthropic = require('@anthropic-ai/sdk'); // Dynamic import for safety
+                const client = new anthropic.Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+                const msg = await client.messages.create({
+                    model: "claude-3-opus-20240229",
+                    max_tokens: 4096,
+                    messages: [{ role: "user", content: prompt }]
+                });
+                return JSON.parse(msg.content[0].text);
+            } catch (claudeError) {
+                console.warn(`⚠️ Claude Opus Primary Failed: ${claudeError.message}. Falling back to Gemini...`);
+            }
+        }
+
+        // 2. Gemini Strategy (Default for other brands, or fallback for Wealth)
+        const MAX_RETRIES = 3;
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
                 console.log(`🌐 Video Strategy: Attempting Gemini 2.0 Flash... [Attempt ${attempt}/${MAX_RETRIES}]`);
                 const result = await model.generateContent(prompt);
                 const response = await result.response;
-                return JSON.parse(response.text());
+                const text = response.text();
+                // Clean markdown fencing if present
+                let cleanJson = text.trim();
+                if (cleanJson.includes('```')) {
+                    cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '').trim();
+                }
+                return JSON.parse(cleanJson);
             } catch (e) {
                 console.warn(`⚠️ Gemini Video Attempt ${attempt} Failed: ${e.message}`);
                 if (attempt < MAX_RETRIES) {
-                    const waitSec = 60; 
-                    console.log(`⏳ Quota may be exceeded. Waiting ${waitSec}s before retry ${attempt + 1}/${MAX_RETRIES}...`);
+                    const waitSec = 45; 
+                    console.log(`⏳ Waiting ${waitSec}s before retry...`);
                     await new Promise(r => setTimeout(r, waitSec * 1000));
                 }
             }
         }
-        throw new Error(`❌ Video Script Generation failed after ${MAX_RETRIES} attempts. Gemini quota might be exhausted. Try again later.`);
+
+        // 3. Recovery Plan: Fallback to Claude (Haiku) if Gemini is exhausted
+        console.log("🛡️ RECOVERY PLAN: All Gemini attempts failed. Activating Fallback (Claude Haiku)...");
+        try {
+            const haikuResult = await callClaude(prompt); // Existing helper uses Haiku
+            let cleanJson = haikuResult.trim();
+            if (cleanJson.includes('```')) {
+                cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '').trim();
+            }
+            return JSON.parse(cleanJson);
+        } catch (recoveryError) {
+            console.error(`❌ Recovery Plan Failed: ${recoveryError.message}`);
+            throw new Error(`❌ Video Script Generation totally failed. Gemini exhausted and Claude fallback failed.`);
+        }
     }
 
     try {
         console.log("🤖 Generating Script...");
-        let scriptJson = await generateVideoScriptResilient(prompt);
+        let scriptJson = await generateVideoScriptResilient(prompt, dna);
         if (Array.isArray(scriptJson)) {
             scriptJson = scriptJson[0];
         }

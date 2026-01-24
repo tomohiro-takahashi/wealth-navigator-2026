@@ -29,7 +29,7 @@ export const siteConfig: SiteConfig = {
     },
 
     hero: {
-        title: "眠れる資産を、<br />叩き起こせ。",
+        title: "眠れる負動産を<br />富動産へ",
         subtitle: "900万戸の空き家に眠る、<br />年利15%の可能性。",
         heroImage: "/assets/hero-kominka.jpg",
         primaryButton: {
@@ -64,7 +64,7 @@ export const siteConfig: SiteConfig = {
 
     philosophy: {
         title: "「負債」と「資産」を分けるのは、<br />視点だけだ。",
-        description: "日本中に放置された900万戸の空き家。多くの人はそれを「負債」と呼ぶ。しかし我々は知っている。正しい目利きと再生戦略があれば、それは年利15%を生む「資産」に変わることを。古民家には、新築にはない物語がある。インバウンド旅行者が求めているのは、まさにその「物語」だ。眠れる不動産を叩き起こし、新たな価値を吹き込む。それが、空き家錬金術。"
+        description: "日本中に放置された900万戸の空き家。<br />多くの人はそれを「負債」と呼ぶ。しかし我々は知っている。正しい目利きと再生戦略があれば、それは年利15%を生む「資産」に変わることを。<br />古民家には、新築にはない物語がある。インバウンド旅行者が求めているのは、まさにその「物語」だ。<br />眠れる不動産を叩き起こし、新たな価値を吹き込む。<br />それが、空き家錬金術。"
     },
 
     bridge: {
@@ -75,10 +75,10 @@ export const siteConfig: SiteConfig = {
     },
 
     categoryNav: [
-        { id: 'find', label: '探す', icon: 'search' },
-        { id: 'renovate', label: '再生', icon: 'handyman' },
-        { id: 'operate', label: '活用', icon: 'key' },
-        { id: 'exit', label: '売却', icon: 'payments' }
+        { id: 'find', label: '空き家の探し方', icon: 'search' },
+        { id: 'renovate', label: 'リノベ/リフォーム', icon: 'handyman' },
+        { id: 'operate', label: '空き家の活用方法', icon: 'key' },
+        { id: 'exit', label: '高く売るには', icon: 'payments' }
     ],
     cta: {
         type: "line_simple",
@@ -87,7 +87,7 @@ export const siteConfig: SiteConfig = {
         description: "空き家バンクの新着、任意売却の事前情報、地方自治体の補助金付き案件。一般には出回らない物件リストを、メンバー限定で毎週配信しています。",
         buttonText: "LINEで非公開物件を受け取る",
         lineUrl: "https://line.me/R/ti/p/@kominka",
-        image: "/images/kominka_lounge.jpg"
+        image: "/assets/banner-kominka.jpg"
     },
     homepageLayout: 'grid'
 };

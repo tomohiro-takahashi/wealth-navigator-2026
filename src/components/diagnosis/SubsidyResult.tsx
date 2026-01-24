@@ -3,34 +3,48 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { ChevronRight, CheckCircle2, Info, ArrowRight, ShieldCheck, HelpCircle, Home, Building2 } from 'lucide-react';
+import { ChevronRight, CheckCircle2, Info, ArrowRight, ShieldCheck, HelpCircle, Home, Building2, AlertCircle, Sparkles } from 'lucide-react';
 import Image from 'next/image';
-import { SubsidyResult as SubsidyResultType } from '@/lib/calculators/subsidy-logic';
+import Link from 'next/link';
+import { SubsidyResult as SubsidyResultType } from '@/lib/calculators/diagnosis-logic';
 
 export default function SubsidyResult() {
     const router = useRouter();
     const [result, setResult] = useState<SubsidyResultType | null>(null);
 
     useEffect(() => {
-        const stored = localStorage.getItem("subsidy_result");
+        const stored = localStorage.getItem("diagnosis_result") || localStorage.getItem("subsidy_result");
         if (stored) {
-            setResult(JSON.parse(stored));
+            try {
+                const parsed = JSON.parse(stored);
+                if (parsed.brand === 'subsidy' || parsed.matchedSubsidies) {
+                    setResult(parsed);
+                }
+            } catch (e) {
+                console.error("Failed to parse subsidy result", e);
+            }
         }
     }, []);
 
-    if (!result) return null;
+    if (!result) return (
+        <div className="flex flex-col items-center justify-center py-20 text-[var(--color-text-sub)]">
+            <AlertCircle className="mb-4 opacity-20" size={48} />
+            <p>診断データが見つかりません。</p>
+            <Link href="/simulation" className="mt-4 text-[var(--color-primary)] underline font-bold">診断をやり直す</Link>
+        </div>
+    );
 
     return (
         <div className="min-h-screen bg-[var(--color-background)] pb-20">
-            {/* Header section with curve */}
-            <div className="bg-gradient-to-b from-[var(--color-border)] to-[var(--color-background)] pt-12 pb-16 px-4 text-center relative overflow-hidden">
+            {/* Header section with curve - Added top padding to avoid header overlap */}
+            <div className="bg-linear-to-b from-[var(--color-border)] to-[var(--color-background)] pt-24 pb-16 px-4 text-center relative overflow-hidden">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="max-w-md mx-auto relative z-10"
                 >
                     <div className="inline-block px-4 py-1 rounded-full bg-[var(--color-accent)]/20 text-[var(--color-primary)] text-sm font-bold mb-6">
-                        2026年度 診断結果
+                        診断結果
                     </div>
                     <h1 className="text-2xl font-bold text-[var(--color-text-main)] mb-4">
                         あなたの家で受け取れる<br />補助金の概算は...
@@ -38,11 +52,11 @@ export default function SubsidyResult() {
                     
                     <div className="relative inline-block mt-4">
                         <div className="flex items-baseline justify-center gap-1">
-                            <span className="text-xl font-bold text-[var(--color-accent)]">最大</span>
+                            <span className="text-xl font-bold text-[var(--color-accent)]">最大 約</span>
                             <span className="text-5xl md:text-6xl font-black text-[var(--color-primary)] tracking-tight">
-                                {result.totalMaxAmount.toLocaleString()}
+                                {result.totalEstimate.toLocaleString()}
                             </span>
-                            <span className="text-2xl font-bold text-[var(--color-primary)]">円</span>
+                            <span className="text-2xl font-bold text-[var(--color-primary)]">万円</span>
                         </div>
                         {/* Underline decoration */}
                         <div className="h-4 w-full bg-[var(--color-accent)]/30 absolute -bottom-2 -rotate-1 -z-10 rounded-full opacity-60" />
@@ -50,7 +64,7 @@ export default function SubsidyResult() {
                     
                     <p className="mt-8 text-sm text-[var(--color-text-sub)] flex items-center justify-center gap-1">
                         <Info size={14} />
-                        審査等の状況により金額は変動します
+                        実際の受取金額は工事内容により変動します
                     </p>
                 </motion.div>
                 
@@ -66,43 +80,52 @@ export default function SubsidyResult() {
                         <div className="w-10 h-10 rounded-full bg-[var(--color-background)] flex items-center justify-center text-[var(--color-primary)]">
                             <CheckCircle2 size={24} />
                         </div>
-                        <h2 className="text-xl font-bold text-[var(--color-text-main)]">適用される可能性が高い補助金</h2>
+                        <h2 className="text-xl font-bold text-[var(--color-text-main)]">使える補助金が見つかりました</h2>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6">
-                        {result.applicableSubsidies.map((subsidy, idx) => (
-                            <motion.div
-                                key={subsidy.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: idx * 0.1 }}
-                                className="bg-[var(--color-background)] rounded-3xl p-5 border border-[var(--color-border)] flex flex-col h-full"
-                            >
-                                <div className="relative h-32 w-full rounded-2xl overflow-hidden mb-4">
-                                    <Image
-                                        src={subsidy.imageUrl}
-                                        alt={subsidy.name}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                    <div className="absolute top-2 left-2 bg-[var(--color-primary)] text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
-                                        {subsidy.category}
+                        {result.matchedSubsidies.length > 0 ? (
+                            result.matchedSubsidies.map((subsidy, idx) => (
+                                <motion.div
+                                    key={idx}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: idx * 0.1 }}
+                                    className="bg-[var(--color-background)] rounded-3xl p-5 border border-[var(--color-border)] flex flex-col h-full"
+                                >
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div className="bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-[10px] px-3 py-1 rounded-full font-bold uppercase">
+                                            {subsidy.amountText}
+                                        </div>
+                                        <div className="flex gap-0.5">
+                                            {[...Array(3)].map((_, i) => (
+                                                <div key={i} className={`w-2 h-2 rounded-full ${i < subsidy.matchScore ? 'bg-[var(--color-accent)]' : 'bg-[var(--color-border)]'}`} />
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                                <h3 className="font-bold text-[var(--color-text-main)] mb-2 leading-snug">
-                                    {subsidy.name}
-                                </h3>
-                                <p className="text-xs text-[var(--color-text-sub)] flex-grow leading-relaxed">
-                                    {subsidy.description}
-                                </p>
-                                <div className="mt-4 pt-4 border-t border-[var(--color-border)] flex justify-between items-center">
-                                    <span className="text-xs font-bold text-[var(--color-text-sub)]">最大</span>
-                                    <span className="text-lg font-black text-[var(--color-primary)]">
-                                        約 {subsidy.maxAmount.toLocaleString()}円
-                                    </span>
-                                </div>
-                            </motion.div>
-                        ))}
+                                    <h3 className="font-bold text-[var(--color-text-main)] mb-2 leading-snug">
+                                        {subsidy.name}
+                                    </h3>
+                                    <p className="text-xs text-[var(--color-text-sub)] mb-2">
+                                        {subsidy.description}
+                                    </p>
+                                    <div className="mt-auto pt-4 flex flex-col gap-2">
+                                        <div className="flex items-start gap-2 text-[10px] text-[var(--color-text-sub)] bg-white/50 p-2 rounded-lg leading-relaxed">
+                                            <Sparkles size={12} className="text-[var(--color-accent)] shrink-0 mt-0.5" />
+                                            <span>判定理由: {subsidy.reason}</span>
+                                        </div>
+                                        {subsidy.note && (
+                                            <p className="text-[9px] text-[var(--color-primary)] font-medium">{subsidy.note}</p>
+                                        )}
+                                    </div>
+                                </motion.div>
+                            ))
+                        ) : (
+                            <div className="col-span-full py-12 text-center bg-[var(--color-background)] rounded-3xl border border-dashed border-[var(--color-border)]">
+                                <p className="text-[var(--color-text-sub)]">該当する国の補助金制度が見つかりませんでした。</p>
+                                <p className="text-xs text-[var(--color-text-sub)] mt-2">自治体独自の制度等をご提案させていただきます。</p>
+                            </div>
+                        )}
                     </div>
                 </div>
 

@@ -24,29 +24,39 @@ export const DynamicCTA: React.FC<Props> = ({ mode, config }) => {
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                         style={{ backgroundImage: `url('${cta.image}')` }}
                     ></div>
-                    <div className="absolute inset-0 bg-black/60"></div>
+                    {/* Dark overlay replacement for subsidy site */}
+                    {config.site_id === 'subsidy' ? (
+                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-primary)]/40 via-white/5 to-white/10 backdrop-blur-[1px]"></div>
+                    ) : (
+                        <div className="absolute inset-0 bg-black/70"></div>
+                    )}
                 </>
             ) : (
                 <div
-                    className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] opacity-90 transition-transform duration-700 group-hover:scale-105"
-                ></div>
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                    style={{ 
+                        backgroundImage: `url('${config.site_id === 'flip' ? '/assets/form-flip.jpg' : config.site_id === 'kominka' ? '/assets/form-kominka.jpg' : '/images/wealth_lounge.jpg'}')` 
+                    }}
+                >
+                    <div className="absolute inset-0 bg-black/70"></div>
+                </div>
             )}
 
             {/* Texture/Image Overlay if available (omitted for now as new config has no asset except assetUrl which is for download) */}
 
             {/* Content */}
             <div className="relative z-10 text-center max-w-2xl mx-auto">
-                <p className="text-[var(--color-background)] opacity-90 text-xs font-bold tracking-[0.2em] uppercase mb-4">
-                    {config.name} Limit
+                <p className="text-white/90 text-xs font-bold tracking-[0.2em] uppercase mb-4 px-4 py-1 inline-block border-b border-white/30 backdrop-blur-md rounded-full bg-white/10">
+                    {config.name}
                 </p>
 
                 <h2
-                    className="text-2xl md:text-3xl font-serif text-[var(--color-background)] mb-6 leading-snug"
+                    className="text-2xl md:text-3xl font-bold text-white mb-6 leading-snug drop-shadow-lg"
                     dangerouslySetInnerHTML={{ __html: cta.title.replace(/\n/g, '<br/>') }}
                 />
 
                 <div
-                    className="text-[var(--color-background)] opacity-90 text-sm leading-relaxed mb-8"
+                    className="text-white opacity-95 text-sm font-medium leading-relaxed mb-8 drop-shadow-md"
                     dangerouslySetInnerHTML={{ __html: cta.description.replace(/\n/g, '<br/>') }}
                 />
 
@@ -54,7 +64,7 @@ export const DynamicCTA: React.FC<Props> = ({ mode, config }) => {
                     href={linkUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-3 w-full max-w-sm mx-auto bg-white hover:bg-gray-100 text-[var(--color-primary)] font-bold py-4 px-8 rounded-md transition-all transform hover:-translate-y-1 shadow-lg"
+                    className="inline-flex items-center justify-center gap-3 w-full max-w-sm mx-auto bg-white hover:bg-gray-100 text-[var(--color-primary)] font-bold py-4 px-8 rounded-full transition-all transform hover:-translate-y-1 shadow-xl"
                 >
                     {isLine && (
                         <svg className="w-6 h-6 flex-shrink-0 fill-[#06C755]" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -66,7 +76,7 @@ export const DynamicCTA: React.FC<Props> = ({ mode, config }) => {
                 </a>
 
                 {isLine && (
-                    <p className="text-xs text-[var(--color-background)] opacity-70 mt-4 tracking-wide">
+                    <p className="text-xs text-white/80 mt-4 tracking-wide font-medium drop-shadow-sm">
                         ※ 登録無料・いつでもブロック可能
                     </p>
                 )}

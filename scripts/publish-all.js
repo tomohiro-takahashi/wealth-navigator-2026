@@ -16,7 +16,8 @@ async function runAll() {
 
     const category = process.argv[2] || 'column'; // デフォルトはコラム
 
-    for (const brand of BRANDS) {
+    for (let i = 0; i < BRANDS.length; i++) {
+        const brand = BRANDS[i];
         console.log(`\n🚀 Processing Brand: ${brand.toUpperCase()}`);
         console.log('-'.repeat(40));
 
@@ -26,6 +27,13 @@ async function runAll() {
             execSync(`node scripts/publish_single.js ${category} ${brand}`, { stdio: 'inherit' });
             
             console.log(`✅ ${brand} publication complete.`);
+
+            // Final brand don't need to wait
+            if (i < BRANDS.length - 1) {
+                const waitMin = 2;
+                console.log(`\n⏳ Cooling down for ${waitMin} minutes to prevent API Rate Limits...`);
+                execSync(`sleep ${waitMin * 60}`);
+            }
 
         } catch (error) {
             console.error(`❌ Error processing ${brand}:`, error.message);

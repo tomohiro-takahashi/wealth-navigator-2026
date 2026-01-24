@@ -44,6 +44,7 @@ export function getLocalArticles(): Article[] {
                 updatedAt: date,
                 badge_text: matterResult.data.badge_text,
                 is_featured: matterResult.data.is_featured,
+                site_id: matterResult.data.site_id,
             } as Article;
         });
 

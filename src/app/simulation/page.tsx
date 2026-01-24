@@ -1,15 +1,19 @@
 import { MultiStepForm } from "@/components/inquiry/MultiStepForm";
 import { FlipSimulator } from "@/components/diagnosis/FlipSimulator";
 import SubsidySimulator from "@/components/diagnosis/SubsidySimulator";
+import { KominkaSimulator } from "@/components/diagnosis/KominkaSimulator";
+import { LegacySimulator } from "@/components/diagnosis/LegacySimulator";
 import { getBrandId } from "@/lib/brand";
 
 export default async function SimulationPage() {
     const brandId = await getBrandId();
     const isFlip = brandId === 'flip';
     const isSubsidy = brandId === 'subsidy';
+    const isKominka = brandId === 'kominka';
+    const isLegacy = brandId === 'legacy';
 
     return (
-        <div className={`min-h-screen flex flex-col justify-center py-20 px-4 transition-colors duration-500 bg-[var(--color-background)]`}>
+        <div className={`min-h-screen flex flex-col justify-center py-20 px-6 transition-colors duration-500 bg-[var(--color-background)]`}>
             <div className="text-center mb-10 max-w-[480px] mx-auto">
                 {isFlip ? (
                     <>
@@ -18,8 +22,18 @@ export default async function SimulationPage() {
                     </>
                 ) : isSubsidy ? (
                     <>
-                        <span className="text-[var(--color-primary)] text-xs font-bold tracking-[0.2em] uppercase">2026年度版 補助金かんたん診断</span>
+                        <span className="text-[var(--color-primary)] text-xs font-bold tracking-[0.2em] uppercase">補助金かんたん診断</span>
                         <h1 className="text-2xl md:text-3xl font-black text-[var(--color-text-main)] mt-2">住宅リフォーム補助金<br />最大受給額チェック</h1>
+                    </>
+                ) : isKominka ? (
+                    <>
+                        <span className="text-[#977e4e] text-xs font-bold tracking-[0.2em] uppercase">利回りシミュレーション</span>
+                        <h1 className="text-2xl md:text-3xl font-serif text-white font-bold mt-2">空き家再生・不動産収益判定</h1>
+                    </>
+                ) : isLegacy ? (
+                    <>
+                        <span className="text-[#a68a68] text-xs font-bold tracking-[0.2em] uppercase">戦略診断</span>
+                        <h1 className="text-2xl md:text-3xl font-bold text-white mt-2">親の家、どうする？<br/>実家・相続戦略診断</h1>
                     </>
                 ) : (
                     <>
@@ -33,6 +47,10 @@ export default async function SimulationPage() {
                         <>感情を排除せよ。数字だけが真実だ。<br />30秒で物件の「真の価値」を算出し、投資判定を下す。</>
                     ) : isSubsidy ? (
                         <>わずか30秒の入力で、あなたの家で使える<br />補助金の概算をシミュレーションします。</>
+                    ) : isKominka ? (
+                        <>物件のポテンシャルを10秒で可視化。<br />「負債」を「年利15%の資産」に変える第一歩。</>
+                    ) : isLegacy ? (
+                        <>10の質問で、ご家族の想いと現状を整理。<br />「売却」「賃貸」「維持」どれが正解かを判定します。</>
                     ) : (
                         <>年収1,000万円以上のあなたが、ただ貯金しているだけで<br />「毎月いくら損しているか」知っていますか？<br />たった1分で、あなたの「資産の適正戦略」を判定します。</>
                     )}
@@ -44,6 +62,10 @@ export default async function SimulationPage() {
                     <FlipSimulator />
                 ) : isSubsidy ? (
                     <SubsidySimulator />
+                ) : isKominka ? (
+                    <KominkaSimulator />
+                ) : isLegacy ? (
+                    <LegacySimulator />
                 ) : (
                     <MultiStepForm />
                 )}

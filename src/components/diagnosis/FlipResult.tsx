@@ -2,22 +2,34 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { FlipResult as FlipResultType } from "@/lib/calculators/flip-logic";
+import { MaoResult as MaoResultType } from "@/lib/calculators/diagnosis-logic";
 import Link from "next/link";
 
 export const FlipResult = () => {
-    const [result, setResult] = useState<FlipResultType & { listingPrice: number } | null>(null);
+    const [result, setResult] = useState<MaoResultType | null>(null);
 
     useEffect(() => {
         const stored = localStorage.getItem("diagnosis_result");
         if (stored) {
-            setResult(JSON.parse(stored));
+            try {
+                const parsed = JSON.parse(stored);
+                if (parsed.brand === 'flip' || parsed.mao) {
+                    setResult(parsed);
+                }
+            } catch (e) {
+                console.error("Failed to parse diagnosis result", e);
+            }
         }
     }, []);
 
-    if (!result) return null;
+    if (!result) return (
+        <div className="flex flex-col items-center justify-center py-20 text-white/50">
+            <p>診断結果が見つかりません。シミュレーションをやり直してください。</p>
+            <Link href="/simulation" className="mt-4 text-[#06e8f9] underline font-bold">シミュレーターへ戻る</Link>
+        </div>
+    );
 
-    const { judgment, calculation, input, listingPrice } = result;
+    const { judgment, mao, difference, targetPrice, breakdown, input } = result;
 
     return (
         <div className="flex flex-col gap-6 animate-fade-in pb-40">
@@ -51,12 +63,12 @@ export const FlipResult = () => {
                         }`}>
                             <p className={`text-[10px] font-bold mb-1 uppercase tracking-widest ${
                                 judgment.id === 'BUY' ? 'text-[#39ff14]' : judgment.id === 'NEGOTIATE' ? 'text-[#facc15]' : 'text-[#ff4d4d]'
-                            }`}>推奨価格との差額</p>
+                            }`}>推奨価格との差額 (MAO 70%)</p>
                             <div className="flex items-baseline gap-2 font-mono">
                                 <span className={`text-3xl font-bold ${
-                                    judgment.id === 'BUY' ? 'text-[#39ff14]' : judgment.id === 'NEGOTIATE' ? 'text-[#facc15]' : 'text-[#ff4d4d]'
+                                    difference > 0 ? 'text-[#39ff14]' : 'text-[#ff4d4d]'
                                 }`}>
-                                    {calculation.netProfit > 0 ? '+' : ''}{calculation.netProfit.toLocaleString()}
+                                    {difference > 0 ? '+' : ''}{difference.toLocaleString()}
                                 </span>
                                 <span className="text-xs font-bold text-white/40">万円</span>
                             </div>
@@ -74,15 +86,15 @@ export const FlipResult = () => {
             {/* Metrics Grid */}
             <div className="grid grid-cols-2 gap-3 mt-4">
                 <div className="bg-[#1b2727] p-4 border border-white/5 space-y-1">
-                    <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">ROI (Net)</p>
-                    <p className={`text-2xl font-mono font-bold ${calculation.roi > 0 ? 'text-[#39ff14]' : 'text-[#ff4d4d]'}`}>
-                        {calculation.roi}%
+                    <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">目標利益希望額 (30%)</p>
+                    <p className={`text-2xl font-mono font-bold text-white`}>
+                        ¥{breakdown.expenses.toLocaleString()}<span className="text-xs ml-1">万</span>
                     </p>
                 </div>
                 <div className="bg-[#1b2727] p-4 border border-white/5 space-y-1">
-                    <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">Break Even</p>
-                    <p className="text-2xl font-mono font-bold text-white">
-                        {calculation.breakEvenPrice.toLocaleString()}<span className="text-xs ml-1">万円</span>
+                    <p className="text-[10px] text-white/40 font-bold uppercase tracking-widest">推奨仕入れ上限 (MAO 70%)</p>
+                    <p className="text-2xl font-mono font-bold text-[#39ff14]">
+                        {mao.mao70.toLocaleString()}<span className="text-xs ml-1">万円</span>
                     </p>
                 </div>
             </div>
@@ -134,17 +146,31 @@ export const FlipResult = () => {
             {/* Details Table */}
             <div className="mt-8 bg-[#1b2727] border border-white/10 overflow-hidden font-mono">
                 {[
-                    { label: 'Expected Resale (ARV)', value: input.expectedResalePrice },
-                    { label: 'Renovation Estimate', value: input.renovationCost },
-                    { label: 'Purchase Price (Listing)', value: listingPrice },
-                    { label: 'Total Investment', value: calculation.totalInvestment },
+                    { label: '想定再販価格 (ARV)', value: input.arv },
+                    { label: 'リフォーム費用 (予備費込)', value: breakdown.rehabCostWithContingency },
+                    { label: '固定経費 (維持・販売費用)', value: breakdown.expenses },
+                    { label: '現在の販売価格', value: input.listPrice },
+                    { label: '推奨仕入れ価格 (MAO)', value: mao.mao70 },
                 ].map((row, i) => (
                     <div key={i} className="grid grid-cols-2 border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
-                        <div className="p-3 border-r border-white/5 bg-white/2 text-[10px] text-white/50 uppercase tracking-widest flex items-center">{row.label}</div>
-                        <div className="p-3 text-sm font-bold text-right">¥{row.value.toLocaleString()} ,000</div>
+                        <div className="p-3 border-r border-white/5 bg-white/2 text-[10px] text-white/70 font-bold uppercase tracking-widest flex items-center">{row.label}</div>
+                        <div className="p-3 text-sm font-bold text-right text-white/90">¥{row.value.toLocaleString()} 万</div>
                     </div>
                 ))}
             </div>
+
+            {/* Inquiry Banner (Added) */}
+            <Link 
+                href="/inquiry" 
+                className="mt-6 group relative overflow-hidden bg-gradient-to-r from-[#06e8f9]/20 to-transparent border border-[#06e8f9]/40 p-6 flex items-center justify-between"
+            >
+                <div className="relative z-10">
+                    <p className="text-[#06e8f9] text-[10px] font-bold tracking-widest uppercase mb-1">Expert Consultation</p>
+                    <h4 className="text-white text-lg font-bold">今回の診断結果を元に<br/>専門家に具体的な相談をする</h4>
+                </div>
+                <span className="material-symbols-outlined text-[#06e8f9] text-3xl group-hover:translate-x-2 transition-transform">arrow_forward</span>
+                <div className="absolute top-0 right-0 w-32 h-full bg-[#06e8f9]/5 skew-x-[30deg] translate-x-16"></div>
+            </Link>
 
             {/* Sticky Actions */}
             <div className="fixed bottom-0 left-0 right-0 bg-background-dark/95 backdrop-blur-xl border-t border-white/10 p-6 z-50">

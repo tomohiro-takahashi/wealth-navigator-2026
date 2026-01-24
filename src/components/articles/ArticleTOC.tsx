@@ -51,10 +51,10 @@ export const ArticleTOC = ({ toc }: { toc: TOCItem[] }) => {
                             }}
                             className={cn(
                                 "text-xs font-medium leading-relaxed block transition-colors",
-                                activeId === item.id ? "text-accent scale-105" : "text-gray-400 hover:text-white"
+                                activeId === item.id ? "text-white font-bold scale-105" : "text-white/70 hover:text-white"
                             )}
                         >
-                            <span className="mr-2 opacity-50 text-[10px]">{(index + 1).toString().padStart(2, '0')}.</span>
+                            <span className="mr-2 opacity-60 text-[10px]">{(index + 1).toString().padStart(2, '0')}.</span>
                             {item.text}
                         </a>
                         {activeId === item.id && (

@@ -23,11 +23,12 @@ export const ExpertTip = ({ content }: Props) => {
                         </div>
                     </div>
                     <div>
-                        <p className="text-white font-serif leading-loose italic text-lg opacity-90">
-                            &ldquo;{content}&rdquo;
-                        </p>
+                        <div 
+                            className="text-white font-serif leading-loose italic text-lg opacity-90 expert-content"
+                            dangerouslySetInnerHTML={{ __html: content }}
+                        />
                         <div className="mt-4 flex items-center gap-2">
-                            <div className="h-[1px] w-8 bg-accent"></div>
+                             <div className="h-px w-8 bg-accent"></div>
                             <span className="text-xs text-accent uppercase tracking-widest">Chief Analyst / Real Estate</span>
                         </div>
                     </div>

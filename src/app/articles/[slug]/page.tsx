@@ -1,4 +1,6 @@
 import { getDetailBySlug } from '@/lib/microcms';
+import { getLocalArticles } from '@/lib/local-articles';
+import matter from 'gray-matter';
 import { notFound } from 'next/navigation';
 import { Article } from '@/types';
 import { DynamicCTA } from '@/components/cta/DynamicCTA';
@@ -11,6 +13,8 @@ import Image from 'next/image';
 import parse, { Element, domToReact as domNodeToReact } from 'html-react-parser';
 import { ImageWithPlaceholder } from '@/components/articles/ImageWithPlaceholder';
 import { getSiteConfig } from '@/site.config';
+import { marked } from 'marked';
+
 
 // キャッシュの設定: ISR (60秒)
 // キャッシュの設定: ISR 無効化
@@ -19,7 +23,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     const siteConfig = await getSiteConfig();
     try {
-        const article = await getDetailBySlug(slug, 'articles') as Article;
+        // 1. Try local files
+        const localArticles = getLocalArticles();
+        let article = localArticles.find(a => a.slug === slug);
+
+        // 2. Try CMS
+        if (!article) {
+            article = await getDetailBySlug(slug, 'articles') as Article;
+        }
+
         if (!article) return { title: `Not Found | ${siteConfig.name}` };
 
         return {
@@ -36,17 +48,33 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params;
-    const siteConfig = await getSiteConfig();
+    const initialConfig = await getSiteConfig();
 
     let article: Article | null = null;
-    try {
-        article = await getDetailBySlug(slug, 'articles') as Article;
-    } catch (e) {
-        console.error(e);
+
+    // 1. Try local files first
+    const localArticles = getLocalArticles();
+    article = localArticles.find(a => a.slug === slug) || null;
+
+    // 2. Fallback to microCMS
+    if (!article) {
+        try {
+            article = await getDetailBySlug(slug, 'articles') as Article;
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     if (!article) {
         notFound();
+    }
+
+    // [IMPORTANT] Override siteConfig based on article.site_id if available
+    // This ensures Flip articles look like Flip even on localhost (which defaults to subsidy)
+    let siteConfig = initialConfig;
+    if (article.site_id && article.site_id !== initialConfig.site_id) {
+        siteConfig = await getSiteConfig(article.site_id as any);
+        console.log(`[DEBUG] Overriding brand to: ${article.site_id} for article: ${slug}`);
     }
 
     // Date formatting
@@ -57,7 +85,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     });
 
 
-    // Process Content (Markdown -> HTML + Frontmatter Strip + TOC + Image Injection)
+    // Process Content
     const { html: contentWithIds, toc } = await processArticleContent(article.content);
 
     // Auto-Injection State
@@ -86,6 +114,20 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         }
     };
 
+    // Help to get category color
+    const getCategoryColor = (catId: string) => {
+        const colors: Record<string, string> = {
+            'find': 'bg-blue-600',
+            'renovate': 'bg-emerald-600',
+            'operate': 'bg-amber-600',
+            'exit': 'bg-rose-600',
+            'learn': 'bg-indigo-600',
+            'guide': 'bg-teal-600',
+            'howto': 'bg-orange-600'
+        };
+        return colors[catId] || 'bg-[var(--color-accent)]';
+    };
+
     return (
         <article className="min-h-screen bg-[var(--color-background)] text-[var(--color-text-main)] selection:bg-[var(--color-accent)] selection:text-white">
             <script
@@ -100,8 +142,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
 
             {/* Dark Hero Section */}
             <div className="relative h-[60vh] w-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/60 via-[var(--color-primary)]/40 to-[var(--color-primary)] z-10" />
-                <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/60 via-[var(--color-primary)]/40 to-[var(--color-primary)] z-10" />
+                {siteConfig.site_id === 'subsidy' || siteConfig.site_id === 'legacy' ? (
+                    // Subtle dark gradient at the bottom for text legibility, but keeping main photo clear
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
+                ) : (
+                    <>
+                        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/60 via-[var(--color-primary)]/40 to-[var(--color-primary)] z-10" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/60 via-[var(--color-primary)]/40 to-[var(--color-primary)] z-10" />
+                    </>
+                )}
                 <Image
                     src={article.eyecatch?.url || `/images/articles/${article.slug}/01.webp`}
                     alt={article.title}
@@ -112,7 +161,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                 <div className="absolute bottom-0 left-0 w-full max-w-4xl mx-auto px-4 pb-12 z-20">
                     <div className="flex gap-3 mb-6">
                         {article.category?.map((cat) => (
-                            <span key={cat} className="bg-[var(--color-accent)]/90 text-white text-xs font-bold px-3 py-1 tracking-widest uppercase rounded-sm">
+                            <span key={cat} className={cn(
+                                "text-white text-[10px] font-bold px-3 py-1 tracking-widest uppercase rounded-sm shadow-sm",
+                                getCategoryColor(cat)
+                            )}>
                                 {getCategoryLabelSync(cat, siteConfig)}
                             </span>
                         ))}
@@ -148,8 +200,12 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     {/* Body */}
                     <div className={cn(
                         "prose prose-lg max-w-none font-sans leading-loose",
+                        // Invert colors for dark themes
+                        (siteConfig.site_id === 'subsidy' || siteConfig.site_id === 'kominka' || siteConfig.site_id === 'flip' || siteConfig.site_id === 'legacy') ? "prose-invert" : "",
                         // Headings
-                        "prose-headings:text-[var(--color-text-main)]",
+                        (siteConfig.site_id === 'subsidy' || siteConfig.site_id === 'kominka' || siteConfig.site_id === 'flip' || siteConfig.site_id === 'legacy')
+                            ? "prose-headings:text-white" 
+                            : "prose-headings:text-[var(--color-text-main)]",
                         `${siteConfig.theme.typography.fontFamily === 'serif' ? 'prose-headings:font-serif' : 'prose-headings:font-sans'}`,
 
                         // H1 Style
@@ -162,12 +218,16 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                         "prose-h3:text-xl prose-h3:mt-12 prose-h3:mb-6 prose-h3:text-[var(--color-accent)]",
 
                         // Text Elements
-                        "prose-p:text-[var(--color-text-main)] prose-p:mb-8",
+                        siteConfig.site_id === 'subsidy' || siteConfig.site_id === 'kominka'
+                            ? "prose-p:text-white/90 prose-p:mb-8"
+                            : "prose-p:text-[var(--color-text-main)] prose-p:mb-8",
                         "prose-a:text-[var(--color-link)] prose-a:no-underline hover:prose-a:underline",
                         "prose-blockquote:border-l-[var(--color-accent)] prose-blockquote:bg-[var(--color-primary)]/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:not-italic prose-blockquote:text-[var(--color-text-sub)]",
-                        "prose-strong:text-[var(--color-text-main)] prose-strong:font-bold",
+                        "prose-strong:text-white prose-strong:font-bold",
                         "prose-img:rounded-xl prose-img:shadow-2xl prose-img:border prose-img:border-black/5",
-                        "prose-li:text-[var(--color-text-main)]",
+                        siteConfig.site_id === 'subsidy' || siteConfig.site_id === 'kominka' || siteConfig.site_id === 'flip' || siteConfig.site_id === 'legacy'
+                            ? "prose-li:text-white/80"
+                            : "prose-li:text-[var(--color-text-main)]",
 
                         // Table styles
                         "prose-table:w-full prose-table:border-collapse prose-table:my-10 prose-table:border prose-table:border-[var(--color-border)] prose-table:rounded-lg prose-table:overflow-hidden",
@@ -256,8 +316,8 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                         <DynamicCTA mode={article.cta_mode} config={siteConfig} />
                     </div>
 
-                    {/* Target Yield Info */}
-                    {article.target_yield && (
+                    {/* Target Yield Info - Hidden on Kominka */}
+                    {article.target_yield && siteConfig.site_id !== 'kominka' && (
                         <div className="mt-8 pt-8 border-t border-white/10">
                             <div className="flex items-center justify-between p-6 bg-white/5 rounded-xl border border-white/10">
                                 <span className="font-bold text-gray-300">想定利回り</span>

@@ -8,20 +8,92 @@ import { ShieldCheck, ArrowRight, Check, Send, Phone, Mail, MessageSquare } from
 export default function SubsidyInquiryForm() {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    
+    // Form States
+    const [formData, setFormData] = useState({
+        lastName: '',
+        firstName: '',
+        address: '',
+        phone: '',
+        email: '',
+        consultations: [] as string[],
+        preference: 'phone'
+    });
+
+    // Handle pre-filling from simulation
+    React.useEffect(() => {
+        const stored = localStorage.getItem("subsidy_result");
+        if (stored) {
+            try {
+                const result = JSON.parse(stored);
+                const parts = result.applicableSubsidies?.map((s: any) => s.name).join(', ') || '';
+                const maxAmount = result.totalMaxAmount?.toLocaleString() || '';
+                
+                setFormData(prev => ({
+                    ...prev,
+                    consultations: ['補助金について詳しく知りたい'],
+                    // Store detailed context in a hidden or message field if needed
+                    // For now, let's just pre-fill the name or message
+                }));
+                
+                console.log("[Form] Detected simulation result. Pre-filling context.");
+            } catch (e) {
+                console.error("Failed to parse stored result", e);
+            }
+        }
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
         
-        // Simulating API call
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        console.log("Subsidy Inquiry Submitted");
-        router.push("/inquiry/thanks");
+        try {
+            const message = `
+【補助金相談】
+住所: ${formData.address}
+相談内容: ${formData.consultations.join(', ')}
+希望連絡方法: ${formData.preference}
+
+※シミュレーション結果がある場合はここに詳細を付記することも可能
+            `.trim();
+
+            const response = await fetch('/api/inquiry', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: `${formData.lastName} ${formData.firstName}`,
+                    email: formData.email || 'no-email@provided.com',
+                    phone: formData.phone,
+                    message: message,
+                    type: 'SUBSIDY_INQUIRY'
+                })
+            });
+
+            if (response.ok) {
+                console.log("Subsidy Inquiry Submitted Successfully");
+                router.push("/inquiry/thanks");
+            } else {
+                alert("送信に失敗しました。時間をおいて再度お試しください。");
+            }
+        } catch (error) {
+            console.error("Submission error:", error);
+            alert("通信エラーが発生しました。");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const toggleConsultation = (item: string) => {
+        setFormData(prev => ({
+            ...prev,
+            consultations: prev.consultations.includes(item)
+                ? prev.consultations.filter(c => c !== item)
+                : [...prev.consultations, item]
+        }));
     };
 
     return (
-        <div className="max-w-3xl mx-auto px-4 py-12">
+        <div className="max-w-3xl mx-auto px-4 py-8">
             <div className="bg-white rounded-[2.5rem] shadow-xl overflow-hidden border border-[#FEF2E4]">
                 {/* Decoration Header */}
                 <div className="h-4 bg-gradient-to-r from-[#FF9D2E] to-[#E87A00]" />
@@ -49,12 +121,16 @@ export default function SubsidyInquiryForm() {
                                     required
                                     type="text"
                                     placeholder="姓"
+                                    value={formData.lastName}
+                                    onChange={e => setFormData({ ...formData, lastName: e.target.value })}
                                     className="w-full px-6 py-4 rounded-2xl border-2 border-[#EEE] focus:border-[#FF9D2E] focus:outline-none bg-[#FFFBF7] transition-all"
                                 />
                                 <input
                                     required
                                     type="text"
                                     placeholder="名"
+                                    value={formData.firstName}
+                                    onChange={e => setFormData({ ...formData, firstName: e.target.value })}
                                     className="w-full px-6 py-4 rounded-2xl border-2 border-[#EEE] focus:border-[#FF9D2E] focus:outline-none bg-[#FFFBF7] transition-all"
                                 />
                             </div>
@@ -69,6 +145,8 @@ export default function SubsidyInquiryForm() {
                             <input
                                 required
                                 type="text"
+                                value={formData.address}
+                                onChange={e => setFormData({ ...formData, address: e.target.value })}
                                 placeholder="例：東京都渋谷区1-2-3"
                                 className="w-full px-6 py-4 rounded-2xl border-2 border-[#EEE] focus:border-[#FF9D2E] focus:outline-none bg-[#FFFBF7] transition-all"
                             />
@@ -83,6 +161,8 @@ export default function SubsidyInquiryForm() {
                             <input
                                 required
                                 type="tel"
+                                value={formData.phone}
+                                onChange={e => setFormData({ ...formData, phone: e.target.value })}
                                 placeholder="例：090-1234-5678"
                                 className="w-full px-6 py-4 rounded-2xl border-2 border-[#EEE] focus:border-[#FF9D2E] focus:outline-none bg-[#FFFBF7] transition-all"
                             />
@@ -96,6 +176,8 @@ export default function SubsidyInquiryForm() {
                             </label>
                             <input
                                 type="email"
+                                value={formData.email}
+                                onChange={e => setFormData({ ...formData, email: e.target.value })}
                                 placeholder="例：example@mail.com"
                                 className="w-full px-6 py-4 rounded-2xl border-2 border-[#EEE] focus:border-[#FF9D2E] focus:outline-none bg-[#FFFBF7] transition-all"
                             />
@@ -114,9 +196,20 @@ export default function SubsidyInquiryForm() {
                                     '概算の見積もりが欲しい',
                                     'その他のお問い合わせ',
                                 ].map(item => (
-                                    <label key={item} className="flex items-center gap-3 p-4 rounded-2xl border-2 border-[#EEE] bg-[#FFFBF7] cursor-pointer hover:border-[#FF9D2E] transition-all group">
-                                        <input type="checkbox" className="hidden peer" />
-                                        <div className="w-5 h-5 rounded border-2 border-[#DDD] peer-checked:bg-[#FF9D2E] peer-checked:border-[#FF9D2E] flex items-center justify-center transition-colors">
+                                    <label key={item} 
+                                        className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all cursor-pointer ${
+                                            formData.consultations.includes(item) ? 'border-[#FF9D2E] bg-[#FFFBF7]' : 'border-[#EEE] bg-white'
+                                        }`}
+                                    >
+                                        <input 
+                                            type="checkbox" 
+                                            className="hidden" 
+                                            checked={formData.consultations.includes(item)}
+                                            onChange={() => toggleConsultation(item)}
+                                        />
+                                        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
+                                            formData.consultations.includes(item) ? 'bg-[#FF9D2E] border-[#FF9D2E]' : 'border-[#DDD]'
+                                        }`}>
                                             <Check size={14} className="text-white" />
                                         </div>
                                         <span className="text-sm text-[#4A3F35] font-medium">{item}</span>
@@ -137,9 +230,19 @@ export default function SubsidyInquiryForm() {
                                     { id: 'email', label: 'メール', icon: Mail },
                                     { id: 'line', label: 'LINE', icon: MessageSquare },
                                 ].map(item => (
-                                    <label key={item.id} className="flex flex-col items-center gap-2 p-4 rounded-2xl border-2 border-[#EEE] bg-[#FFFBF7] cursor-pointer hover:border-[#FF9D2E] transition-all">
-                                        <input type="radio" name="preference" className="hidden peer" />
-                                        <item.icon size={20} className="text-[#888] peer-checked:text-[#E87A00]" />
+                                    <label key={item.id} 
+                                        className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all cursor-pointer ${
+                                            formData.preference === item.id ? 'border-[#FF9D2E] bg-[#FFFBF7]' : 'border-[#EEE] bg-white'
+                                        }`}
+                                    >
+                                        <input 
+                                            type="radio" 
+                                            name="preference" 
+                                            className="hidden" 
+                                            checked={formData.preference === item.id}
+                                            onChange={() => setFormData({ ...formData, preference: item.id })}
+                                        />
+                                        <item.icon size={20} className={formData.preference === item.id ? 'text-[#E87A00]' : 'text-[#888]'} />
                                         <span className="text-xs font-bold text-[#4A3F35]">{item.label}</span>
                                     </label>
                                 ))}

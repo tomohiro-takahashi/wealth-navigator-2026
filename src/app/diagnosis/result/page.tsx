@@ -1,12 +1,16 @@
 import { DiagnosisResult } from "@/components/diagnosis/DiagnosisResult";
 import { FlipResult } from "@/components/diagnosis/FlipResult";
 import SubsidyResult from "@/components/diagnosis/SubsidyResult";
+import { KominkaResult } from "@/components/diagnosis/KominkaResult";
+import { LegacyResult } from "@/components/diagnosis/LegacyResult";
 import { getBrandId } from "@/lib/brand";
 
 export default async function ResultPage() {
     const brandId = await getBrandId();
     const isFlip = brandId === 'flip';
     const isSubsidy = brandId === 'subsidy';
+    const isKominka = brandId === 'kominka';
+    const isLegacy = brandId === 'legacy';
 
     return (
         <div className={`min-h-screen transition-colors duration-500 bg-[var(--color-background)]`}>
@@ -14,6 +18,10 @@ export default async function ResultPage() {
                 <FlipResult />
             ) : isSubsidy ? (
                 <SubsidyResult />
+            ) : isKominka ? (
+                <KominkaResult />
+            ) : isLegacy ? (
+                <LegacyResult />
             ) : (
                 <DiagnosisResult />
             )}

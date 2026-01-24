@@ -10,16 +10,16 @@ export const siteConfig: SiteConfig = {
 
     theme: {
         colors: {
-            primary: "#E87A00",
-            background: "#FFFBF7",
-            accent: "#FF9D2E",
+            primary: "#D97200", // Slightly deeper orange for better contrast on white
+            background: "#FFFFFF", // Pure white for a cleaner look
+            accent: "#FF8C00", // Vibrant orange for buttons/accents
             text: {
-                main: "#4A3F35",
-                sub: "#888888",
+                main: "#2D241E", // Darker text for readability
+                sub: "#666666",
                 inverse: "#FFFFFF"
             },
-            link: "#E87A00",
-            border: "#F0E5D8"
+            link: "#D97200",
+            border: "#EAE0D5"
         },
 
         typography: {
@@ -81,14 +81,15 @@ export const siteConfig: SiteConfig = {
         title: "まずは「自分が対象か」だけ確認しませんか？",
         description: "LINEで簡単な質問に答えるだけ。30秒であなたが使える補助金と、だいたいの金額がわかります。",
         buttonText: "LINEで無料診断を受ける",
-        lineUrl: "https://line.me/R/ti/p/@subsidy_nav"
+        lineUrl: "https://line.me/R/ti/p/@subsidy_nav",
+        image: "/assets/banner-subsidy.jpg"
     },
 
     categoryNav: [
-        { id: 'learn', label: '知る', icon: 'school' },
-        { id: 'guide', label: 'ガイド', icon: 'explore' },
-        { id: 'howto', label: '流れ', icon: 'steps' },
-        { id: 'case', label: '事例', icon: 'history_edu' }
+        { id: 'learn', label: '使える制度', icon: 'school' },
+        { id: 'guide', label: '失敗しないコツ', icon: 'explore' },
+        { id: 'howto', label: '申請の流れ', icon: 'steps' },
+        { id: 'case', label: '事例を見る', icon: 'history_edu' }
     ],
     homepageLayout: 'grid'
 };

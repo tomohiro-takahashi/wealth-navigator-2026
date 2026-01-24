@@ -17,8 +17,6 @@ category: "options"
 
 この記事では、実家の3つの選択肢——「売る」「貸す」「住む（所有し続ける）」——について、それぞれのメリット・デメリット、向いている人の特徴、具体的な判断基準をお伝えします。
 
-![Family Legacy](/images/articles/real-estate-legacy-options_1.webp)
-
 ## まず、3つの選択肢を整理しましょう
 
 <table class="responsive-table">
@@ -62,8 +60,6 @@ category: "options"
 <strong>ご相談室からのひとこと：</strong><br>
 まずは複数の不動産会社に査定を依頼し、「いくらで売れるのか」の相場感を掴むことから始めてみてください。
 </div>
-
-![Key vs Coin](/images/articles/real-estate-legacy-options_2.webp)
 
 ## 選択肢2：実家を「貸す」
 
@@ -112,8 +108,6 @@ category: "options"
     </tr>
   </tbody>
 </table>
-
-![Peace of Mind](/images/articles/real-estate-legacy-options_3.webp)
 
 ## 選択肢3：実家に「住む」または「所有し続ける」
 

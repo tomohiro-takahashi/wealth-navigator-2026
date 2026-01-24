@@ -55,3 +55,20 @@ if (fs.existsSync(tsSourcePath)) {
 } else {
     console.warn(`[WARN] Frontend config not found: ${tsSourcePath}`);
 }
+
+// 3. Update .env.local for Next.js Environment Variable
+const envPath = path.resolve(__dirname, '../.env.local');
+let envContent = '';
+if (fs.existsSync(envPath)) {
+    envContent = fs.readFileSync(envPath, 'utf8');
+}
+
+const brandEnvLine = `NEXT_PUBLIC_BRAND=${brandKey}`;
+if (envContent.includes('NEXT_PUBLIC_BRAND=')) {
+    envContent = envContent.replace(/NEXT_PUBLIC_BRAND=.*/, brandEnvLine);
+} else {
+    envContent += (envContent ? '\n' : '') + brandEnvLine;
+}
+
+fs.writeFileSync(envPath, envContent);
+console.log(`✅ Updated .env.local: NEXT_PUBLIC_BRAND=${brandKey}`);

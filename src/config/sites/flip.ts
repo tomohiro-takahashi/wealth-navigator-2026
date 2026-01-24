@@ -64,7 +64,7 @@ export const siteConfig: SiteConfig = {
 
     philosophy: {
         title: "安く買って、高く売る。<br />それ以外は誤差だ。",
-        description: "不動産投資には様々な手法がある。しかしフリッピングの本質は、極めてシンプルだ。「安く買って、高く売る」。それだけだ。感情に流されず、相場の歪みを見抜き、出口から逆算して仕入れる。このロジックを徹底できる者だけが、市場で生き残る。ここは、冷徹な計算と論理だけが支配する世界。夢を語る場所ではない。"
+        description: "不動産投資には様々な手法がある。<br />しかしフリッピングの本質は、極めてシンプルだ。<br />「安く買って、高く売る」それだけだ。<br />感情に流されず、相場の歪みを見抜き、出口から逆算して仕入れる。<br />このロジックを徹底できる者だけが、市場で生き残る。<br />ここは、冷徹な計算と論理だけが支配する世界。<br />夢を語る場所ではない。"
     },
 
     bridge: {
@@ -84,10 +84,10 @@ export const siteConfig: SiteConfig = {
         type: "line_simple",
         label: "Flip Logic Community",
         title: "表に出ない<br />「仕入れ情報」がある。",
-        description: "競売の注目案件、任売の事前情報、業者ルートの非公開物件。フリッパーが本当に欲しい情報は、一般には流れてこない。メンバー限定で、週次レポートを配信中。",
+        description: "競売の注目案件、任売の事前情報、業者ルートの非公開物件。フリッパーが本当に欲しい情報は、一般には流れてこない。メンバー限定で、定時レポートを配信中。",
         buttonText: "LINEで仕入れ情報を受け取る",
         lineUrl: "https://line.me/R/ti/p/@flip_logic",
-        image: "/images/flip_lounge.jpg"
+        image: "/assets/form-flip.jpg"
     },
     homepageLayout: 'grid'
 };

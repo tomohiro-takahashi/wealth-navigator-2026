@@ -104,26 +104,55 @@ async function builderArticle() {
         console.log(`✍️  Writing content for: ${slug}`);
 
         // --- HYBRID SWITCHER LOGIC ---
-        const siteId = blueprintObj.site_id || "wealth_navigator";
+        const siteId = blueprintObj.site_id || "wealth";
+        const useClaudePrimary = siteId === "wealth";
         let result;
 
-        // Patient Gemini strategy (Cost effective)
-        const MAX_RETRIES = 5;
-        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        // 1. Primary Strategy (Wealth = Claude Opus)
+        if (useClaudePrimary) {
+            console.log(`💎 Wealth Brand detected: Using Claude Opus (Quality Mode) for ${siteId}`);
             try {
-                console.log(`⚡ Using Engine: Gemini (Attempt ${attempt}/${MAX_RETRIES}) for ${siteId}`);
-                result = await callGemini(prompt);
-                break; // Success!
-            } catch (e) {
-                console.warn(`⚠️ Gemini Attempt ${attempt} Failed: ${e.message}`);
-                if (attempt < MAX_RETRIES) {
-                    const waitSec = 60;
-                    console.log(`⏳ Quota may be exceeded. Waiting ${waitSec}s before retry...`);
-                    await new Promise(r => setTimeout(r, waitSec * 1000));
-                } else {
-                    console.error("❌ All Gemini attempts failed. To avoid Claude costs, stopping here.");
-                    throw e;
+                result = await callClaude(prompt); // Existing callClaude uses Opus
+            } catch (claudeError) {
+                console.warn(`⚠️ Claude Opus Primary Failed: ${claudeError.message}. Falling back to Gemini...`);
+            }
+        }
+
+        // 2. Gemini Strategy (Default for others, or fallback for Wealth)
+        if (!result) {
+            const MAX_RETRIES = 5;
+            for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+                try {
+                    console.log(`⚡ Using Engine: Gemini (Attempt ${attempt}/${MAX_RETRIES}) for ${siteId}`);
+                    result = await callGemini(prompt);
+                    break; // Success!
+                } catch (e) {
+                    console.warn(`⚠️ Gemini Attempt ${attempt} Failed: ${e.message}`);
+                    if (attempt < MAX_RETRIES) {
+                        const waitSec = 60;
+                        console.log(`⏳ Waiting ${waitSec}s before retry...`);
+                        await new Promise(r => setTimeout(r, waitSec * 1000));
+                    }
                 }
+            }
+        }
+
+        // 3. Recovery Plan: Fallback to Claude (Haiku/Sonnet) if Gemini fails for any brand
+        if (!result) {
+            console.log("🛡️ RECOVERY PLAN: Gemini exhausted. Activating Fallback Engine...");
+            try {
+                // For recovery, we can use Haiku to ensure the job finishes
+                const anthropic = require('@anthropic-ai/sdk');
+                const client = new anthropic.Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+                const msg = await client.messages.create({
+                    model: "claude-3-haiku-20240307",
+                    max_tokens: 4096,
+                    messages: [{ role: "user", content: prompt }]
+                });
+                result = msg.content[0].text;
+            } catch (recoveryError) {
+                console.error("❌ Recovery Plan Failed:", recoveryError);
+                throw new Error("❌ Article Generation failed completely (Gemini & Fallback exhausted).");
             }
         }
 

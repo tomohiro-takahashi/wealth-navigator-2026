@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { CheckCircle, QrCode, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { KominkaThanks } from "./KominkaThanks";
+import { LegacyThanks } from "./LegacyThanks";
 
 type Props = {
     brandId: string;
@@ -33,6 +35,14 @@ export const InquiryThanks = ({ brandId }: Props) => {
                 </div>
             </div>
         );
+    }
+
+    if (brandId === 'kominka') {
+        return <KominkaThanks />;
+    }
+
+    if (brandId === 'legacy') {
+        return <LegacyThanks />;
     }
 
     return (

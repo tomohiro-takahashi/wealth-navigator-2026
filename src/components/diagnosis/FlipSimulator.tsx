@@ -2,21 +2,21 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { FlipLogicCalculator, FlipInput } from "@/lib/calculators/flip-logic";
+import { MaoCalculator, MaoInput } from "@/lib/calculators/diagnosis-logic";
 
 export const FlipSimulator = () => {
     const router = useRouter();
-    const [input, setInput] = useState<FlipInput & { listingPrice: number }>({
-        expectedResalePrice: 0,
-        renovationCost: 0,
-        listingPrice: 0, // 売出価格 (UI上の比較用)
-        riskBufferRate: 0.1
+    const [input, setInput] = useState<MaoInput>({
+        arv: 0,
+        rehabCost: 0,
+        listPrice: 0,
+        contingencyRate: 0.1
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleCalculate = async () => {
-        if (input.expectedResalePrice <= 0 || input.listingPrice <= 0) {
+        if (input.arv <= 0 || input.listPrice <= 0) {
             alert("想定再販価格と売出価格を入力してください。");
             return;
         }
@@ -25,21 +25,20 @@ export const FlipSimulator = () => {
         // Simulate Calculation Delay
         await new Promise(resolve => setTimeout(resolve, 1500));
 
-        const result = FlipLogicCalculator.calculate(input);
+        const result = MaoCalculator.calculate(input);
         
         // Save result to localStorage for the result page
         if (typeof window !== "undefined") {
             localStorage.setItem("diagnosis_result", JSON.stringify({
                 ...result,
-                brand: 'flip',
-                listingPrice: input.listingPrice
+                brand: 'flip'
             }));
         }
 
         router.push("/diagnosis/result");
     };
 
-    const updateInput = (key: keyof typeof input, value: number) => {
+    const updateInput = (key: keyof MaoInput, value: number) => {
         setInput(prev => ({ ...prev, [key]: value }));
     };
 
@@ -70,8 +69,8 @@ export const FlipSimulator = () => {
                                 className="flex w-full min-w-0 flex-1 border-none bg-transparent h-14 text-white focus:ring-0 px-4 text-2xl font-mono"
                                 placeholder="0"
                                 type="number"
-                                value={input.expectedResalePrice || ""}
-                                onChange={(e) => updateInput('expectedResalePrice', parseInt(e.target.value) || 0)}
+                                value={input.arv || ""}
+                                onChange={(e) => updateInput('arv', parseInt(e.target.value) || 0)}
                             />
                             <div className="flex items-center pr-4 text-[#00eeff] font-bold text-xs">
                                 万円
@@ -93,8 +92,8 @@ export const FlipSimulator = () => {
                                 className="flex w-full min-w-0 flex-1 border-none bg-transparent h-14 text-white focus:ring-0 px-4 text-2xl font-mono"
                                 placeholder="0"
                                 type="number"
-                                value={input.renovationCost || ""}
-                                onChange={(e) => updateInput('renovationCost', parseInt(e.target.value) || 0)}
+                                value={input.rehabCost || ""}
+                                onChange={(e) => updateInput('rehabCost', parseInt(e.target.value) || 0)}
                             />
                             <div className="flex items-center pr-4 text-[#00eeff] font-bold text-xs">
                                 万円
@@ -116,8 +115,8 @@ export const FlipSimulator = () => {
                                 className="flex w-full min-w-0 flex-1 border-none bg-transparent h-14 text-white focus:ring-0 px-4 text-2xl font-mono"
                                 placeholder="0"
                                 type="number"
-                                value={input.listingPrice || ""}
-                                onChange={(e) => updateInput('listingPrice', parseInt(e.target.value) || 0)}
+                                value={input.listPrice || ""}
+                                onChange={(e) => updateInput('listPrice', parseInt(e.target.value) || 0)}
                             />
                             <div className="flex items-center pr-4 text-[#00eeff] font-bold text-xs">
                                 万円
@@ -137,9 +136,9 @@ export const FlipSimulator = () => {
                         {[0.1, 0.15, 0.2].map((rate) => (
                             <button
                                 key={rate}
-                                onClick={() => updateInput('riskBufferRate', rate)}
+                                onClick={() => updateInput('contingencyRate', rate)}
                                 className={`py-3 text-xs font-bold transition-all ${
-                                    input.riskBufferRate === rate
+                                    input.contingencyRate === rate
                                         ? "bg-[#00eeff] text-black"
                                         : "text-white/50 hover:bg-white/5"
                                 }`}

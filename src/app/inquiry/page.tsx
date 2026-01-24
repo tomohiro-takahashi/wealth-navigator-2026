@@ -1,6 +1,8 @@
 import { InquiryForm } from "@/components/inquiry/InquiryForm";
 import { FlipInquiryForm } from "@/components/inquiry/FlipInquiryForm";
 import SubsidyInquiryForm from "@/components/inquiry/SubsidyInquiryForm";
+import { KominkaInquiryForm } from "@/components/inquiry/KominkaInquiryForm";
+import { LegacyInquiryForm } from "@/components/inquiry/LegacyInquiryForm";
 import { Metadata } from "next";
 import { getSiteConfig } from '@/site.config';
 import { getBrandId } from "@/lib/brand";
@@ -18,6 +20,8 @@ export default async function InquiryPage() {
     const brandId = await getBrandId();
     const isFlip = brandId === 'flip';
     const isSubsidy = brandId === 'subsidy';
+    const isKominka = brandId === 'kominka';
+    const isLegacy = brandId === 'legacy';
 
     return (
         <div className={`min-h-screen pt-20 pb-20 transition-colors duration-500 bg-[var(--color-background)]`}>
@@ -38,7 +42,7 @@ export default async function InquiryPage() {
                         </>
                     ) : isSubsidy ? (
                         <>
-                            <span className="text-[var(--color-primary)] text-sm tracking-widest font-bold block mb-3 uppercase">2026年度版 Subsidy Support</span>
+                            <span className="text-[var(--color-primary)] text-sm tracking-widest font-bold block mb-3 uppercase">Subsidy Support</span>
                             <h1 className="text-3xl md:text-5xl font-black text-[var(--color-text-main)] mb-10">
                                 無料サポートのお申し込み
                             </h1>
@@ -53,6 +57,42 @@ export default async function InquiryPage() {
                                     あなたに最適なプランを無料で診断・アドバイスします。
                                 </p>
                                 <div className="w-20 h-px bg-[var(--color-primary)]/30 mx-auto mt-6"></div>
+                            </div>
+                        </>
+                    ) : isKominka ? (
+                        <>
+                            <span className="text-[#977e4e] text-sm tracking-widest font-bold block mb-3 uppercase">Property Sourcing & Consulting</span>
+                            <h1 className="text-3xl md:text-5xl font-serif font-bold text-white mb-10 text-center">
+                                高利回り物件の提案依頼
+                            </h1>
+                            <div className="max-w-3xl mx-auto text-center mb-10 px-4">
+                                <div className="w-20 h-px bg-[#977e4e]/30 mx-auto mb-6"></div>
+                                <h2 className="text-xl md:text-2xl font-serif font-bold text-white leading-snug mb-4">
+                                    「負債」を「資産」に変える。
+                                </h2>
+                                <p className="text-sm md:text-[15px] text-gray-400 font-normal leading-relaxed tracking-wide">
+                                    市場に出回る前の「原石」物件から、<br className="hidden md:block" />
+                                    あなたの収益目標に合致する投資案件を抽出・提案します。
+                                </p>
+                                <div className="w-20 h-px bg-[#977e4e]/30 mx-auto mt-6"></div>
+                            </div>
+                        </>
+                    ) : isLegacy ? (
+                        <>
+                            <span className="text-[#a68a68] text-sm tracking-widest font-bold block mb-3 uppercase">Heritage & Strategy Consulting</span>
+                            <h1 className="text-3xl md:text-5xl font-bold text-white mb-10 text-center">
+                                査定・活用相談のお申し込み
+                            </h1>
+                            <div className="max-w-3xl mx-auto text-center mb-10 px-4">
+                                <div className="w-20 h-px bg-[#a68a68]/30 mx-auto mb-6"></div>
+                                <h2 className="text-xl md:text-2xl font-bold text-white leading-snug mb-4">
+                                    実家の「これから」を、<br/>一緒に考えさせてください。
+                                </h2>
+                                <p className="text-sm md:text-[15px] text-white/60 font-normal leading-relaxed tracking-wide">
+                                    専門のスタッフがお客様の物件に合わせた最適なプランをご提案いたします。<br className="hidden md:block" />
+                                    必要事項をご記入の上、送信してください。
+                                </p>
+                                <div className="w-20 h-px bg-[#a68a68]/30 mx-auto mt-6"></div>
                             </div>
                         </>
                     ) : (
@@ -84,6 +124,10 @@ export default async function InquiryPage() {
                         <FlipInquiryForm />
                     ) : isSubsidy ? (
                         <SubsidyInquiryForm />
+                    ) : isKominka ? (
+                        <KominkaInquiryForm />
+                    ) : isLegacy ? (
+                        <LegacyInquiryForm />
                     ) : (
                         <InquiryForm />
                     )}

@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { ChevronRight, ChevronLeft, Check, Home, Building2, Calendar, HardHat, Users, MapPin } from 'lucide-react';
-import { SubsidyCalculator, SubsidyInput, SubsidyRenovationPart } from '@/lib/calculators/subsidy-logic';
+import { SubsidyDiagnosis, SubsidyInput } from '@/lib/calculators/diagnosis-logic';
 
 const STEPS = [
     { id: 'prefecture', title: 'お住まいの地域', icon: MapPin },
     { id: 'buildingType', title: '住宅の種類', icon: Home },
     { id: 'buildingAge', title: '築年数', icon: Calendar },
-    { id: 'renovationParts', title: 'リフォームの内容', icon: HardHat },
-    { id: 'householdStatus', title: '世帯の状況', icon: Users },
+    { id: 'renovationItems', title: 'リフォームの内容', icon: HardHat },
+    { id: 'householdType', title: '世帯の状況', icon: Users },
 ];
 
 const PREFECTURES = [
@@ -23,10 +23,10 @@ export default function SubsidySimulator() {
     const [currentStep, setCurrentStep] = useState(0);
     const [input, setInput] = useState<SubsidyInput>({
         prefecture: '東京都',
-        buildingType: 'house',
-        buildingAge: 'mid',
-        renovationParts: [],
-        householdStatus: ['none'],
+        buildingType: '戸建て',
+        buildingAge: '20〜30年',
+        renovationItems: [],
+        householdType: 'いずれも該当しない',
     });
 
     const handleNext = () => {
@@ -44,34 +44,21 @@ export default function SubsidySimulator() {
     };
 
     const handleCalculate = () => {
-        const result = SubsidyCalculator.calculate(input);
-        localStorage.setItem("subsidy_result", JSON.stringify(result));
+        const result = SubsidyDiagnosis.diagnose(input);
+        localStorage.setItem("diagnosis_result", JSON.stringify({
+            ...result,
+            brand: 'subsidy'
+        }));
         router.push("/diagnosis/result");
     };
 
-    const togglePart = (part: SubsidyRenovationPart) => {
+    const togglePart = (part: string) => {
         setInput(prev => ({
             ...prev,
-            renovationParts: prev.renovationParts.includes(part)
-                ? prev.renovationParts.filter(p => p !== part)
-                : [...prev.renovationParts, part]
+            renovationItems: prev.renovationItems.includes(part)
+                ? prev.renovationItems.filter(p => p !== part)
+                : [...prev.renovationItems, part]
         }));
-    };
-
-    const toggleStatus = (status: 'child' | 'elderly' | 'none') => {
-        if (status === 'none') {
-            setInput(prev => ({ ...prev, householdStatus: ['none'] }));
-            return;
-        }
-        setInput(prev => {
-            const next = prev.householdStatus.filter(s => s !== 'none');
-            return {
-                ...prev,
-                householdStatus: next.includes(status)
-                    ? next.filter(s => s !== status)
-                    : [...next, status]
-            };
-        });
     };
 
     return (
@@ -147,20 +134,18 @@ export default function SubsidySimulator() {
                     {currentStep === 2 && (
                         <div className="flex flex-col gap-3">
                             {[
-                                { id: 'new', label: '10年以内' },
-                                { id: 'mid', label: '11年 〜 20年' },
-                                { id: 'old', label: '21年以上' },
-                            ].map(item => (
+                                '10年未満', '10〜20年', '20〜30年', '30〜40年', '40年以上'
+                            ].map(age => (
                                 <button
-                                    key={item.id}
-                                    onClick={() => { setInput({ ...input, buildingAge: item.id as any }); handleNext(); }}
+                                    key={age}
+                                    onClick={() => { setInput({ ...input, buildingAge: age as any }); handleNext(); }}
                                     className={`p-6 rounded-2xl border-2 transition-all text-left flex justify-between items-center ${
-                                        input.buildingAge === item.id
+                                        input.buildingAge === age
                                             ? 'border-[var(--color-accent)] bg-[var(--color-border)] text-[var(--color-primary)]'
                                             : 'border-[var(--color-border)] bg-white text-[var(--color-text-main)] hover:border-[var(--color-accent)]'
                                     }`}
                                 >
-                                    <span className="text-lg font-bold">{item.label}</span>
+                                    <span className="text-lg font-bold">{age}</span>
                                     <ChevronRight />
                                 </button>
                             ))}
@@ -172,17 +157,19 @@ export default function SubsidySimulator() {
                             <p className="text-sm text-[var(--color-text-sub)] mb-4">※2026年度の補助金対象箇所を選択してください（複数選択可）</p>
                             <div className="grid grid-cols-1 gap-3">
                                 {[
-                                    { id: 'window', label: '窓・断熱・防音', sub: '内窓設置、ガラス交換など' },
-                                    { id: 'bath', label: 'お風呂（浴室）', sub: '高断熱浴槽、浴室乾燥機など' },
-                                    { id: 'kitchen', label: 'キッチン', sub: '対面化、掃除しやすいレンジフードなど' },
-                                    { id: 'heater', label: '給湯器・エコキュート', sub: '高効率給湯器への交換' },
-                                    { id: 'other', label: 'その他', sub: 'バリアフリー、防犯など' },
+                                    { id: '窓の断熱', label: '窓・断熱・防音', sub: '内窓設置、ガラス交換など' },
+                                    { id: '浴室', label: 'お風呂（浴室）', sub: '高断熱浴槽、浴室乾燥機など' },
+                                    { id: 'キッチン', label: 'キッチン', sub: '対面化、掃除しやすいレンジフードなど' },
+                                    { id: 'トイレ', label: 'トイレ', sub: '節水型トイレへの交換' },
+                                    { id: '給湯器', label: '給湯器・エコキュート', sub: '高効率給湯器への交換' },
+                                    { id: 'バリアフリー', label: 'バリアフリー', sub: '手すり設置、段差解消など' },
+                                    { id: 'その他', label: 'その他', sub: '外壁・屋根、防犯など' },
                                 ].map(item => {
-                                    const isSelected = input.renovationParts.includes(item.id as any);
+                                    const isSelected = input.renovationItems.includes(item.id);
                                     return (
                                         <button
                                             key={item.id}
-                                            onClick={() => togglePart(item.id as any)}
+                                            onClick={() => togglePart(item.id)}
                                             className={`p-5 rounded-2xl border-2 transition-all text-left flex items-start gap-4 ${
                                                 isSelected
                                                     ? 'border-[var(--color-accent)] bg-[var(--color-border)]'
@@ -207,18 +194,19 @@ export default function SubsidySimulator() {
 
                     {currentStep === 4 && (
                         <div className="space-y-4">
-                            <p className="text-sm text-[var(--color-text-sub)] mb-4">※複数選択可能です</p>
+                            <p className="text-sm text-[var(--color-text-sub)] mb-4">※世帯の状況を選択してください</p>
                             <div className="grid grid-cols-1 gap-3">
                                 {[
-                                    { id: 'child', label: '子育て世帯', sub: '18歳未満のお子様がいる世帯' },
-                                    { id: 'elderly', label: '高齢者等と同居', sub: '60歳以上の方、または障がいをお持ちの方' },
-                                    { id: 'none', label: '特になし', sub: '上記に当てはまらない場合' },
+                                    { id: '18歳未満の子どもがいる', label: '子育て世帯', sub: '18歳未満のお子様がいる世帯' },
+                                    { id: '夫婦どちらかが39歳以下', label: '若者夫婦世帯', sub: 'ご夫婦のいずれかが39歳以下の世帯' },
+                                    { id: '要介護・要支援の方がいる', label: '高齢者・介護世帯', sub: '60歳以上の方、または要介護・要支援認定者がいる世帯' },
+                                    { id: 'いずれも該当しない', label: '特になし', sub: '上記に当てはまらない場合' },
                                 ].map(item => {
-                                    const isSelected = input.householdStatus.includes(item.id as any);
+                                    const isSelected = input.householdType === item.id;
                                     return (
                                         <button
                                             key={item.id}
-                                            onClick={() => toggleStatus(item.id as any)}
+                                            onClick={() => { setInput({ ...input, householdType: item.id }); handleNext(); }}
                                             className={`p-5 rounded-2xl border-2 transition-all text-left flex items-start gap-4 ${
                                                 isSelected
                                                     ? 'border-[var(--color-accent)] bg-[var(--color-border)]'
@@ -256,14 +244,14 @@ export default function SubsidySimulator() {
                 )}
                 <button
                     onClick={handleNext}
-                    disabled={currentStep === 3 && input.renovationParts.length === 0}
+                    disabled={currentStep === 3 && input.renovationItems.length === 0}
                     className={`flex-[2] py-5 rounded-full text-white font-bold flex items-center justify-center gap-2 transition-all shadow-lg ${
-                        currentStep === 3 && input.renovationParts.length === 0
+                        currentStep === 3 && input.renovationItems.length === 0
                         ? 'bg-gray-300 cursor-not-allowed shadow-none'
                         : 'bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-primary)] hover:scale-[1.02] active:scale-95'
                     }`}
                 >
-                    {currentStep === STEPS.length - 1 ? '2026年度版 診断結果を見る' : '次へ進む'}
+                    {currentStep === STEPS.length - 1 ? '診断結果を見る' : '次へ進む'}
                     <ChevronRight size={20} />
                 </button>
             </div>

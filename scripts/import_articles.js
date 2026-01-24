@@ -85,9 +85,17 @@ async function main() {
         // 1. Read Content
         let content = fs.readFileSync(args.file, 'utf8');
 
-
         // STRIP FRONTMATTER: Use regex to remove YAML block at the start
         content = content.replace(/^---[\s\S]*?---\s*/, '').trim();
+
+        // CONVERT MARKDOWN TO HTML (if not already polished)
+        // This ensures the structure is preserved in MicroCMS Rich Text fields.
+        const { marked } = require('marked');
+        const isMarkdown = /^#|[\n\r]#|^- |^\* |^\d+\. /.test(content);
+        if (isMarkdown && !content.startsWith('<')) {
+            console.log('[INFO] Detected Markdown content. Converting to HTML before import...');
+            content = marked.parse(content);
+        }
 
         // SPLIT EXPERT TIP: Extract <div class="expert-box">...</div>
         // If expert_tip is not provided in args, try to extract it.
