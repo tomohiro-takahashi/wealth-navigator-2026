@@ -19,16 +19,16 @@ const client = createClient({
 });
 
 /**
- * Handle image: Copy to public/images/articles/ and return relative path
+ * Handle image: Copy to public/images/articles/[slug]/ and return relative path
  */
-function handleImage(imagePath) {
+function handleImage(imagePath, slug) {
     if (!fs.existsSync(imagePath)) {
         throw new Error(`Image file not found: ${imagePath}`);
     }
 
     const fileName = path.basename(imagePath);
-    // Dest: public/images/articles/
-    const destDir = path.resolve(__dirname, '../public/images/articles');
+    // Dest: public/images/articles/[slug]/
+    const destDir = path.resolve(__dirname, `../public/images/articles/${slug}`);
     if (!fs.existsSync(destDir)) {
         fs.mkdirSync(destDir, { recursive: true });
     }
@@ -38,7 +38,7 @@ function handleImage(imagePath) {
     console.log(`[LOCAL] Copied image to: ${destPath}`);
 
     // Return URL path relative to public root
-    return `/images/articles/${fileName}`;
+    return `/images/articles/${slug}/${fileName}`;
 }
 
 /**
@@ -112,8 +112,9 @@ async function main() {
         }
 
         // 2. Handle Images (Local Copy)
+        let eyecatchUrl = null;
         if (args.images.length > 0) {
-            console.log(`Processing ${args.images.length} images...`);
+            console.log(`Processing ${args.images.length} images for slug: ${args.slug || 'default'}...`);
 
             for (let i = 0; i < args.images.length; i++) {
                 const imagePath = args.images[i];
@@ -121,7 +122,11 @@ async function main() {
 
                 try {
                     // Start local handler
-                    const imageUrl = handleImage(imagePath);
+                    const imageUrl = handleImage(imagePath, args.slug || 'default');
+                    
+                    if (i === 0) {
+                        eyecatchUrl = imageUrl;
+                    }
 
                     // Replace placeholder in content
                     if (content.includes(imageIdPlaceholder)) {

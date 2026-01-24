@@ -9,18 +9,18 @@ const client = createClient({
 async function check() {
     const res = await client.getList({
         endpoint: 'articles',
-        queries: { limit: 10 }
+        queries: { limit: 1 }
     });
     
-    console.log('--- MicroCMS Current Articles ---');
-    res.contents.forEach(a => {
-        console.log(`Title: ${a.title}`);
-        console.log(`Slug: ${a.slug}`);
-        console.log(`Content Length: ${a.content ? a.content.length : 0}`);
-        console.log(`Category: ${JSON.stringify(a.category)}`);
-        console.log(`Site ID: ${JSON.stringify(a.site_id)}`);
-        console.log('---');
-    });
+    if (res.contents.length > 0) {
+        const article = res.contents[0];
+        console.log('--- Raw Keys found in MicroCMS Article ---');
+        console.log(Object.keys(article).join(', '));
+        console.log('--- Sample Data ---');
+        console.log(JSON.stringify(article, null, 2));
+    } else {
+        console.log('No articles found in MicroCMS ARTICLES endpoint.');
+    }
 }
 
 check();
