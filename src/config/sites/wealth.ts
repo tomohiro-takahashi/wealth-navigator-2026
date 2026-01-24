@@ -88,5 +88,6 @@ export const siteConfig: SiteConfig = {
         buttonText: "LINEで「極秘情報」を受け取る",
         lineUrl: "https://line.me/R/ti/p/@wealth-navigator",
         image: "/images/wealth_lounge.jpg"
-    }
+    },
+    inquiry: { sheetName: "Wealth_Inquiry" }
 };

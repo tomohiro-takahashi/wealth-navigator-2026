@@ -49,11 +49,13 @@ export async function POST(request: Request) {
         // B. Google Sheets (Append)
         // ---------------------------------------------------------
         try {
-            const hasCreds = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY && process.env.GOOGLE_SHEET_ID;
-            console.log(`[Sheet] Credentials Check: ${!!hasCreds}`);
+            const spreadsheetId = siteConfig.inquiry?.spreadsheetId || process.env.GOOGLE_SHEET_ID;
+            const sheetName = siteConfig.inquiry?.sheetName || 'Sheet1';
+            
+            const hasCreds = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL && process.env.GOOGLE_PRIVATE_KEY && spreadsheetId;
+            console.log(`[Sheet] Credentials Check: ${!!hasCreds}, Target: ${spreadsheetId}, Sheet: ${sheetName}`);
 
             if (hasCreds) {
-                console.log(`[Sheet] Target Sheet ID: ${process.env.GOOGLE_SHEET_ID}`);
                 const auth = new google.auth.GoogleAuth({
                     credentials: {
                         client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
@@ -65,10 +67,10 @@ export async function POST(request: Request) {
                 const sheets = google.sheets({ version: 'v4', auth });
                 const timestamp = new Date().toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
 
-                console.log("[Sheet] Appending row...");
+                console.log(`[Sheet] Appending row to ${sheetName}...`);
                 await sheets.spreadsheets.values.append({
-                    spreadsheetId: process.env.GOOGLE_SHEET_ID,
-                    range: 'Sheet1!A:F',
+                    spreadsheetId: spreadsheetId,
+                    range: `${sheetName}!A:F`,
                     valueInputOption: 'USER_ENTERED',
                     requestBody: {
                         values: [
@@ -78,7 +80,7 @@ export async function POST(request: Request) {
                 });
                 console.log("[Sheet] Append success.");
             } else {
-                console.log("[Sheet] Credentials missing, skipping.");
+                console.log("[Sheet] Credentials or Sheet ID missing, skipping.");
             }
         } catch (sheetError) {
             console.error("[Sheet] Error:", sheetError);

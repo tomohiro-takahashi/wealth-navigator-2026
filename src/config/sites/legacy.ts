@@ -89,5 +89,6 @@ export const siteConfig: SiteConfig = {
         lineUrl: "https://line.me/R/ti/p/@legacy_guard",
         image: "/images/legacy_lounge.jpg"
     },
-    homepageLayout: 'grid'
+    homepageLayout: 'grid',
+    inquiry: { sheetName: "Legacy_Inquiry" }
 };

@@ -91,5 +91,6 @@ export const siteConfig: SiteConfig = {
         { id: 'howto', label: '申請の流れ', icon: 'steps' },
         { id: 'case', label: '事例を見る', icon: 'history_edu' }
     ],
-    homepageLayout: 'grid'
+    homepageLayout: 'grid',
+    inquiry: { sheetName: "Subsidy_Inquiry" }
 };

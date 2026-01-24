@@ -89,5 +89,6 @@ export const siteConfig: SiteConfig = {
         lineUrl: "https://line.me/R/ti/p/@kominka",
         image: "/assets/banner-kominka.jpg"
     },
-    homepageLayout: 'grid'
+    homepageLayout: 'grid',
+    inquiry: { sheetName: "Kominka_Inquiry" }
 };

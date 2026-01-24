@@ -90,4 +90,8 @@ export type SiteConfig = {
     categoryNav: SiteCategory[];
     filters?: string[]; // article filters
     homepageLayout?: 'list' | 'grid';
+    inquiry?: {
+        spreadsheetId?: string;
+        sheetName?: string;
+    };
 };

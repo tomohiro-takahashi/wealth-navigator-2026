@@ -89,5 +89,6 @@ export const siteConfig: SiteConfig = {
         lineUrl: "https://line.me/R/ti/p/@flip_logic",
         image: "/assets/form-flip.jpg"
     },
-    homepageLayout: 'grid'
+    homepageLayout: 'grid',
+    inquiry: { sheetName: "Flip_Inquiry" }
 };
