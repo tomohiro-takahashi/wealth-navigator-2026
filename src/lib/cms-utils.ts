@@ -21,10 +21,14 @@ export async function getUnifiedArticles(siteId: string, options?: { limit?: num
     // 1. Fetch Local Articles
     const localArticles = getLocalArticles().filter(a => a.site_id === siteId);
 
-    // 2. Fetch MicroCMS Articles
+    // 2. Fetch MicroCMS Articles (Filtered by Brand)
     const cmsData = await getList('articles', {
-        limit: options?.limit || 20,
+        limit: options?.limit || 50,
+        queries: {
+            filters: `site_id[contains]${siteId}`,
+        }
     });
+
     // Ensure CMS articles have the same eyecatch fallback logic and category safety
     const cmsArticles = (cmsData.contents as Article[]).map(a => ({
         ...a,

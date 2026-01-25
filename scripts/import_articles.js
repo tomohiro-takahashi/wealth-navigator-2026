@@ -1,246 +1,130 @@
 
+const { createClient } = require('microcms-js-sdk');
 const fs = require('fs');
 const path = require('path');
-const { createClient } = require('microcms-js-sdk');
-require('dotenv').config({ path: path.resolve(__dirname, '../.env.local'), override: true });
+const matter = require('gray-matter');
+const { marked } = require('marked');
+require('dotenv').config({ path: '.env.local' });
 
-// Configuration
-const SERVICE_DOMAIN = process.env.MICROCMS_SERVICE_DOMAIN;
-const API_KEY = process.env.MICROCMS_API_KEY?.trim();
-
-if (!SERVICE_DOMAIN || !API_KEY) {
-    console.error('Error: MICROCMS_SERVICE_DOMAIN and MICROCMS_API_KEY are required in .env.local');
-    process.exit(1);
-}
-
+// Initialize MicroCMS Client
 const client = createClient({
-    serviceDomain: SERVICE_DOMAIN,
-    apiKey: API_KEY,
+    serviceDomain: process.env.MICROCMS_SERVICE_DOMAIN,
+    apiKey: process.env.MICROCMS_API_KEY,
 });
 
-/**
- * Handle image: Copy to public/images/articles/[slug]/ and return relative path
- */
-function handleImage(imagePath, slug) {
-    if (!fs.existsSync(imagePath)) {
-        throw new Error(`Image file not found: ${imagePath}`);
-    }
+const args = require('minimist')(process.argv.slice(2));
 
-    const fileName = path.basename(imagePath);
-    // Dest: public/images/articles/[slug]/
-    const destDir = path.resolve(__dirname, `../public/images/articles/${slug}`);
-    if (!fs.existsSync(destDir)) {
-        fs.mkdirSync(destDir, { recursive: true });
-    }
-
-    const destPath = path.join(destDir, fileName);
-    fs.copyFileSync(imagePath, destPath);
-    console.log(`[LOCAL] Copied image to: ${destPath}`);
-
-    // Return URL path relative to public root
-    return `/images/articles/${slug}/${fileName}`;
-}
-
-/**
- * Parse CLI arguments
- */
-function parseArgs() {
-    const args = process.argv.slice(2);
-    const parsed = { images: [] };
-    for (let i = 0; i < args.length; i++) {
-        const arg = args[i];
-        if (arg === '--images') {
-            // Collect all subsequent arguments until the next flag
-            let j = i + 1;
-            while (j < args.length && !args[j].startsWith('--')) {
-                parsed.images.push(args[j]);
-                j++;
-            }
-            i = j - 1;
-        } else if (arg.startsWith('--')) {
-            const key = arg.slice(2);
-            const value = args[i + 1];
-            if (value && !value.startsWith('--')) {
-                parsed[key] = value;
-                i++;
-            } else {
-                parsed[key] = true;
-            }
-        }
-    }
-    return parsed;
-}
-
-async function main() {
-    const args = parseArgs();
-
-    // Validate required arguments for minimal operation
-    if (!args.file || !args.title) {
-        console.error('Usage: node scripts/import_articles.js --file <path> --title <title> [options]');
-        process.exit(1);
-    }
-
+async function importArticle() {
     try {
+        if (!args.file) throw new Error('Usage: node import_articles.js --file <md_file_path> [--force-reset]');
 
-        // 1. Read Content
-        let content = fs.readFileSync(args.file, 'utf8');
+        console.log(`[IMPORT] Starting for: ${args.file}`);
 
-        // STRIP FRONTMATTER: Use regex to remove YAML block at the start
-        content = content.replace(/^---[\s\S]*?---\s*/, '').trim();
+        const fileAbsPath = path.resolve(args.file);
+        const rawFileContent = fs.readFileSync(fileAbsPath, 'utf8');
+        let { data: frontmatter, content } = matter(rawFileContent);
 
-        // CONVERT MARKDOWN TO HTML (if not already polished)
-        // This ensures the structure is preserved in MicroCMS Rich Text fields.
-        const { marked } = require('marked');
-        // Improved detection: Check if it's NOT already HTML and contains common Markdown patterns
+        // 1. Content Normalization (Markdown -> HTML)
         const isAlreadyHtml = /<[a-z][\s\S]*>/i.test(content.substring(0, 500));
         const hasMarkdownPatterns = /^#|[\n\r]#|^- |^\* |^\d+\. |!\[.*\]\(.*\)/m.test(content);
         
         if (!isAlreadyHtml || hasMarkdownPatterns) {
-            console.log('[INFO] Content appears to be Markdown or Hybrid. Converting to clean HTML...');
+            console.log('[INFO] Content appears to be Markdown. Converting to clean HTML...');
             content = marked.parse(content);
         }
 
-        // SPLIT EXPERT TIP: Extract <div class="expert-box">...</div>
-        // If expert_tip is not provided in args, try to extract it.
-        // Always remove it from body to prevent duplication with the ExpertTip component.
-        const expertTipRegex = /<div class="expert-box">([\s\S]*?)<\/div>/;
-        const expertTipMatch = content.match(expertTipRegex);
-        if (expertTipMatch) {
-            const extractedTip = expertTipMatch[1].trim();
-            console.log('[INFO] Extracted Expert Tip from content.');
-            if (!args.expert_tip) {
-                args.expert_tip = extractedTip;
-            }
-            content = content.replace(expertTipRegex, '').trim();
-        }
+        // 2. Data Preparation
+        const slug = args.slug || frontmatter.slug || path.basename(args.file, '.md');
+        let title = args.title || frontmatter.title || 'No Title';
 
-        // 2. Handle Images (Local Copy)
-        let eyecatchUrl = null;
-        if (args.images.length > 0) {
-            console.log(`Processing ${args.images.length} images for slug: ${args.slug || 'default'}...`);
-
-            for (let i = 0; i < args.images.length; i++) {
-                const imagePath = args.images[i];
-                const imageIdPlaceholder = `IMAGE_ID_${i + 1}`;
-
-                try {
-                    // Start local handler
-                    const imageUrl = handleImage(imagePath, args.slug || 'default');
-                    
-                    if (i === 0) {
-                        eyecatchUrl = imageUrl;
-                    }
-
-                    // Replace placeholder in content
-                    if (content.includes(imageIdPlaceholder)) {
-                        content = content.replace(new RegExp(imageIdPlaceholder, 'g'), imageUrl);
-                        console.log(`[REPLACED] ${imageIdPlaceholder} -> ${imageUrl}`);
-                    } else {
-                        console.warn(`[WARN] Placeholder ${imageIdPlaceholder} not found in content.`);
-                    }
-
-                } catch (error) {
-                    console.warn(`[WARN] Image processing failed for ${imagePath}: ${error.message}`);
-                }
+        // Title Fallback
+        if (title === 'No Title' || title === 'undefined') {
+            const h1Match = content.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || content.match(/^# (.*)$/m);
+            if (h1Match) {
+                title = h1Match[1].replace(/<[^>]+>/g, '').trim();
+                console.log(`[INFO] Extracted title from content: "${title}"`);
             }
         }
 
-        // 3. Construct Payload (Only include fields if present in args)
+        // DNA Mapping (Site ID & Category)
+        let siteId = args.site_id || frontmatter.site_id || 'wealth';
+        let categories = args.category ? (args.category.includes('[') ? JSON.parse(args.category.replace(/'/g, '"')) : [args.category]) : (frontmatter.category ? (Array.isArray(frontmatter.category) ? frontmatter.category : [frontmatter.category]) : ['column']);
+
+        // 3. Assemble Payload
         const payload = {
-            title: args.title,
-            content: content, // Content is always updated from file
+            title: title,
+            content: content,
+            slug: slug,
+            site_id: [siteId],
+            category: categories,
+            meta_title: args.meta_title || frontmatter.meta_title || title,
+            meta_description: args.meta_description || frontmatter.meta_description || '',
+            keywords: args.keywords || frontmatter.keywords || '',
+            expert_tip: args.expert_tip || frontmatter.expert_tip || '',
+            target_yield: parseFloat(args.target_yield || frontmatter.target_yield) || 0,
+            publishedAt: args.date || frontmatter.publishedAt || new Date().toISOString(),
         };
 
-        if (args.category) {
-            let category = args.category;
-
-            // DNA Category Mapping (Rich Object Support)
-            try {
-                const dnaPath = path.resolve(__dirname, '../src/dna.config.json');
-                const dna = require(dnaPath);
-
-                // Check new structure: categories[key].id
-                if (dna.categories && dna.categories[category]) {
-                    const catObj = dna.categories[category];
-                    console.log(`🧬 DNA Category Mapping: ${category} -> ${catObj.id} (${catObj.name})`);
-                    category = catObj.id;
-                }
-                // Check legacy map (just in case)
-                else if (dna.category_map && dna.category_map[category]) {
-                    category = dna.category_map[category];
-                }
-            } catch (e) {
-                // Ignore if DNA config issue
-            }
-
-            payload.category = [category];
-        }
-        if (args.slug) payload.slug = args.slug;
-        if (args.target_yield) payload.target_yield = args.target_yield;
-        if (args.expert_tip) payload.expert_tip = args.expert_tip;
-        if (args.meta_title) payload.meta_title = args.meta_title;
-        if (args.meta_description) payload.meta_description = args.meta_description;
-        if (args.keywords) payload.keywords = args.keywords;
-        // Site ID Logic: CLI Arg > DNA Config > Default
-        let siteId = args.site_id;
-        if (!siteId) {
-            try {
-                const dnaPath = path.resolve(__dirname, '../src/dna.config.json');
-                if (fs.existsSync(dnaPath)) {
-                    const dna = require(dnaPath);
-                    // Support both camelCase and snake_case in DNA
-                    siteId = dna.identity?.siteId || dna.identity?.site_id;
-                    if (siteId) {
-                        console.log(`🧬 DNA Site ID Detected: ${siteId}`);
-                    }
-                }
-            } catch (e) {
-                // Ignore
+        // Extract Expert Tip if present in HTML
+        if (!payload.expert_tip) {
+            const expertMatch = content.match(/<div class="expert-box">([\s\S]*?)<\/div>/);
+            if (expertMatch) {
+                payload.expert_tip = expertMatch[1].replace(/【.*?】/, '').trim();
+                console.log('[INFO] Extracted Expert Tip from HTML content.');
             }
         }
-        if (siteId) payload.site_id = [siteId]; // Treat as Array (Multi-Select/Tag pattern)
 
-        // Check for existing article with same title
-        console.log(`Checking for existing article with title: "${args.title}"...`);
-        const { contents: existingArticles } = await client.getList({
+        // 4. Special Field: Eyecatch
+        // If local 01.webp exists, use it as eyecatch URL (relative to base)
+        const localEyecatch = path.join(process.cwd(), `public/images/articles/${slug}/01.webp`);
+        if (fs.existsSync(localEyecatch)) {
+            console.log(`[INFO] Auto-detected local eyecatch: /images/articles/${slug}/01.webp`);
+            payload.eyecatch = {
+                url: `${process.env.NEXT_PUBLIC_BASE_URL || ''}/images/articles/${slug}/01.webp`
+            };
+        }
+
+        // 5. Sync to MicroCMS
+        console.log(`[CMS] Checking for existing article: "${title}" (Slug: ${slug})`);
+        
+        // Find by Slug first (safer than title)
+        const { contents: existingBySlug } = await client.getList({
             endpoint: 'articles',
-            queries: { filters: `title[equals]${args.title}` }
+            queries: { filters: `slug[equals]${slug}` }
         });
 
-        if (existingArticles.length > 0) {
-            const existingId = existingArticles[0].id;
-            console.log(`[FOUND] Existing article found (ID: ${existingId}). Updating...`);
-            
-            if (args['force-reset']) {
-                console.log('⚠️ [FORCE RESET] Overwriting MicroCMS content entirely with local file content.');
-                // In force-reset, we DON'T try to preserve existing CMS-only edits or merges
-            } else {
-                console.log('[INFO] Normal update mode. AI-generated images in CMS will be preserved if scripts are run sequentially.');
-            }
+        let existingId = existingBySlug.length > 0 ? existingBySlug[0].id : null;
 
+        if (!existingId) {
+            // Backup search by title
+            const { contents: existingByTitle } = await client.getList({
+                endpoint: 'articles',
+                queries: { filters: `title[equals]${title}` }
+            });
+            if (existingByTitle.length > 0) existingId = existingByTitle[0].id;
+        }
+
+        if (existingId) {
+            console.log(`[UPDATE] Found article ID: ${existingId}. Syncing...`);
             await client.update({
                 endpoint: 'articles',
                 contentId: existingId,
                 content: payload,
             });
-            console.log(`[SUCCESS] Article updated! ID: ${existingId}`);
+            console.log('✅ Update successful.');
         } else {
-            console.log('[NEW] No existing article found. Creating new article...');
-            // For creation, we might want defaults if fields are mandatory, 
-            // but for now let's send what we have. API might validation error if missing required.
-            if (!payload.category) payload.category = ['overseas']; // Default for creation only
-
-            await client.create({
+            console.log('[CREATE] No article found. Creating new...');
+            const newRes = await client.create({
                 endpoint: 'articles',
                 content: payload,
             });
-            console.log(`[SUCCESS] Article created!`);
+            console.log(`✅ Creation successful! ID: ${newRes.id}`);
         }
 
     } catch (error) {
-        console.error('[ERROR] Import failed:', error.message);
+        console.error('❌ Sync Failed:', error.message);
         process.exit(1);
     }
 }
 
-main();
+importArticle();

@@ -74,7 +74,9 @@ async function masterRecovery() {
     console.log('🚀 MASTER QUALITY RECOVERY SYSTEM v1.0');
     console.log('='.repeat(60));
 
-    const files = fs.readdirSync(ARTICLES_DIR).filter(f => f.endsWith('.md') && f !== 'wealth-navigator-manifesto.md');
+    const files = fs.readdirSync(ARTICLES_DIR).filter(f => f.endsWith('.md') && 
+        f !== 'wealth-navigator-manifesto.md' && 
+        !f.startsWith('article-')); // Skip temporary files
 
     for (const file of files) {
         const filePath = path.join(ARTICLES_DIR, file);
@@ -85,13 +87,20 @@ async function masterRecovery() {
         const rawContent = fs.readFileSync(filePath, 'utf8');
         const { data: frontmatter, content } = matter(rawContent);
         
-        let metaTitle = frontmatter.meta_title || frontmatter.title;
+        let title = frontmatter.title;
+        // Fallback for missing frontmatter title: try to find H1 in content
+        if (!title) {
+            const h1Match = content.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || content.match(/^# (.*)$/m);
+            title = h1Match ? h1Match[1].replace(/<[^>]+>/g, '').trim() : slug;
+        }
+
+        let metaTitle = frontmatter.meta_title || title;
         let metaDesc = frontmatter.description || frontmatter.meta_description;
         let keywords = frontmatter.keywords;
         const brand = frontmatter.site_id || 'wealth';
         const category = frontmatter.category || 'column';
 
-        // 1. Meta Intelligence: Generate if missing
+        /* 1. Meta Intelligence: Disable for now to fix visual issues fast
         if (!metaDesc || !keywords) {
             try {
                 const aiMeta = await generateMeta(frontmatter.title || slug, content);
@@ -110,10 +119,9 @@ async function masterRecovery() {
                 console.log(`   ✅ Local MD updated with new Meta Tags.`);
             } catch (e: any) {
                 console.warn(`   ⚠️ AI Meta Generation failed: ${e.message}`);
-                metaDesc = metaDesc || frontmatter.title || "不動産投資と資産形成の専門メディア。";
-                keywords = keywords || "不動産投資, 資産形成";
             }
         }
+        */
 
         // 2. Force Re-Import (Sync to CMS)
         console.log(`   📤 Re-importing to MicroCMS (Force Reset)...`);
