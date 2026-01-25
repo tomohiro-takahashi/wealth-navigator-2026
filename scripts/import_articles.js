@@ -75,14 +75,8 @@ async function importArticle() {
         }
 
         // 4. Special Field: Eyecatch
-        // If local 01.webp exists, use it as eyecatch URL (relative to base)
-        const localEyecatch = path.join(process.cwd(), `public/images/articles/${slug}/01.webp`);
-        if (fs.existsSync(localEyecatch)) {
-            console.log(`[INFO] Auto-detected local eyecatch: /images/articles/${slug}/01.webp`);
-            payload.eyecatch = {
-                url: `${process.env.NEXT_PUBLIC_BASE_URL || ''}/images/articles/${slug}/01.webp`
-            };
-        }
+        // [REMOVED] 'eyecatch' field is not configured in MicroCMS. 
+        // We rely on frontend fallback: /images/articles/${slug}/01.webp
 
         // 5. Sync to MicroCMS
         console.log(`[CMS] Checking for existing article: "${title}" (Slug: ${slug})`);

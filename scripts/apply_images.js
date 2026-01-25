@@ -10,7 +10,8 @@ const mappings = [
     { src: 'tokyo_one_room_01', dest: '2026-01-18-tokyo-one-room-alchemy/01.webp' },
     { src: 'kominka_strategy_01', dest: '2026-01-24-kominka-vacant-house-strategy/01.webp' },
     { src: 'renovation_subsidy_01', dest: '2026-01-23-renovation-subsidy-guide/01.webp' },
-    { src: 'flip_strategy_01', dest: '2026-01-24-flip-rotation-strategy/01.webp' }
+    { src: 'flip_strategy_01', dest: '2026-01-24-flip-rotation-strategy/01.webp' },
+    { src: 'malaysia_js_sez_01', dest: 'malaysia-js-sez-tax-scheme/01.webp' }
 ];
 
 const brainDir = '/Users/takahashitomohiro/.gemini/antigravity/brain/9f52e896-ffc0-4af6-9082-825c289a79ec';
