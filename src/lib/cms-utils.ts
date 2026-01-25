@@ -29,16 +29,19 @@ export async function getUnifiedArticles(siteId: string, options?: { limit?: num
         }
     });
 
-    // Ensure CMS articles have the same eyecatch fallback logic and category safety
-    const cmsArticles = (cmsData.contents as Article[]).map(a => ({
-        ...a,
-        category: a.category || [],
-        eyecatch: a.eyecatch || {
-            url: `/images/articles/${a.slug}/01.webp`,
-            height: 600,
-            width: 800
-        }
-    }));
+    // --- Hard Isolation Logic ---
+    // Even if CMS filters leak, we only keep articles where site_id field actually contains our siteId
+    const cmsArticles = (cmsData.contents as Article[])
+        .filter(a => ((a.site_id as any) || []).includes(siteId)) 
+        .map(a => ({
+            ...a,
+            category: a.category || [],
+            eyecatch: a.eyecatch || {
+                url: `/images/articles/${a.slug}/01.webp`,
+                height: 600,
+                width: 800
+            }
+        }));
 
     // 3. Merge and Sort
     // We use slug as unique identifier to avoid duplicates if mirrored

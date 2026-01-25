@@ -50,6 +50,31 @@ async function importArticle() {
         let siteId = args.site_id || frontmatter.site_id || 'wealth';
         let categories = args.category ? (args.category.includes('[') ? JSON.parse(args.category.replace(/'/g, '"')) : [args.category]) : (frontmatter.category ? (Array.isArray(frontmatter.category) ? frontmatter.category : [frontmatter.category]) : ['column']);
 
+        // --- Brand Integrity: Category Validation ---
+        try {
+            const dnaPath = path.join(process.cwd(), `src/dna.config.${siteId}.json`);
+            if (fs.existsSync(dnaPath)) {
+                const dna = JSON.parse(fs.readFileSync(dnaPath, 'utf8'));
+                const validCategoryKeys = Object.keys(dna.categories || {});
+                
+                if (validCategoryKeys.length > 0) {
+                    const filteredCategories = categories.filter(c => validCategoryKeys.includes(c));
+                    if (filteredCategories.length === 0) {
+                        const defaultCat = validCategoryKeys[0];
+                        console.warn(`⚠️ [BRAND PROTECT] Category "${categories.join(',')}" is invalid for brand "${siteId}". Falling back to: "${defaultCat}"`);
+                        categories = [defaultCat];
+                    } else if (filteredCategories.length < categories.length) {
+                        console.warn(`⚠️ [BRAND PROTECT] Removed invalid categories for ${siteId}. Keeping: ${filteredCategories.join(',')}`);
+                        categories = filteredCategories;
+                    }
+                }
+            } else {
+                console.warn(`⚠️ [BRAND PROTECT] DNA config for "${siteId}" not found. Skipping validation.`);
+            }
+        } catch (catError) {
+            console.warn(`⚠️ [BRAND PROTECT] Category validation failed: ${catError.message}`);
+        }
+
         // 3. Assemble Payload
         const payload = {
             title: title,

@@ -313,7 +313,7 @@ async function architectArticle(topic, category) {
         try {
             const anthropic = require('@anthropic-ai/sdk'); 
             const client = new anthropic.Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-            const model = (brand === 'wealth') ? "claude-3-opus-20240229" : "claude-3-5-sonnet-20240620";
+            const model = (brand === 'wealth') ? "claude-3-opus-latest" : "claude-3-5-sonnet-latest";
             
             console.log(`🧠 Using Claude model: ${model}`);
             const msg = await client.messages.create({
@@ -422,9 +422,12 @@ async function architectArticle(topic, category) {
         const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
         let slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
         
-        // Fallback for non-ASCII topics (like Japanese)
+        // Fallback for non-ASCII topics (like Japanese) - use deterministic hashing to avoid duplicates
         if (!slug || slug === '-' || /[^\x00-\x7F]/.test(topic)) {
-            slug = `${today}-${Date.now()}`;
+            const crypto = require('crypto');
+            const hash = crypto.createHash('md5').update(topic).digest('hex').substring(0, 8);
+            slug = `${today}-${hash}`;
+            console.log(`[INFO] Non-ASCII topic detected. Generated deterministic slug: ${slug}`);
         } else {
             // Prepend date to slugs for consistency
             if (!slug.startsWith(today)) {
