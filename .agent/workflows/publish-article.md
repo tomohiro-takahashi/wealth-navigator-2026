@@ -132,7 +132,7 @@ This workflow automates the research, writing, image generation, and ingestion o
 // turbo
 
 1. **Stage Images**:
-   - Run `git add public/images/tmp/`.
+   - Run `git add public/images/articles/`.
 2. **Commit**:
    - Run `git commit -m "Deploy optimized WebP images for auto-generated article: [TOPIC]"`.
 3. **Push**:
@@ -146,7 +146,7 @@ This workflow automates the research, writing, image generation, and ingestion o
 1. Read `expert_tip.txt` into a variable.
 2. Read `metadata.json` and parse `meta_title`, `meta_description`, and `keywords`.
 3. Execute ingestion script:
-   - Command: `node scripts/import_articles.js --file content_draft.html --title "[TOPIC]" --category "[CATEGORY]" --slug "[TOPIC_SLUG]" --expert_tip "$(cat expert_tip.txt)" --target_yield "0" --meta_title "META_TITLE_FROM_JSON" --meta_description "META_DESC_FROM_JSON" --keywords "KEYWORDS_FROM_JSON" --images public/images/tmp/[TOPIC_SLUG]_1.webp public/images/tmp/[TOPIC_SLUG]_2.webp public/images/tmp/[TOPIC_SLUG]_3.webp`
+   - Command: `node scripts/import_articles.js --file content_draft.html --title "[TOPIC]" --category "[CATEGORY]" --slug "[TOPIC_SLUG]" --expert_tip "$(cat expert_tip.txt)" --target_yield "0" --meta_title "META_TITLE_FROM_JSON" --meta_description "META_DESC_FROM_JSON" --keywords "KEYWORDS_FROM_JSON" --images public/images/articles/[TOPIC_SLUG]/01.webp public/images/articles/[TOPIC_SLUG]/02.webp public/images/articles/[TOPIC_SLUG]/03.webp`
 
 # Step 5: Manual Video Prompt Generation (8s Cut)
 

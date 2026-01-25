@@ -30,8 +30,10 @@ async function runAll() {
 
             // Final brand don't need to wait
             if (i < BRANDS.length - 1) {
-                const waitMin = 2;
+                const waitMin = 30;
+                const nextRun = new Date(Date.now() + waitMin * 60000);
                 console.log(`\n⏳ Cooling down for ${waitMin} minutes to prevent API Rate Limits...`);
+                console.log(`📅 Next brand (${BRANDS[i+1]}) will start at: ${nextRun.toLocaleTimeString()}`);
                 execSync(`sleep ${waitMin * 60}`);
             }
 

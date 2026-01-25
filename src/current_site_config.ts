@@ -1,39 +1,41 @@
 import { SiteConfig } from '@/types/site';
 
 export const siteConfig: SiteConfig = {
-    name: "親の家、どうする？",
-    tagline: "実家を'負担'から'資産'に変える、たったひとつの選択。",
-    description: "実家じまい、相続不動産の売却・活用、遺品整理、家族信託の専門サイト。",
-    email: "consult@legacy-guard.jp",
-    site_id: "legacy",
-    pinnedSlug: "real-estate-legacy-options",
+    name: "おうちの補助金相談室",
+    tagline: "おばあちゃんでもわかる、補助金でお得にリフォーム。",
+    description: "窓、お風呂、給湯器のリフォームに使える補助金を、日本一やさしく解説。相談から申請、工事までワンストップ。",
+    email: "info@subsidy-nav.jp",
+    site_id: "subsidy",
+    pinnedSlug: "2026-renovation-subsidy-guide",
 
     theme: {
         colors: {
-            primary: "#1a1a1a",
-            background: "#191919",
-            accent: "#A68966",
+            primary: "#D97200", // Slightly deeper orange for better contrast on white
+            background: "#FFFFFF", // Pure white for a cleaner look
+            accent: "#FF8C00", // Vibrant orange for buttons/accents
             text: {
-                main: "#FFFFFF",
-                sub: "#8D8675",
+                main: "#2D241E", // Darker text for readability
+                sub: "#666666",
                 inverse: "#FFFFFF"
             },
-            link: "#A68966",
-            border: "#8D8675"
+            link: "#D97200",
+            border: "#EAE0D5"
         },
+
         typography: {
             fontFamily: "sans",
-            h2: "text-4xl md:text-6xl font-light italic text-[#A68966]"
+            h2: "text-4xl md:text-5xl font-black tracking-tight text-[#4A3F35]"
         },
-        rounded: "lg"
+
+        rounded: "2xl"
     },
 
     hero: {
-        title: "実家問題、<br />終わらせよう。",
-        subtitle: "「いつかやらなきゃ」を、<br />「今日、解決」に。",
-        heroImage: "/assets/hero-legacy.jpg",
+        title: "知らないだけで、<br />損してます",
+        subtitle: "リフォームおばちゃんが教える<br />誰でもかんたん補助金活用術",
+        heroImage: "/assets/hero-subsidy.jpg",
         primaryButton: {
-            text: "選択肢を診断してみる",
+            text: "使える補助金を30秒で診断",
             url: "/simulation"
         },
         secondaryButton: {
@@ -43,52 +45,52 @@ export const siteConfig: SiteConfig = {
     },
 
     premium: {
-        title: "解決事例",
-        btnText: "すべての事例を見る"
+        title: "2026年 人気の補助金活用事例",
+        btnText: "すべての活用事例を見る"
     },
 
     features: [
         {
-            title: "心の準備",
-            description: "感情の整理・罪悪感の解消。実家じまいは親不孝ではない。"
+            title: "申請は業者がやってくれます",
+            description: "2026年度の住宅省エネ補助金は、リフォーム会社が申請を代行。あなたがやることは、補助対象の工事を選ぶだけ。"
         },
         {
-            title: "選択肢を知る",
-            description: "売る・貸す・活かす、どれが正解か。家族会議の進め方。"
+            title: "窓・お風呂・給湯器、全部対象です",
+            description: "先進的窓リノベ2026で最大200万円、子育てエコホームで最大60万円、給湯省エネで約20万円。組み合わせればさらにお得。"
         },
         {
-            title: "手続き・税金",
-            description: "具体的な手続き・税金を知りたい。相続登記、譲渡所得税、特例活用。"
+            title: "実績豊富なアドバイザー",
+            description: "最新の補助金制度を熟知した専門家が、あなたの工事内容に合わせた最適な組み合わせを提案します。"
         }
     ],
 
     philosophy: {
-        title: "「先送り」が、<br />最も高くつく。",
-        description: "親の家を相続したけれど、どうすればいいかわからない。売るのは親不孝な気がする。でも維持するのも大変。そんな気持ち、よくわかります。ただ、知っておいてほしいのです。空き家は放置するほど、価値が下がり、リスクが増える。相続登記の義務化、固定資産税の増額、近隣トラブル…。「いつかやる」の「いつか」は、永遠に来ません。一人で抱え込まなくて大丈夫。一緒に、最適な選択肢を見つけましょう。"
+        title: "快適な暮らしを、負担なく。",
+        description: "国は今、省エネやバリアフリー改修を強力に支援しています。2026年の制度を正しく使えば、自己負担はぐっと減らせます。"
     },
 
     bridge: {
-        title: "「どうすればいいかわからない」<br />その状態で大丈夫です。",
-        description: "売るべきか、貸すべきか、まだ決まっていなくてOK。まずは現状を整理するところから。相続・不動産の専門スタッフが、あなたのペースに合わせてお手伝いします。",
-        buttonText: "無料で相談予約する",
+        title: "「よくわからない」から「任せて安心」へ",
+        description: "補助金制度は毎年アップデートされます。2026年度の最新情報を熟知したプロに、まずは相談しましょう。",
+        buttonText: "無料で診断・相談する",
         url: "/inquiry"
     },
 
-    categoryNav: [
-        { id: 'mindset', label: '心の準備', icon: 'favorite' },
-        { id: 'options', label: '選択肢', icon: 'list_alt' },
-        { id: 'procedure', label: '手続き', icon: 'gavel' },
-        { id: 'case', label: '活用事例', icon: 'history_edu' }
-    ],
     cta: {
-        type: "consultation",
-        label: "Legacy Consultation",
-        title: "「実家の価値」<br />知っておきませんか？",
-        description: "売るかどうかは別として、今の実家がいくらで売れるのか。それを知っておくだけで、選択肢が見えてきます。もちろん、査定したからといって売る必要はありません。",
-        buttonText: "LINEで無料査定を依頼する",
-        lineUrl: "https://line.me/R/ti/p/@legacy_guard",
-        image: "/images/legacy_lounge.jpg"
+        type: "line_quiz",
+        title: "まずは「自分が対象か」だけ確認しませんか？",
+        description: "LINEで簡単な質問に答えるだけ。30秒であなたが使える補助金と、だいたいの金額がわかります。",
+        buttonText: "LINEで無料診断を受ける",
+        lineUrl: "https://line.me/R/ti/p/@subsidy_nav",
+        image: "/assets/banner-subsidy.jpg"
     },
+
+    categoryNav: [
+        { id: 'learn', label: '使える制度', icon: 'school' },
+        { id: 'guide', label: '失敗しないコツ', icon: 'explore' },
+        { id: 'howto', label: '申請の流れ', icon: 'steps' },
+        { id: 'case', label: '事例を見る', icon: 'history_edu' }
+    ],
     homepageLayout: 'grid',
-    inquiry: { sheetName: "Legacy_Inquiry" }
+    inquiry: { sheetName: "Subsidy_Inquiry" }
 };

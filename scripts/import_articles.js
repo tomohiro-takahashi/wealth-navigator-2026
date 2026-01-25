@@ -91,9 +91,12 @@ async function main() {
         // CONVERT MARKDOWN TO HTML (if not already polished)
         // This ensures the structure is preserved in MicroCMS Rich Text fields.
         const { marked } = require('marked');
-        const isMarkdown = /^#|[\n\r]#|^- |^\* |^\d+\. /.test(content);
-        if (isMarkdown && !content.startsWith('<')) {
-            console.log('[INFO] Detected Markdown content. Converting to HTML before import...');
+        // Improved detection: Check if it's NOT already HTML and contains common Markdown patterns
+        const isAlreadyHtml = /<[a-z][\s\S]*>/i.test(content.substring(0, 500));
+        const hasMarkdownPatterns = /^#|[\n\r]#|^- |^\* |^\d+\. |!\[.*\]\(.*\)/m.test(content);
+        
+        if (!isAlreadyHtml || hasMarkdownPatterns) {
+            console.log('[INFO] Content appears to be Markdown or Hybrid. Converting to clean HTML...');
             content = marked.parse(content);
         }
 
@@ -207,7 +210,13 @@ async function main() {
         if (existingArticles.length > 0) {
             const existingId = existingArticles[0].id;
             console.log(`[FOUND] Existing article found (ID: ${existingId}). Updating...`);
-            console.log('Update Payload:', JSON.stringify(payload, null, 2));
+            
+            if (args['force-reset']) {
+                console.log('⚠️ [FORCE RESET] Overwriting MicroCMS content entirely with local file content.');
+                // In force-reset, we DON'T try to preserve existing CMS-only edits or merges
+            } else {
+                console.log('[INFO] Normal update mode. AI-generated images in CMS will be preserved if scripts are run sequentially.');
+            }
 
             await client.update({
                 endpoint: 'articles',

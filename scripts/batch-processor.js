@@ -52,9 +52,9 @@ async function processPendingProjects() {
       const mp4Files = fs.readdirSync(clipsDir).filter(f => f.endsWith('.mp4'));
       
       // draftかつ動画がある、または動画数が不一致なら同期
+      // ハイブリッド戦略: 手動でドライブに置かれた動画がローカルの 'clips' に同期された時点で clips_ready に移行させる
       if (mp4Files.length > 0 && (config.status === 'draft' || mp4Files.length !== config.clips.length)) {
-        console.log(`  🎬 New clips detected. Syncing...`);
-        // project-managerのロジックを実行（実際にはCLIを叩くのが安全）
+        console.log(`  🎬 New manual clips detected. Syncing to project config...`);
         execSync(`node scripts/project-manager.js sync-clips ${projectId}`, { stdio: 'inherit' });
         config = JSON.parse(fs.readFileSync(configPath, 'utf-8')); // 再読み込み
       }

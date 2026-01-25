@@ -43,12 +43,20 @@ async function main() {
         for (const article of articles) {
             console.log(`\nProcessing Article: ${article.title} (ID: ${article.id})`);
 
-            let content = article.content;
+            const content: string = article.content || '';
             let updated = false;
 
-            const parts = content.split('<h2');
+            // --- CLEANUP PHASE (Self-Healing) ---
+            // Remove existing AI-generated image tags to prevent duplication
+            // Patterns: <figure class="w-full my-8">... or placeholders
+            const figureRegex = /<figure class="w-full my-8">[\s\S]*?<\/figure>/gi;
+            const placeholderRegex = /<div class="[^"]*IMAGE_LOAD_FAILED[^"]*">[\s\S]*?<\/div>/gi;
+            
+            const sanitizedContent = content.replace(figureRegex, '').replace(placeholderRegex, '');
+            
+            const parts = sanitizedContent.split('<h2');
             if (parts.length <= 1) {
-                console.log('  No H2 tags found or single section. Skipping complex insertion.');
+                console.log('  No H2 tags found or single section after cleanup. Skipping complex insertion.');
                 continue;
             }
 
@@ -90,9 +98,8 @@ async function main() {
                     }
 
                     // Create Image Tag using WebP
-                    const imgTag = `<figure class="w-full my-8"><img src="${publicPath}" alt="${article.title} - Section ${imageCount}" width="1200" height="630" class="rounded-xl shadow-lg" /></figure>`;
+                    const imgTag = `<figure class="w-full my-8"><img src="${publicPath}" alt="${article.title} - Image ${imageCount}" width="1200" height="630" class="rounded-xl shadow-lg" loading="lazy" /></figure>`;
 
-                    // Check if current part *already* starts with an image tag to avoid double insertion?
                     newContent += imgTag;
                     updated = true;
                 }

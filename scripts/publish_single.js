@@ -106,6 +106,41 @@ async function run() {
         console.log(`\n[5/7] Generating Video Prompts & Markdown Assets...`);
         execSync(`node scripts/brain_architect.js "${slug}" --type video`, { stdio: 'inherit' });
 
+        // [HYBRID STRATEGY] 5.2 Initialize Local Project for Batch Processor (Phase 1)
+        console.log(`\n[5.2/7] Preparing Project Skeleton for Phase 3...`);
+        try {
+            const projectDir = path.join(process.cwd(), 'projects', slug);
+            if (!fs.existsSync(projectDir)) fs.mkdirSync(projectDir, { recursive: true });
+            
+            const configPath = path.join(projectDir, 'config.json');
+            if (!fs.existsSync(configPath)) {
+                const config = {
+                    project_id: slug,
+                    project_name: topic,
+                    brand_id: targetBrand,
+                    status: 'draft',
+                    created_at: new Date().toISOString(),
+                    updated_at: new Date().toISOString(),
+                    video: { resolution: '1080x1920', fps: 30, aspect_ratio: '9:16' },
+                    clips: [],
+                    captions: [],
+                    audio: { use_veo_audio: true, bgm: { enabled: true, file: 'audio/bgm.mp3', volume: 0.2 } }
+                };
+                fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
+                console.log(`✅ Project Skeleton created: ${configPath}`);
+            } else {
+                console.log(`ℹ️ Project Skeleton already exists.`);
+            }
+            
+            // Ensure subdirs exist
+            ['clips', 'images', 'audio', 'captions', 'output'].forEach(d => {
+                const subDir = path.join(projectDir, d);
+                if (!fs.existsSync(subDir)) fs.mkdirSync(subDir, { recursive: true });
+            });
+        } catch (initError) {
+            console.warn(`⚠️ Project Initialization Failed: ${initError.message}`);
+        }
+
         // 5.5 Video Seed Images (動画用シード画像生成)
         console.log(`\n[5.5/7] Generating Video Seed Images...`);
         execSync(`npx tsx scripts/generate-video-seeds.ts`, { stdio: 'inherit' });
@@ -121,13 +156,8 @@ async function run() {
         // 7. Google Drive Backup
         console.log(`\n[7/7] Backing up to Google Drive...`);
         try {
-            // Backup the newly generated scripts to projects folder for safety (Optional but good for packaging)
+            // Project dir and subdirs are already created in Step 5.2
             const projectDir = path.join(process.cwd(), 'projects', slug);
-            if (!fs.existsSync(projectDir)) fs.mkdirSync(projectDir, { recursive: true });
-            
-            // プレミアム用のクリップ格納フォルダも作成
-            const clipsDir = path.join(projectDir, 'clips');
-            if (!fs.existsSync(clipsDir)) fs.mkdirSync(clipsDir, { recursive: true });
             
             // Copy assets to project folder before upload (for local record)
             const assetsToCopy = [
@@ -152,6 +182,23 @@ async function run() {
             execSync(`python3 scripts/upload_to_drive.py "${slug}"`, { stdio: 'inherit' });
         } catch (driveError) {
             console.error(`❌ Drive Backup Failed: ${driveError.message}`);
+        }
+
+        // 8. Git Sync (Release to Production)
+        console.log(`\n[8/7] Syncing Images to GitHub...`);
+        try {
+            execSync(`git add public/images/articles/${slug}`, { stdio: 'inherit' });
+            // Check if there are changes to commit
+            const status = execSync('git status --porcelain', { encoding: 'utf-8' });
+            if (status.includes(`public/images/articles/${slug}`)) {
+                execSync(`git commit -m "Deploy images for ${slug}"`, { stdio: 'inherit' });
+                execSync(`git push origin main`, { stdio: 'inherit' });
+                console.log(`✅ Images pushed to GitHub.`);
+            } else {
+                console.log(`ℹ️ No new images to push for ${slug}.`);
+            }
+        } catch (gitError) {
+            console.warn(`⚠️ Git Sync Failed: ${gitError.message}. You may need to push manually.`);
         }
 
         console.log(`\n✅ Published and Backed up successfully: ${slug}`);

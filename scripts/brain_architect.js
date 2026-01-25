@@ -142,7 +142,7 @@ async function architectVideo(slugKeyword) {
                 const anthropic = require('@anthropic-ai/sdk'); 
                 const client = new anthropic.Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
                 const msg = await client.messages.create({
-                    model: "claude-3-opus-20240229",
+                    model: "claude-3-opus-latest",
                     max_tokens: 4096,
                     messages: [{ role: "user", content: prompt }]
                 });
@@ -241,16 +241,21 @@ async function architectArticle(topic, category) {
     // Primary: Gemini 3 Flash (Cost/Speed)
     // Fallback: Claude 3.5 Sonnet (Quality/Reliability)
 
-    async function architectWithFallback(prompt) {
+    async function architectWithFallback(prompt, brand) {
         // Shared Cleaner Function
         const cleanAndParse = (text) => {
             let cleanJson = text.trim();
-            if (cleanJson.includes('```')) cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '');
+            if (cleanJson.includes('```')) {
+                cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '');
+            }
+            // Robust extraction: Find first { and last }
             const start = cleanJson.indexOf('{');
             const end = cleanJson.lastIndexOf('}');
-            if (start !== -1 && end !== -1) cleanJson = cleanJson.slice(start, end + 1);
+            if (start !== -1 && end !== -1) {
+                cleanJson = cleanJson.slice(start, end + 1);
+            }
 
-            // State machine cleaner
+            // Custom State Machine Cleaner (handles escaped chars in strings)
             let fixedJson = '';
             let inString = false;
             let escaped = false;
@@ -259,6 +264,7 @@ async function architectArticle(topic, category) {
                 if (char === '"' && !escaped) inString = !inString;
                 if (char === '\\' && !escaped) escaped = true;
                 else escaped = false;
+
                 if (inString) {
                     if (char === '\n') fixedJson += '\\n';
                     else if (char === '\r') fixedJson += '\\r';
@@ -272,13 +278,13 @@ async function architectArticle(topic, category) {
         };
 
         // 1. Try Gemini (Primary) with Retries
-        const MAX_RETRIES = 5;
+        const MAX_RETRIES = 2; // Reduced retries for faster failover
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
-                console.log(`🌐 Architect Strategy: Attempting Primary (Gemini 3 Flash)... [Attempt ${attempt}/${MAX_RETRIES}]`);
+                console.log(`🌐 Architect Strategy: Attempting Primary (Gemini 2.0 Flash)... [Attempt ${attempt}/${MAX_RETRIES}]`);
                 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
                 const model = genAI.getGenerativeModel({
-                    model: "gemini-3-flash-preview",
+                    model: "gemini-2.0-flash",
                     generationConfig: { responseMimeType: "application/json" },
                     safetySettings: [
                         { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
@@ -295,16 +301,31 @@ async function architectArticle(topic, category) {
                 console.warn(`⚠️ Gemini Attempt ${attempt} Failed: ${geminiError.message}`);
 
                 if (attempt < MAX_RETRIES) {
-                    const waitSec = 60;
-                    console.log(`⏳ Quota may be exceeded. Waiting ${waitSec}s before retry ${attempt + 1}/${MAX_RETRIES}...`);
+                    const waitSec = 30;
+                    console.log(`⏳ Waiting ${waitSec}s before retry ${attempt + 1}/${MAX_RETRIES}...`);
                     await new Promise(r => setTimeout(r, waitSec * 1000));
-                } else {
-                    console.error(`❌ All Gemini attempts failed.`);
                 }
             }
         }
 
-        throw new Error(`❌ Article Architecture failed after ${MAX_RETRIES} attempts. Gemini quota might be exhausted. Try again later.`);
+        // 2. Fallback to Claude
+        console.log("🛡️ RECOVERY PLAN: Gemini exhausted. Activating Fallback (Claude Sonnet)...");
+        try {
+            const anthropic = require('@anthropic-ai/sdk'); 
+            const client = new anthropic.Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+            const model = (brand === 'wealth') ? "claude-3-opus-20240229" : "claude-3-5-sonnet-20240620";
+            
+            console.log(`🧠 Using Claude model: ${model}`);
+            const msg = await client.messages.create({
+                model: model,
+                max_tokens: 4096,
+                messages: [{ role: "user", content: prompt }]
+            });
+            return cleanAndParse(msg.content[0].text);
+        } catch (recoveryError) {
+            console.error(`❌ Recovery Plan Failed: ${recoveryError.message}`);
+            throw new Error(`❌ Article Architecture totally failed. Gemini exhausted and Claude fallback failed.`);
+        }
     }
 
     const dnaPath = path.join(process.cwd(), 'src/dna.config.json');
@@ -315,6 +336,8 @@ async function architectArticle(topic, category) {
     } catch (e) {
         console.warn("⚠️ DNA config not found, using defaults.");
     }
+    
+    const brandId = dna.identity?.siteId || dna.identity?.site_id || 'wealth';
 
     // Load Strategy from DNA Bible Path or Fallback
     const biblePath = dna.bible_path ? path.join(process.cwd(), dna.bible_path) : STRATEGIST_BRAIN_PATH;
@@ -357,7 +380,7 @@ async function architectArticle(topic, category) {
     `;
 
     try {
-        const blueprint = await architectWithFallback(prompt);
+        const blueprint = await architectWithFallback(prompt, brandId);
 
         // Remove redundant cleaning logic here since architectWithFallback returns parsed JSON object
         /*

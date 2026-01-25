@@ -1,69 +1,69 @@
 {
     "identity": {
-        "name": "親の家、どうする？",
-        "site_id": "legacy",
-        "description": "実家を'負担'から'資産'に変える、たったひとつの選択。"
+        "name": "おうちの補助金相談室",
+        "site_id": "subsidy",
+        "description": "おばあちゃんでもわかる、補助金でお得にリフォーム。"
     },
     "persona": {
-        "tone": "Empathetic, Gentle, Consultant",
-        "first_person": "私 (相続不動産コンサルタント)",
-        "audience_level": "Beginner/Emotional",
+        "tone": "Friendly, Simple, Reliable Pro",
+        "first_person": "私 (リフォーム会社社長)",
+        "audience_level": "Beginner (Seniors)",
         "keywords": [
-            "寄り添う",
-            "家族会議",
-            "罪悪感",
-            "実家じまい"
+            "簡単",
+            "お得",
+            "国のお金",
+            "ワンストップ"
         ]
     },
     "target": {
-        "audience": "45-65yo, Heirs, Empty House Owners",
+        "audience": "55-75yo Seniors, Reform Considerers",
         "pain_points": [
-            "罪悪感",
-            "手続きが不明",
-            "税金への不安"
+            "制度が複雑",
+            "申請が面倒",
+            "騙されたくない"
         ]
     },
     "categories": {
-        "mindset": {
-            "id": "mindset",
-            "name": "心の準備について",
-            "description": "感情の整理・罪悪感の解消。",
-            "context": "Focus on 'Guilt Relief', 'Family Discussions', 'Mental Preparation'."
+        "learn": {
+            "id": "learn",
+            "name": "補助金を知る",
+            "description": "どんな補助金があるか全体像を知りたい。",
+            "context": "Focus on 'Subsidy Overview', '2026 Updates', 'Government Policy'."
         },
-        "options": {
-            "id": "options",
-            "name": "色々な選択肢",
-            "description": "売る・貸す・活かす、どれが正解か。",
-            "context": "Focus on 'Selling vs Renting', 'Utilization Options', 'Decision Framework'."
+        "guide": {
+            "id": "guide",
+            "name": "目的別ガイド",
+            "description": "自分のリフォームに使える補助金を知りたい。",
+            "context": "Focus on 'Specific Reforms (Windows, Barrier-free)', 'Eligibility', 'Matching Needs'."
         },
-        "procedure": {
-            "id": "procedure",
-            "name": "手続きの仕方",
-            "description": "具体的な手続き・税金を知りたい。",
-            "context": "Focus on 'Inheritance Tax', 'Registration', 'Legal Steps'."
+        "howto": {
+            "id": "howto",
+            "name": "申請の流れ",
+            "description": "申請方法・手続きを知りたい。",
+            "context": "Focus on 'Application Steps', 'Required Documents', 'Choosing Contractors'."
         },
         "case": {
             "id": "case",
-            "name": "活用事例",
-            "description": "実際にどうしたか事例を見たい。",
-            "context": "Focus on 'Success Stories', 'Real Life Examples', 'User Voices'."
+            "name": "事例・お得情報",
+            "description": "実際にいくら得したか知りたい。",
+            "context": "Focus on 'Success Stories', 'Amount Saved', 'Combination Techniques'."
         }
     },
-    "bible_path": "libs/brain/bibles/legacy_bible.md",
-    "strategy_path": "libs/brain/strategies/legacy_strategy.md",
+    "bible_path": "libs/brain/bibles/subsidy_bible.md",
+    "strategy_path": "libs/brain/strategies/subsidy_strategy.md",
     "cta": {
-        "label": "Legacy Consultation",
-        "title": "実家の悩み、<br />ひとりで抱えていませんか？",
-        "description": "「親になんて切り出そう…」「兄弟と揉めたくない…」<br class=\"hidden md:block\" />相続のプロが、あなたの家族にぴったりの<br />「円満な実家じまい」の進め方をアドバイスします。",
-        "buttonText": "無料相談を予約する",
-        "url": "https://line.me/R/ti/p/@legacy_guard",
-        "image": "/images/legacy_cta_bg.jpg"
+        "label": "Subsidy Checker",
+        "title": "あなたの家のリフォーム、<br />いくらもらえる？",
+        "description": "たった3分の診断で、あなたが使える補助金の<br class=\"hidden md:block\" />「最大金額」がわかります。<br />リフォーム会社に相談する前に、まずはチェック。",
+        "buttonText": "無料で補助金を診断する",
+        "url": "https://line.me/R/ti/p/@subsidy_nav",
+        "image": "/images/subsidy_lounge.jpg"
     },
     "hero": {
-        "title": "実家を、<br />負担から資産へ。",
-        "subTitle": "思い出はそのままに、<br />家族みんなが笑顔になれる選択を。",
+        "title": "リフォームは、<br />国のお金で賢く。",
+        "subTitle": "知っている人だけが得をする。<br />補助金活用のプロにお任せください。",
         "primaryButton": {
-            "text": "実家診断を始める (無料)",
+            "text": "もらえる金額を診断する (無料)",
             "url": "/simulation"
         },
         "secondaryButton": {
@@ -72,21 +72,21 @@
         }
     },
     "premium": {
-        "title": "実家活用の成功事例",
-        "btnText": "すべての事例を見る"
+        "title": "人気の補助金活用術",
+        "btnText": "すべての活用事例を見る"
     },
     "philosophy": {
-        "title": "実家じまいは、<br />家族の新しい出発。",
-        "description": "実家をどうするか。それは単なる不動産の問題ではありません。<br />親の想い、子供の事情、それぞれの人生が交差する場所です。<br /><br />でも維持するのも大変。<br />そんな気持ち、よくわかります。<br />放置すれば、リスクが増える。<br />「いつか」は永遠に来ません。<br />ひとりで抱え込まなくて大丈夫。<br /><br />私たちは、不動産のプロである前に、<br />家族の想いに寄り添う、良き相談相手でありたい。"
+        "title": "快適な暮らしを、<br />負担なく。",
+        "description": "リフォームは高い、と諦めていませんか？<br />国は今、省エネや耐震リフォームを全力で応援しています。<br />制度を正しく使えば、自己負担はぐっと減らせます。<br /><br />面倒な申請はプロにお任せ。<br />あなたは、理想の暮らしを描くだけです。"
     },
     "bridge": {
-        "title": "「罪悪感」から、<br />「前向きな解決」へ",
-        "description": "相続や空き家問題はデリケートです。<br class=\"hidden md:block\" />経験豊富な専門家と、<br class=\"text-[#B1A7A6] font-bold\">「家族の代理人」</span>として話し合う。<br />それが、後悔しない実家じまいの第一歩です。",
-        "buttonText": "相続・個別相談を予約する",
+        "title": "「よくわからない」から、<br />「任せて安心」へ",
+        "description": "補助金制度は毎年変わります。<br class=\"hidden md:block\" />最新情報を熟知したプロと、<br class=\"text-[#FFD700] font-bold\">「相談できるパートナー」</span>として繋がる。<br />それが、一番お得にリフォームする近道です。",
+        "buttonText": "補助金・個別相談を予約する",
         "url": "/inquiry"
     },
     "theme": {
-        "primaryColor": "#1a1a1a",
-        "accentColor": "#A68966"
+        "primaryColor": "#E67E22",
+        "accentColor": "#E67E22"
     }
 }
