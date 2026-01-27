@@ -76,10 +76,24 @@ async function builderArticle() {
     const blueprint = fs.readFileSync(blueprintPath, 'utf8');
     const blueprintObj = JSON.parse(blueprint); // Parse here to access site_id
     const editorBible = fs.readFileSync(EDITOR_BRAIN_PATH, 'utf8');
+    
+    // --- Brand Identity Decoupling ---
+    const siteId = blueprintObj.site_id || "wealth";
+    const brandBiblePath = path.join(process.cwd(), 'libs/brain/bibles', `${siteId}_bible.md`);
+    let brandBible = "";
+    if (fs.existsSync(brandBiblePath)) {
+        console.log(`📖 Loading Brand Bible: ${path.basename(brandBiblePath)}`);
+        brandBible = fs.readFileSync(brandBiblePath, 'utf8');
+    } else {
+        console.warn(`⚠️ No specific bible found for ${siteId}. Using generic approach.`);
+    }
 
     const prompt = `
     ${editorBible}
 
+    ## BRAND SPIRIT (PERSONALITY & MINDSET)
+    ${brandBible}
+    
     ---
     
     ## TASK: Build the Article Content

@@ -1,71 +1,69 @@
 {
     "identity": {
-        "name": "空き家錬金術",
-        "description": "放置された空き家を、年間利回り15%の資産に変える。",
-        "domain": "kominka-frontier.vercel.app",
-        "email": "info@kominka-frontier.com",
-        "site_id": "kominka",
-        "author": "Kominka Frontier Team",
-        "social": {
-            "line": "https://lin.ee/xxxxxx"
-        }
+        "name": "親の家、どうする？",
+        "site_id": "legacy",
+        "description": "実家を'負担'から'資産'に変える、たったひとつの選択。"
     },
     "persona": {
-        "role": "夢を語れる建築家 × 数字に厳しい投資家",
-        "tone": "熱量高めだが、数字の話などの重要な判断においては冷静でシャープ。「〜だ・である」調を交えつつ、夢と実利の両方を語る。",
-        "mission": "読者に古民家投資のロマンと経済的メリットを伝え、実際に行動（物件探し・購入）へ移させること。"
+        "tone": "Empathetic, Gentle, Consultant",
+        "first_person": "私 (相続不動産コンサルタント)",
+        "audience_level": "Beginner/Emotional",
+        "keywords": [
+            "寄り添う",
+            "家族会議",
+            "罪悪感",
+            "実家じまい"
+        ]
     },
     "target": {
-        "audience": "35〜55歳のサラリーマン投資家、中小企業経営者、医師・士業",
+        "audience": "45-65yo, Heirs, Empty House Owners",
         "pain_points": [
-            "次の投資先がない（都心・RCの利回り低下）",
-            "キャッシュフローが出ない",
-            "差別化できない",
-            "相続した実家の処分",
-            "リフォーム費用の不透明さ"
+            "罪悪感",
+            "手続きが不明",
+            "税金への不安"
         ]
     },
     "categories": {
-        "find": {
-            "id": "find",
-            "name": "物件を探す",
-            "description": "投資対象の物件を見つけたい。",
-            "context": "Focus on 'Finding Properties', 'Empty House Bank', 'Under 1 Million Yen' deals."
+        "mindset": {
+            "id": "mindset",
+            "name": "心の準備について",
+            "description": "感情の整理・罪悪感の解消。",
+            "context": "Focus on 'Guilt Relief', 'Family Discussions', 'Mental Preparation'."
         },
-        "renovate": {
-            "id": "renovate",
-            "name": "再生する",
-            "description": "リノベーションの方法・費用を知りたい。",
-            "context": "Focus on 'Renovation Costs', 'Subsidies', 'DIY vs Pro', 'Architectural Value'."
+        "options": {
+            "id": "options",
+            "name": "色々な選択肢",
+            "description": "売る・貸す・活かす、どれが正解か。",
+            "context": "Focus on 'Selling vs Renting', 'Utilization Options', 'Decision Framework'."
         },
-        "operate": {
-            "id": "operate",
-            "name": "民泊で稼ぐ",
-            "description": "民泊運営のノウハウを知りたい。",
-            "context": "Focus on 'Airbnb Operation', 'Occupancy Rate', 'Pricing Strategy', 'Guest Experience'."
+        "procedure": {
+            "id": "procedure",
+            "name": "手続きの仕方",
+            "description": "具体的な手続き・税金を知りたい。",
+            "context": "Focus on 'Inheritance Tax', 'Registration', 'Legal Steps'."
         },
-        "exit": {
-            "id": "exit",
-            "name": "出口戦略",
-            "description": "売却・事業承継を考えたい。",
-            "context": "Focus on 'Selling Higher', 'Exit Timing', 'Business Succession', 'Real Estate Capital Gains'."
+        "case": {
+            "id": "case",
+            "name": "活用事例",
+            "description": "実際にどうしたか事例を見たい。",
+            "context": "Focus on 'Success Stories', 'Real Life Examples', 'User Voices'."
         }
     },
-    "bible_path": "libs/brain/bibles/kominka_bible.md",
-    "strategy_path": "libs/brain/strategies/kominka_strategy.md",
+    "bible_path": "libs/brain/bibles/legacy_bible.md",
+    "strategy_path": "libs/brain/strategies/legacy_strategy.md",
     "cta": {
-        "label": "Kominka Investor Community",
-        "title": "利回り15%物件は<br />市場には出ない。",
-        "description": "本当に儲かる古民家情報は、水面下で取引されます。<br class=\"hidden md:block\" />空き家バンクに出る前の「川上情報」、<br />リフォーム費を半額にする職人リストを、<br class=\"hidden md:block\" />LINEメンバー限定で公開します。",
-        "buttonText": "非公開物件リストを受け取る",
-        "url": "https://line.me/R/ti/p/@kominka",
-        "image": "/images/kominka_lounge.jpg"
+        "label": "Legacy Consultation",
+        "title": "実家の悩み、<br />ひとりで抱えていませんか？",
+        "description": "「親になんて切り出そう…」「兄弟と揉めたくない…」<br class=\"hidden md:block\" />相続のプロが、あなたの家族にぴったりの<br />「円満な実家じまい」の進め方をアドバイスします。",
+        "buttonText": "無料相談を予約する",
+        "url": "https://line.me/R/ti/p/@legacy_guard",
+        "image": "/images/legacy_cta_bg.jpg"
     },
     "hero": {
-        "title": "放置された資産を、<br />蘇らせる。",
-        "subTitle": "眠れる古民家に、<br />新たな命と価値を。",
+        "title": "実家を、<br />負担から資産へ。",
+        "subTitle": "思い出はそのままに、<br />家族みんなが笑顔になれる選択を。",
         "primaryButton": {
-            "text": "古民家投資診断を始める (無料)",
+            "text": "実家診断を始める (無料)",
             "url": "/simulation"
         },
         "secondaryButton": {
@@ -74,21 +72,21 @@
         }
     },
     "premium": {
-        "title": "厳選された古民家",
-        "btnText": "すべての物件を見る"
+        "title": "実家活用の成功事例",
+        "btnText": "すべての事例を見る"
     },
     "philosophy": {
-        "title": "古き良きものに、<br />新しい価値を。",
-        "description": "ただの古い家ではない。それは、地域の歴史であり、文化である。<br />適切なリノベーションと戦略があれば、<br />それは高い利回りを生む最強の資産に変わる。<br /><br />空き家問題の解決と、投資家の利益。<br />その両立こそが、私たちの使命である。"
+        "title": "実家じまいは、<br />家族の新しい出発。",
+        "description": "実家をどうするか。それは単なる不動産の問題ではありません。<br />親の想い、子供の事情、それぞれの人生が交差する場所です。<br /><br />でも維持するのも大変。<br />そんな気持ち、よくわかります。<br />放置すれば、リスクが増える。<br />「いつか」は永遠に来ません。<br />ひとりで抱え込まなくて大丈夫。<br /><br />私たちは、不動産のプロである前に、<br />家族の想いに寄り添う、良き相談相手でありたい。"
     },
     "bridge": {
-        "title": "「不安な投資」から、<br />「堅実な再生」へ",
-        "description": "古民家投資は知識と経験が全てです。<br class=\"hidden md:block\" />リノベーションのプロと、<br class=\"text-[#c59f59] font-bold\">「再生のパートナー」</span>として手を組む。<br />それが、失敗しない古民家投資の条件です。",
-        "buttonText": "古民家再生・個別相談を予約する",
+        "title": "「罪悪感」から、<br />「前向きな解決」へ",
+        "description": "相続や空き家問題はデリケートです。<br class=\"hidden md:block\" />経験豊富な専門家と、<br class=\"text-[#B1A7A6] font-bold\">「家族の代理人」</span>として話し合う。<br />それが、後悔しない実家じまいの第一歩です。",
+        "buttonText": "相続・個別相談を予約する",
         "url": "/inquiry"
     },
     "theme": {
         "primaryColor": "#1a1a1a",
-        "accentColor": "#A68A56"
+        "accentColor": "#A68966"
     }
 }
