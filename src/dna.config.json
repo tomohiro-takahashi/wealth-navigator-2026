@@ -1,69 +1,53 @@
 {
     "identity": {
-        "name": "おうちの補助金相談室",
-        "site_id": "subsidy",
-        "description": "おばあちゃんでもわかる、補助金でお得にリフォーム。"
+        "name": "Wealth Navigator",
+        "site_id": "wealth",
+        "description": "Global Investment Strategies for High Net Worth Individuals."
     },
     "persona": {
-        "tone": "Friendly, Simple, Reliable Pro",
-        "first_person": "私 (リフォーム会社社長)",
-        "audience_level": "Beginner (Seniors)",
+        "tone": "Authoritative, Strategic, Premium",
+        "first_person": "私 (チーフストラテジスト)",
+        "audience_level": "High/Expert",
         "keywords": [
-            "簡単",
-            "お得",
-            "国のお金",
-            "ワンストップ"
+            "Opportunity Loss",
+            "Arbitrage",
+            "Global Macro",
+            "Tax Optimization"
         ]
     },
     "target": {
-        "audience": "55-75yo Seniors, Reform Considerers",
+        "audience": "High Net Worth Individuals (HNWI), Business Owners",
         "pain_points": [
-            "制度が複雑",
-            "申請が面倒",
-            "騙されたくない"
+            "Taxation",
+            "Inflation",
+            "Legacy Preservation"
         ]
     },
     "categories": {
-        "learn": {
-            "id": "learn",
-            "name": "補助金を知る",
-            "description": "どんな補助金があるか全体像を知りたい。",
-            "context": "Focus on 'Subsidy Overview', '2026 Updates', 'Government Policy'."
+        "domestic": {
+            "id": "domestic",
+            "name": "国内不動産",
+            "description": "都心中古マンション、J-REIT、金利戦略。",
+            "context": "Focus on 'Deny New Build Premium', 'Vintage Superiority', and 'Selection/Replacement Period'."
         },
-        "guide": {
-            "id": "guide",
-            "name": "目的別ガイド",
-            "description": "自分のリフォームに使える補助金を知りたい。",
-            "context": "Focus on 'Specific Reforms (Windows, Barrier-free)', 'Eligibility', 'Matching Needs'."
+        "overseas": {
+            "id": "overseas",
+            "name": "海外不動産",
+            "description": "成長国投資、通貨分散、タックスメリット。",
+            "context": "Focus on 'Yen Depreciation Risk', 'Ray Dalio Diversification', and 'Shelter for Assets'."
         },
-        "howto": {
-            "id": "howto",
-            "name": "申請の流れ",
-            "description": "申請方法・手続きを知りたい。",
-            "context": "Focus on 'Application Steps', 'Required Documents', 'Choosing Contractors'."
-        },
-        "case": {
-            "id": "case",
-            "name": "事例・お得情報",
-            "description": "実際にいくら得したか知りたい。",
-            "context": "Focus on 'Success Stories', 'Amount Saved', 'Combination Techniques'."
+        "column": {
+            "id": "column",
+            "name": "ストラテジー",
+            "description": "投資家心理、市場サイクル、マクロ経済。",
+            "context": "Focus on 'Howard Marks Market Cycle', 'Contrarian Courage', and 'Investor Psychology'."
         }
     },
-    "bible_path": "libs/brain/bibles/subsidy_bible.md",
-    "strategy_path": "libs/brain/strategies/subsidy_strategy.md",
-    "cta": {
-        "label": "Subsidy Checker",
-        "title": "あなたの家のリフォーム、<br />いくらもらえる？",
-        "description": "たった3分の診断で、あなたが使える補助金の<br class=\"hidden md:block\" />「最大金額」がわかります。<br />リフォーム会社に相談する前に、まずはチェック。",
-        "buttonText": "無料で補助金を診断する",
-        "url": "https://line.me/R/ti/p/@subsidy_nav",
-        "image": "/images/subsidy_lounge.jpg"
-    },
     "hero": {
-        "title": "リフォームは、<br />国のお金で賢く。",
-        "subTitle": "知っている人だけが得をする。<br />補助金活用のプロにお任せください。",
+        "title": "一流を、<br />再定義する。",
+        "subTitle": "現代のビジョナリーへ贈る、<br />至高のインサイト。",
         "primaryButton": {
-            "text": "もらえる金額を診断する (無料)",
+            "text": "「信用力」と「最適戦略」を診断する (無料)",
             "url": "/simulation"
         },
         "secondaryButton": {
@@ -72,21 +56,31 @@
         }
     },
     "premium": {
-        "title": "人気の補助金活用術",
-        "btnText": "すべての活用事例を見る"
+        "title": "厳選された物件",
+        "btnText": "すべての物件を見る"
     },
     "philosophy": {
-        "title": "快適な暮らしを、<br />負担なく。",
-        "description": "リフォームは高い、と諦めていませんか？<br />国は今、省エネや耐震リフォームを全力で応援しています。<br />制度を正しく使えば、自己負担はぐっと減らせます。<br /><br />面倒な申請はプロにお任せ。<br />あなたは、理想の暮らしを描くだけです。"
+        "title": "真の豊かさとは、<br />選択肢を持つこと。",
+        "description": "資産とは、数字の羅列ではない。それは、選択肢である。<br />望む場所に住み、望む時間を生き、望む人々と過ごす。<br />その自由を手にするための、静かなる力である。<br /><br />知識こそが、最強の防衛策。<br />そして、真の自由への最短距離である。"
     },
     "bridge": {
-        "title": "「よくわからない」から、<br />「任せて安心」へ",
-        "description": "補助金制度は毎年変わります。<br class=\"hidden md:block\" />最新情報を熟知したプロと、<br class=\"text-[#FFD700] font-bold\">「相談できるパートナー」</span>として繋がる。<br />それが、一番お得にリフォームする近道です。",
-        "buttonText": "補助金・個別相談を予約する",
+        "title": "「孤独な決断」から、<br />「確信ある選択」へ",
+        "description": "資産運用は情報戦です。30年の実績を持つプロフェッショナルを、<br class=\"hidden md:block\" />あなた専属の<span class=\"text-[#c59f59] font-bold\">「プライベート・顧問」</span>に迎え入れる。<br />それが、資産を守る最強の防衛策です。",
+        "buttonText": "資産防衛・個別相談を予約する",
         "url": "/inquiry"
     },
+    "bible_path": "libs/brain/titans_knowledge.md",
+    "strategy_path": "libs/brain/strategies/wealth_strategy.md",
+    "cta": {
+        "label": "Members Only Intelligence",
+        "title": "Webでは書けない<br />「裏情報」がある。",
+        "description": "この記事で公開したのは、氷山の一角です。<br class=\"hidden md:block\" />具体的な金融機関名、市場に出ない非公開物件、税務の核心...<br />不特定多数には公開できない「資産防衛の真実」を、<br class=\"hidden md:block\" />LINEメンバー限定で配信します。",
+        "buttonText": "LINEで「極秘情報」を受け取る",
+        "url": "https://line.me/R/ti/p/@wealth-navigator",
+        "image": "/images/wealth_lounge.jpg"
+    },
     "theme": {
-        "primaryColor": "#E67E22",
-        "accentColor": "#E67E22"
+        "primaryColor": "#1A1A1A",
+        "accentColor": "#C9A962"
     }
 }

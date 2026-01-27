@@ -202,6 +202,15 @@ async function run() {
         }
 
         console.log(`\n✅ Published and Backed up successfully: ${slug}`);
+ 
+        // 9. Batch Video Processing (Distributed Load)
+        console.log(`\n[9/7] Checking for pending video renders for ${targetBrand}...`);
+        try {
+            execSync(`node scripts/batch-processor.js --brand ${targetBrand}`, { stdio: 'inherit' });
+            console.log(`✅ Video Batch Processing for ${targetBrand} complete.`);
+        } catch (batchError) {
+            console.warn(`⚠️ Video Batch Processing partially failed or no projects found: ${batchError.message}`);
+        }
 
     } catch (error) {
         console.error(`\n❌ Publication Failed:`, error.message);

@@ -9,9 +9,12 @@ const client = createClient({
 
 async function main() {
     try {
+        const args = require('minimist')(process.argv.slice(2));
+        const slug = args.slug || 'loan-deadline-strategy';
+        
         const { contents } = await client.getList({
             endpoint: 'articles',
-            queries: { filters: 'slug[equals]loan-deadline-strategy' }
+            queries: { filters: `slug[equals]${slug}` }
         });
 
         if (contents.length === 0) {

@@ -152,8 +152,8 @@ async function architectVideo(slugKeyword) {
             }
         }
 
-        // 2. Gemini Strategy (Default for other brands, or fallback for Wealth)
-        const MAX_RETRIES = 3;
+        // 2. Gemini Strategy (Default for other brands, or fallback for Wealth) - High Persistence
+        const MAX_RETRIES = 5;
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
                 console.log(`🌐 Video Strategy: Attempting Gemini 2.0 Flash... [Attempt ${attempt}/${MAX_RETRIES}]`);
@@ -169,7 +169,7 @@ async function architectVideo(slugKeyword) {
             } catch (e) {
                 console.warn(`⚠️ Gemini Video Attempt ${attempt} Failed: ${e.message}`);
                 if (attempt < MAX_RETRIES) {
-                    const waitSec = 45; 
+                    const waitSec = 300; // 5 minute wait
                     console.log(`⏳ Waiting ${waitSec}s before retry...`);
                     await new Promise(r => setTimeout(r, waitSec * 1000));
                 }
@@ -277,8 +277,8 @@ async function architectArticle(topic, category) {
             return JSON.parse(fixedJson);
         };
 
-        // 1. Try Gemini (Primary) with Retries
-        const MAX_RETRIES = 2; // Reduced retries for faster failover
+        // 1. Try Gemini (Primary) with Retries - High Persistence for Cost Saving
+        const MAX_RETRIES = 5; 
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
                 console.log(`🌐 Architect Strategy: Attempting Primary (Gemini 2.0 Flash)... [Attempt ${attempt}/${MAX_RETRIES}]`);
@@ -301,7 +301,7 @@ async function architectArticle(topic, category) {
                 console.warn(`⚠️ Gemini Attempt ${attempt} Failed: ${geminiError.message}`);
 
                 if (attempt < MAX_RETRIES) {
-                    const waitSec = 30;
+                    const waitSec = 300; // 5 minute wait between retries
                     console.log(`⏳ Waiting ${waitSec}s before retry ${attempt + 1}/${MAX_RETRIES}...`);
                     await new Promise(r => setTimeout(r, waitSec * 1000));
                 }

@@ -1,96 +1,93 @@
 import { SiteConfig } from '@/types/site';
 
 export const siteConfig: SiteConfig = {
-    name: "おうちの補助金相談室",
-    tagline: "おばあちゃんでもわかる、補助金でお得にリフォーム。",
-    description: "窓、お風呂、給湯器のリフォームに使える補助金を、日本一やさしく解説。相談から申請、工事までワンストップ。",
-    email: "info@subsidy-nav.jp",
-    site_id: "subsidy",
-    pinnedSlug: "2026-renovation-subsidy-guide",
+    name: "Wealth Navigator",
+    tagline: "Global Investment Strategies for High Net Worth Individuals.",
+    description: "富裕層のための資産防衛・運用戦略。国内・海外不動産、タックスプランニング、ポートフォリオ構築。",
+    email: "contact@wealth-navigator.com",
+    site_id: "wealth",
+    pinnedSlug: "wealth-navigator-manifesto",
 
     theme: {
         colors: {
-            primary: "#D97200", // Slightly deeper orange for better contrast on white
-            background: "#FFFFFF", // Pure white for a cleaner look
-            accent: "#FF8C00", // Vibrant orange for buttons/accents
+            primary: "#1A1A1B",
+            background: "#F8F9FA",
+            accent: "#C5A059",
             text: {
-                main: "#2D241E", // Darker text for readability
-                sub: "#666666",
+                main: "#1A1A1B",
+                sub: "#4B5563",
                 inverse: "#FFFFFF"
             },
-            link: "#D97200",
-            border: "#EAE0D5"
+            link: "#C5A059",
+            border: "#E5E7EB"
         },
-
         typography: {
-            fontFamily: "sans",
-            h2: "text-4xl md:text-5xl font-black tracking-tight text-[#4A3F35]"
+            fontFamily: "serif",
+            h2: "text-[40px] md:text-[44px] font-medium leading-[1.2] tracking-wide font-serif"
         },
-
-        rounded: "2xl"
+        rounded: "md",
     },
 
     hero: {
-        title: "知らないだけで、<br />損してます",
-        subtitle: "リフォームおばちゃんが教える<br />誰でもかんたん補助金活用術",
-        heroImage: "/assets/hero-subsidy.jpg",
+        title: "一流を、<br />再定義する。",
+        subtitle: "現代のビジョナリーへ贈る、<br />至高のインサイト。",
         primaryButton: {
-            text: "使える補助金を30秒で診断",
+            text: "「信用力」と「最適戦略」を診断する (無料)",
             url: "/simulation"
         },
         secondaryButton: {
-            text: "はじめての方へ",
+            text: "About us 私たちについて",
             url: "/about"
-        }
+        },
+        imageQuery: "luxury modern architecture gold finance abstract"
     },
 
     premium: {
-        title: "2026年 人気の補助金活用事例",
-        btnText: "すべての活用事例を見る"
+        title: "厳選された物件",
+        btnText: "すべての物件を見る"
     },
 
     features: [
         {
-            title: "申請は業者がやってくれます",
-            description: "2026年度の住宅省エネ補助金は、リフォーム会社が申請を代行。あなたがやることは、補助対象の工事を選ぶだけ。"
+            title: "国内不動産",
+            description: "都心プライムエリアの中古マンション、一棟収益物件。流動性と資産価値を重視した選定眼。"
         },
         {
-            title: "窓・お風呂・給湯器、全部対象です",
-            description: "先進的窓リノベ2026で最大200万円、子育てエコホームで最大60万円、給湯省エネで約20万円。組み合わせればさらにお得。"
+            title: "海外不動産",
+            description: "成長著しい新興国から、安定した先進国まで。通貨分散としての海外不動産投資戦略。"
         },
         {
-            title: "実績豊富なアドバイザー",
-            description: "最新の補助金制度を熟知した専門家が、あなたの工事内容に合わせた最適な組み合わせを提案します。"
+            title: "タックスマネジメント",
+            description: "法人活用、減価償却、相続対策。税引き後の手残りキャッシュフローを最大化する。"
         }
     ],
 
     philosophy: {
-        title: "快適な暮らしを、負担なく。",
-        description: "国は今、省エネやバリアフリー改修を強力に支援しています。2026年の制度を正しく使えば、自己負担はぐっと減らせます。"
+        title: "真の豊かさとは、<br />選択肢を持つこと。",
+        description: "資産とは、数字の羅列ではない。それは、選択肢である。<br />望む場所に住み、望む時間を生き、望む人々と過ごす。<br />その自由を手にするための、静かなる力である。<br /><br />知識こそが、最強の防衛策。<br />そして、真の自由への最短距離である。"
     },
 
     bridge: {
-        title: "「よくわからない」から「任せて安心」へ",
-        description: "補助金制度は毎年アップデートされます。2026年度の最新情報を熟知したプロに、まずは相談しましょう。",
-        buttonText: "無料で診断・相談する",
-        url: "/inquiry"
-    },
-
-    cta: {
-        type: "line_quiz",
-        title: "まずは「自分が対象か」だけ確認しませんか？",
-        description: "LINEで簡単な質問に答えるだけ。30秒であなたが使える補助金と、だいたいの金額がわかります。",
-        buttonText: "LINEで無料診断を受ける",
-        lineUrl: "https://line.me/R/ti/p/@subsidy_nav",
-        image: "/assets/banner-subsidy.jpg"
+        title: "「孤独な決断」から、<br />「確信ある選択」へ",
+        description: "資産運用は情報戦です。30年の実績を持つプロフェッショナルを、<br class=\"hidden md:block\" />あなた専属の<span class=\"text-[#c59f59] font-bold\">「プライベート・顧問」</span>に迎え入れる。<br />それが、資産を守る最強の防衛策です。",
+        buttonText: "資産防衛・個別相談を予約する",
+        url: "/inquiry",
+        image: "/images/wealth_lounge.jpg"
     },
 
     categoryNav: [
-        { id: 'learn', label: '使える制度', icon: 'school' },
-        { id: 'guide', label: '失敗しないコツ', icon: 'explore' },
-        { id: 'howto', label: '申請の流れ', icon: 'steps' },
-        { id: 'case', label: '事例を見る', icon: 'history_edu' }
+        { id: 'domestic', label: '国内不動産', icon: 'apartment' },
+        { id: 'overseas', label: '海外不動産', icon: 'public' },
+        { id: 'column', label: '資産コラム', icon: 'article' }
     ],
-    homepageLayout: 'grid',
-    inquiry: { sheetName: "Subsidy_Inquiry" }
+    cta: {
+        type: "consultation",
+        label: "Members Only Intelligence",
+        title: "Webでは書けない<br />「裏情報」がある。",
+        description: "この記事で公開したのは、氷山の一角です。<br class=\"hidden md:block\" />具体的な金融機関名、市場に出ない非公開物件、税務の核心...<br />不特定多数には公開できない「資産防衛の真実」を、<br class=\"hidden md:block\" />LINEメンバー限定で配信します。",
+        buttonText: "LINEで「極秘情報」を受け取る",
+        lineUrl: "https://line.me/R/ti/p/@wealth-navigator",
+        image: "/images/wealth_lounge.jpg"
+    },
+    inquiry: { sheetName: "Wealth_Inquiry" }
 };

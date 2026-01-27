@@ -7,6 +7,8 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const args = require('minimist')(process.argv.slice(2));
+const targetBrand = args.brand;
 const projectManager = require('./project-manager'); // syncClips を再利用
 const captionGenerator = require('./caption-generator'); // generateCaptionsForProject を再利用
 
@@ -15,7 +17,7 @@ const OUTPUT_DIR = './out';
 
 async function processPendingProjects() {
   console.log('='.repeat(60));
-  console.log('Batch Video Processor v1.1 (Cloud-First)');
+  console.log(`Batch Video Processor v1.1 ${targetBrand ? `(Brand: ${targetBrand})` : '(All Brands)'}`);
   console.log('='.repeat(60));
 
   // --- Step 0: Cloud Sync (Google Drive -> Local) ---
@@ -45,6 +47,12 @@ async function processPendingProjects() {
     let config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 
     console.log(`[${projectId}] Current Status: ${config.status}`);
+ 
+    // ブランドフィルタリング
+    if (targetBrand && config.brand_id !== targetBrand) {
+      console.log(`  ⏭️  Skipping brand: ${config.brand_id}`);
+      continue;
+    }
 
     // --- Step 1: クリップの有無を確認し、自動同期 ---
     const clipsDir = path.join(projectPath, 'clips');
