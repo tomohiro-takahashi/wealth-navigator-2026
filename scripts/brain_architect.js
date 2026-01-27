@@ -452,7 +452,9 @@ async function architectArticle(topic, category) {
         
         const outputPath = path.join(ARTIFACTS_DIR, `${slug}_blueprint.json`);
 
-        blueprint.site_id = dna.identity?.siteId || dna.identity?.site_id || 'wealth_navigator';
+        // Ensure normalized site_id and category are in the blueprint
+        blueprint.site_id = siteId === 'wealth_navigator' ? 'wealth' : siteId;
+        blueprint.category = category;
 
         fs.writeFileSync(outputPath, JSON.stringify(blueprint, null, 2));
         console.log(`✅ Blueprint saved to: ${outputPath}`);

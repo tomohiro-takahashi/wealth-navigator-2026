@@ -107,6 +107,8 @@ brain.py は、以下のJSON構造を期待してAIにプロンプトを送信�
 
 ```json
 {
+  "site_id": "（wealth, kominka, flip, subsidy, legacy のいずれか）",
+  "category": "（提供されたDNAに基づく有効なカテゴリキー）",
   "target_keyword": "（ターゲットとなるSEOキーワード）",
   "h1_title": "（32文字以内のHTMLタグを含まないタイトル文字列）",
   "intro_hook": "（<p>タグで囲まれたリード文のHTML文字列。IMAGE_ID_1を含む）",
