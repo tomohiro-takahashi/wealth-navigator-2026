@@ -313,7 +313,7 @@ async function architectArticle(topic, category) {
         try {
             const anthropic = require('@anthropic-ai/sdk'); 
             const client = new anthropic.Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-            const model = (brand === 'wealth') ? "claude-3-opus-latest" : "claude-3-5-sonnet-latest";
+            const model = (brand === 'wealth') ? "claude-3-opus-20240229" : "claude-3-5-sonnet-20241022";
             
             console.log(`🧠 Using Claude model: ${model}`);
             const msg = await client.messages.create({
