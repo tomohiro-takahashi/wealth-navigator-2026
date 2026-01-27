@@ -2,7 +2,7 @@ name: Daily Multi-Media Publish
 
 on:
   schedule:
-    - cron: "0 20 * * *" # 20:00 UTC = 05:00 JST
+    - cron: "0 20,23,02,05,08 * * *" # Every 3 hours (shifted to start at 05:00 JST)
   workflow_dispatch: # Manual trigger
 
 jobs:
@@ -33,7 +33,7 @@ jobs:
       - name: Install Python Dependencies
         run: pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib python-dotenv
 
-      - name: Run Daily Publish
+      - name: Run Daily Publish (Distributed Mode)
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -42,7 +42,7 @@ jobs:
           GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
           GOOGLE_SERVICE_ACCOUNT_INFO: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_INFO }}
           GOOGLE_DRIVE_TOKEN_JSON: ${{ secrets.GOOGLE_DRIVE_TOKEN_JSON }}
-        run: npm run publish:all
+        run: node scripts/publish-all.js --distributed
 
       - name: Commit and Push Changes
         run: |

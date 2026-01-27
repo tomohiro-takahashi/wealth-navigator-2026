@@ -46,6 +46,7 @@ async function runAll() {
     console.log('Multi-Brand Master Scheduler (Sequential Category Rotation)');
     console.log('='.repeat(60));
 
+    const isDistributed = process.argv.includes('--distributed');
     const state = getJobState();
 
     for (let i = 0; i < BRANDS.length; i++) {
@@ -71,13 +72,18 @@ async function runAll() {
 
         try {
             console.log(`Executing publication pipeline for ${brand}...`);
-            // 引数は強制せず、決定したカテゴリを渡す
             execSync(`node scripts/publish_single.js ${category} ${brand}`, { stdio: 'inherit' });
             
             console.log(`✅ ${brand} publication complete.`);
             saveJobState(brand, category);
 
-            // 最後のブランド以外は待機
+            // 分散実行モード（GitHub Actions等）の場合は1つ処理して終了
+            if (isDistributed) {
+                console.log(`\n✅ Distributed mode: One brand processed. Exiting to avoid timeout.`);
+                return;
+            }
+
+            // 連続実行モード（ローカル等）の場合は待機して次へ
             const remainingBrands = BRANDS.slice(i + 1).filter(b => !getJobState().completed.includes(b));
             if (remainingBrands.length > 0) {
                 const nextRun = new Date(Date.now() + WAIT_MIN * 60000);
