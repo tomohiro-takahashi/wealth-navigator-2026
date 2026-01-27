@@ -2,11 +2,12 @@
     "identity": {
         "name": "おうちの補助金相談室",
         "site_id": "subsidy",
-        "description": "おばあちゃんでもわかる、補助金でお得にリフォーム。"
+        "description": "難しい制度を、日本一やさしく。補助金で賢く・快適なリフォームを。"
     },
     "persona": {
-        "tone": "Friendly, Simple, Reliable Pro",
-        "first_person": "私 (リフォーム会社社長)",
+        "role": "50代の補助金コンサルタント・暮らしの専門家",
+        "tone": "Empathetic, Knowledgeable, Gentle Expert",
+        "first_person": "私 (補助金コンサルタント/暮らしのアドバイザー)",
         "audience_level": "Beginner (Seniors)",
         "keywords": [
             "簡単",

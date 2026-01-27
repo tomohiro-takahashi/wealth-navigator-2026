@@ -142,7 +142,7 @@ async function architectVideo(slugKeyword) {
                 const anthropic = require('@anthropic-ai/sdk'); 
                 const client = new anthropic.Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
                 const msg = await client.messages.create({
-                    model: "claude-3-opus-latest",
+                    model: "claude-opus-4-5-20251101",
                     max_tokens: 4096,
                     messages: [{ role: "user", content: prompt }]
                 });
@@ -154,24 +154,32 @@ async function architectVideo(slugKeyword) {
 
         // 2. Gemini Strategy (Default for other brands, or fallback for Wealth) - High Persistence
         const MAX_RETRIES = 5;
-        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-            try {
-                console.log(`🌐 Video Strategy: Attempting Gemini 2.0 Flash... [Attempt ${attempt}/${MAX_RETRIES}]`);
-                const result = await model.generateContent(prompt);
-                const response = await result.response;
-                const text = response.text();
-                // Clean markdown fencing if present
-                let cleanJson = text.trim();
-                if (cleanJson.includes('```')) {
-                    cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '').trim();
-                }
-                return JSON.parse(cleanJson);
-            } catch (e) {
-                console.warn(`⚠️ Gemini Video Attempt ${attempt} Failed: ${e.message}`);
-                if (attempt < MAX_RETRIES) {
-                    const waitSec = 300; // 5 minute wait
-                    console.log(`⏳ Waiting ${waitSec}s before retry...`);
-                    await new Promise(r => setTimeout(r, waitSec * 1000));
+        const geminiModels = ["gemini-2.0-flash", "gemini-3-flash-preview"];
+        
+        for (const modelId of geminiModels) {
+            for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+                try {
+                    console.log(`🌐 Video Strategy: Attempting ${modelId}... [Attempt ${attempt}/${MAX_RETRIES}]`);
+                    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+                    const model = genAI.getGenerativeModel({
+                        model: modelId,
+                        generationConfig: { responseMimeType: "application/json" }
+                    });
+                    const result = await model.generateContent(prompt);
+                    const response = await result.response;
+                    const text = response.text();
+                    let cleanJson = text.trim();
+                    if (cleanJson.includes('```')) {
+                        cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '').trim();
+                    }
+                    return JSON.parse(cleanJson);
+                } catch (e) {
+                    console.warn(`⚠️ ${modelId} Video Attempt ${attempt} Failed: ${e.message}`);
+                    if (attempt < MAX_RETRIES) {
+                        const waitSec = 10;
+                        console.log(`⏳ Waiting ${waitSec}s before retry...`);
+                        await new Promise(r => setTimeout(r, waitSec * 1000));
+                    }
                 }
             }
         }
@@ -279,31 +287,34 @@ async function architectArticle(topic, category) {
 
         // 1. Try Gemini (Primary) with Retries - High Persistence for Cost Saving
         const MAX_RETRIES = 5; 
-        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-            try {
-                console.log(`🌐 Architect Strategy: Attempting Primary (Gemini 2.0 Flash)... [Attempt ${attempt}/${MAX_RETRIES}]`);
-                const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-                const model = genAI.getGenerativeModel({
-                    model: "gemini-2.0-flash",
-                    generationConfig: { responseMimeType: "application/json" },
-                    safetySettings: [
-                        { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
-                    ]
-                });
+        const geminiModels = ["gemini-2.0-flash", "gemini-3-flash-preview"];
+        
+        for (const modelId of geminiModels) {
+            for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+                try {
+                    console.log(`🌐 Architect Strategy: Attempting ${modelId}... [Attempt ${attempt}/${MAX_RETRIES}]`);
+                    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+                    const model = genAI.getGenerativeModel({
+                        model: modelId,
+                        generationConfig: { responseMimeType: "application/json" },
+                        safetySettings: [
+                            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" }
+                        ]
+                    });
 
-                const result = await model.generateContent(prompt);
-                const text = result.response.text();
+                    const result = await model.generateContent(prompt);
+                    const text = result.response.text();
 
-                // Validate IMMEDIATELY
-                return cleanAndParse(text);
+                    return cleanAndParse(text);
 
-            } catch (geminiError) {
-                console.warn(`⚠️ Gemini Attempt ${attempt} Failed: ${geminiError.message}`);
+                } catch (geminiError) {
+                    console.warn(`⚠️ ${modelId} Attempt ${attempt} Failed: ${geminiError.message}`);
 
-                if (attempt < MAX_RETRIES) {
-                    const waitSec = 300; // 5 minute wait between retries
-                    console.log(`⏳ Waiting ${waitSec}s before retry ${attempt + 1}/${MAX_RETRIES}...`);
-                    await new Promise(r => setTimeout(r, waitSec * 1000));
+                    if (attempt < MAX_RETRIES) {
+                        const waitSec = 10;
+                        console.log(`⏳ Waiting ${waitSec}s before retry ${attempt + 1}/${MAX_RETRIES}...`);
+                        await new Promise(r => setTimeout(r, waitSec * 1000));
+                    }
                 }
             }
         }
@@ -313,7 +324,7 @@ async function architectArticle(topic, category) {
         try {
             const anthropic = require('@anthropic-ai/sdk'); 
             const client = new anthropic.Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-            const model = (brand === 'wealth') ? "claude-3-opus-20240229" : "claude-3-5-sonnet-20241022";
+            const model = "claude-opus-4-5-20251101";
             
             console.log(`🧠 Using Claude model: ${model}`);
             const msg = await client.messages.create({

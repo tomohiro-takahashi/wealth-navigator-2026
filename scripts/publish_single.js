@@ -145,12 +145,17 @@ async function run() {
         console.log(`\n[5.5/7] Generating Video Seed Images...`);
         execSync(`npx tsx scripts/generate-video-seeds.ts`, { stdio: 'inherit' });
 
-        // 6. SNS Posts
-        console.log(`\n[6/7] Generating Social Media Posts...`);
+        // 6. X (Twitter) Automation [NEW 3+2 Strategy]
+        console.log(`\n[6/7] Generating & Syncing X Posts (3 Bible + 2 Article)...`);
         try {
-            execSync(`python3 scripts/generate_social_posts.py "${slug}"`, { stdio: 'inherit' });
+            execSync(`node scripts/generate_x_posts.js ${targetBrand} ${slug}`, { stdio: 'inherit' });
+            if (process.env.GAS_X_WEBAPP_URL) {
+                execSync(`node scripts/sync_to_gas.js ${targetBrand}`, { stdio: 'inherit' });
+            } else {
+                console.log(`ℹ️ [SKIP] GAS_X_WEBAPP_URL not set. Skipping GAS sync.`);
+            }
         } catch (snsError) {
-            console.warn(`⚠️ SNS Post Generation Failed: ${snsError.message}. Proceeding...`);
+            console.warn(`⚠️ X Post Automation Failed: ${snsError.message}. Proceeding...`);
         }
 
         // 7. Google Drive Backup

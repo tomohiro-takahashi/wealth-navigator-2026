@@ -35,10 +35,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
         if (!article) return { title: `Not Found | ${siteConfig.name}` };
 
+        const title = article.meta_title ? `${article.meta_title} | ${siteConfig.name}` : `${article.title} | ${siteConfig.name}`;
+        const description = article.meta_description || article.content.replace(/<[^>]+>/g, '').slice(0, 120) + '...';
+        const keywords = article.keywords ? article.keywords.split(',') : [];
+        const imageUrl = article.eyecatch?.url || `/images/articles/${slug}/01.webp`;
+
         return {
-            title: article.meta_title ? `${article.meta_title} | ${siteConfig.name}` : `${article.title} | ${siteConfig.name}`,
-            description: article.meta_description || article.content.replace(/<[^>]+>/g, '').slice(0, 120) + '...',
-            keywords: article.keywords ? article.keywords.split(',') : [],
+            title,
+            description,
+            keywords,
+            openGraph: {
+                title,
+                description,
+                images: [imageUrl],
+                type: 'article',
+            },
+            twitter: {
+                card: 'summary_large_image',
+                title,
+                description,
+                images: [imageUrl],
+            },
         };
     } catch {
         return {
@@ -233,7 +250,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                             : "prose-p:text-[var(--color-text-main)] prose-p:mb-8",
                         "prose-a:text-[var(--color-link)] prose-a:no-underline hover:prose-a:underline",
                         "prose-blockquote:border-l-[var(--color-accent)] prose-blockquote:bg-[var(--color-primary)]/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:not-italic prose-blockquote:text-[var(--color-text-sub)]",
-                        "prose-strong:text-white prose-strong:font-bold",
+                        "prose-strong:text-[var(--color-primary)] prose-strong:font-bold",
                         "prose-img:rounded-xl prose-img:shadow-2xl prose-img:border prose-img:border-black/5",
                         siteConfig.site_id === 'subsidy' || siteConfig.site_id === 'kominka' || siteConfig.site_id === 'flip' || siteConfig.site_id === 'legacy'
                             ? "prose-li:text-white/80"

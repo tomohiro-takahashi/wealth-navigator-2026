@@ -20,7 +20,7 @@ async function callClaude(prompt) {
             'content-type': 'application/json'
         },
         body: JSON.stringify({
-            model: 'claude-3-opus-20240229',
+            model: 'claude-opus-4-5-20251101',
             max_tokens: 8192,
             messages: [
                 { role: 'user', content: prompt }
@@ -37,13 +37,13 @@ async function callClaude(prompt) {
     return data.content[0].text;
 }
 
-async function callGemini(prompt) {
+async function callGemini(prompt, modelId = "gemini-2.0-flash") {
     if (!GOOGLE_API_KEY) {
         throw new Error("GOOGLE_API_KEY is missing in .env.local");
     }
     const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
     const model = genAI.getGenerativeModel({
-        model: "gemini-3-flash-preview",
+        model: modelId,
         generationConfig: { responseMimeType: "application/json" },
         safetySettings: [
             { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
@@ -121,17 +121,22 @@ async function builderArticle() {
         // 2. Gemini Strategy (Default for others, or fallback for Wealth)
         if (!result) {
             const MAX_RETRIES = 5;
-            for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-                try {
-                    console.log(`⚡ Using Engine: Gemini (Attempt ${attempt}/${MAX_RETRIES}) for ${siteId}`);
-                    result = await callGemini(prompt);
-                    break; // Success!
-                } catch (e) {
-                    console.warn(`⚠️ Gemini Attempt ${attempt} Failed: ${e.message}`);
-                    if (attempt < MAX_RETRIES) {
-                        const waitSec = 60;
-                        console.log(`⏳ Waiting ${waitSec}s before retry...`);
-                        await new Promise(r => setTimeout(r, waitSec * 1000));
+            const geminiModels = ["gemini-2.0-flash", "gemini-3-flash-preview"];
+            
+            for (const modelId of geminiModels) {
+                if (result) break;
+                for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+                    try {
+                        console.log(`⚡ Using Engine: ${modelId} (Attempt ${attempt}/${MAX_RETRIES}) for ${siteId}`);
+                        result = await callGemini(prompt, modelId);
+                        break; // Success!
+                    } catch (e) {
+                        console.warn(`⚠️ ${modelId} Attempt ${attempt} Failed: ${e.message}`);
+                        if (attempt < MAX_RETRIES) {
+                            const waitSec = 10;
+                            console.log(`⏳ Waiting ${waitSec}s before retry...`);
+                            await new Promise(r => setTimeout(r, waitSec * 1000));
+                        }
                     }
                 }
             }
@@ -145,7 +150,7 @@ async function builderArticle() {
                 const anthropic = require('@anthropic-ai/sdk');
                 const client = new anthropic.Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
                 const msg = await client.messages.create({
-                    model: "claude-3-haiku-20240307",
+                    model: "claude-opus-4-5-20251101",
                     max_tokens: 4096,
                     messages: [{ role: "user", content: prompt }]
                 });

@@ -86,9 +86,12 @@ async function importArticle() {
             meta_description: args.meta_description || frontmatter.meta_description || '',
             keywords: args.keywords || frontmatter.keywords || '',
             expert_tip: args.expert_tip || frontmatter.expert_tip || '',
-            target_yield: parseFloat(args.target_yield || frontmatter.target_yield) || 0,
-            publishedAt: args.date || frontmatter.publishedAt || new Date().toISOString(),
         };
+        
+        if (args.target_yield || frontmatter.target_yield) {
+            payload.target_yield = parseFloat(args.target_yield || frontmatter.target_yield) || 0;
+        }
+        payload.publishedAt = args.date || frontmatter.publishedAt || new Date().toISOString();
 
         // Extract Expert Tip if present in HTML
         if (!payload.expert_tip) {
