@@ -250,7 +250,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                             : "prose-p:text-[var(--color-text-main)] prose-p:mb-8",
                         "prose-a:text-[var(--color-link)] prose-a:no-underline hover:prose-a:underline",
                         "prose-blockquote:border-l-[var(--color-accent)] prose-blockquote:bg-[var(--color-primary)]/5 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:not-italic prose-blockquote:text-[var(--color-text-sub)]",
-                        "prose-strong:text-[var(--color-primary)] prose-strong:font-bold",
+                        // Wealth (Light theme) should be dark, others (Dark themes) should be white
+                        siteConfig.site_id === 'wealth' 
+                            ? "prose-strong:text-[#1A1A1A] prose-strong:font-bold" 
+                            : "prose-strong:text-white prose-strong:font-bold",
                         "prose-img:rounded-xl prose-img:shadow-2xl prose-img:border prose-img:border-black/5",
                         siteConfig.site_id === 'subsidy' || siteConfig.site_id === 'kominka' || siteConfig.site_id === 'flip' || siteConfig.site_id === 'legacy'
                             ? "prose-li:text-white/80"
