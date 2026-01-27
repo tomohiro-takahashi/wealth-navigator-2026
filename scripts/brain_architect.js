@@ -363,10 +363,14 @@ async function architectArticle(topic, category) {
     ---
     
     ## TASK: Create the Article Blueprint
-    You are the "Editor-in-Chief" for "${dna.identity?.name || 'the media'}".
+    You are the "Editor-in-Chief" for "${siteId === 'wealth' ? 'Wealth Navigator' : siteId === 'kominka' ? '古民家ナビゲーター' : siteId === 'flip' ? 'Flip Logic' : siteId === 'subsidy' ? 'おうちの補助金相談室' : '親の家、どうする？'}".
+    **Site ID:** ${siteId}
     **Role:** ${dna.persona?.role || 'Expert'}
     **Tone:** ${dna.persona?.tone || 'Professional'}
     **Target Audience:** ${dna.target?.audience || 'General'}
+    
+    あなたは現在、このブランドの専門家として、独自の「バイブル（思想）」に基づいた企画を立てています。
+    他のブランド（例：Wealthの時にFlipの出口戦略を語りすぎる、など）の主張を混ぜないように厳重に注意してください。
     
     Based on the "Article Production Bible" above, and the "Strategist Knowledge" below, create the JSON Blueprint for the topic: "${topic}".
 

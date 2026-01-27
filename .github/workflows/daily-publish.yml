@@ -2,7 +2,7 @@ name: Daily Multi-Media Publish
 
 on:
   schedule:
-    - cron: "0 0,3,15,18,21 * * *" # Every 3 hours (JST: 09, 12, 00, 03, 06)
+    - cron: "0 0,3,6,9,12,15,18,21 * * *" # Every 3 hours (Starts JST 09:00, 12:00, 15:00, 18:00, 21:00, 00:00, 03:00, 06:00)
   workflow_dispatch: # Manual trigger
 
 jobs:

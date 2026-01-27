@@ -96,6 +96,12 @@ async function builderArticle() {
     ## Blueprint JSON (Input)
     ${blueprint}
 
+    ## BRAND CONTEXT (CRITICAL)
+    あなたは現在、ブランド「${siteId}」の専属ライターとして執筆しています。
+    - ブランド名: ${blueprintObj.site_id === 'wealth' ? 'Wealth Navigator' : blueprintObj.site_id === 'kominka' ? '古民家ナビゲーター' : blueprintObj.site_id === 'flip' ? 'Flip Logic' : blueprintObj.site_id === 'subsidy' ? 'おうちの補助金相談室' : '親の家、どうする？'}
+    - このブランドの目的・ビジョンにのみ忠実であってください。他ブランドの主張（例：Wealthの時にFlipの出口戦略を語りすぎるなど）を混ぜないこと。
+    - **CTAについても、このブランド専用のLINE誘導や個別診断へのオファーを生成してください。**
+
     ## Output
     Return ONLY the completed JSON object. No markdown fencing, no preamble.
     `;
