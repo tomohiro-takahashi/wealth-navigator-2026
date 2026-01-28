@@ -165,8 +165,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
                 ) : (
                     <>
-                        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/60 via-[var(--color-primary)]/40 to-[var(--color-primary)] z-10" />
-                        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/60 via-[var(--color-primary)]/40 to-[var(--color-primary)] z-10" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-primary)]/40 via-transparent to-[var(--color-primary)] z-10" />
                     </>
                 )}
                 <Image
@@ -239,10 +238,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                         "prose-h1:text-2xl md:prose-h1:text-4xl prose-h1:leading-tight",
 
                         // H2 Style: Dynamic border color
-                        "prose-h2:text-2xl prose-h2:mt-16 prose-h2:mb-8 prose-h2:pl-6 prose-h2:border-l-4 prose-h2:border-[var(--color-accent)]",
+                        "prose-h2:text-xl md:prose-h2:text-2xl prose-h2:mt-16 prose-h2:mb-8 prose-h2:pl-6 prose-h2:border-l-4 prose-h2:border-[var(--color-accent)] prose-h2:leading-tight md:prose-h2:leading-snug",
 
                         // H3 Style
-                        "prose-h3:text-xl prose-h3:mt-12 prose-h3:mb-6 prose-h3:text-[var(--color-accent)]",
+                        "prose-h3:text-lg md:prose-h3:text-xl prose-h3:mt-12 prose-h3:mb-6 prose-h3:text-[var(--color-accent)] prose-h3:leading-tight",
 
                         // Text Elements
                         siteConfig.site_id === 'subsidy' || siteConfig.site_id === 'kominka'

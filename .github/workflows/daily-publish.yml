@@ -48,6 +48,6 @@ jobs:
         run: |
           git config --global user.name "GitHub Action [Bot]"
           git config --global user.email "action@github.com"
-          git add content/ projects/ public/images/ scripts/last_run.json
+          git add content/ projects/ public/images/ scripts/last_run.json content/published_history.json
           git commit -m "chore: automated content update [skip ci]" || echo "No changes to commit"
           git push

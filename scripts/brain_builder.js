@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 require('dotenv').config({ path: '.env.local' });
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
@@ -85,11 +86,33 @@ async function builderArticle() {
     
     ---
     ## TASK: Build the Article Content
-    Replace every 'content_html' instruction in the JSON below with actual High-Quality HTML content.
+    Replace every 'content_html' instruction in the JSON below with actual High-Quality content.
     Follow the "Style Rules" in the Bible (Japanese, Professional, Numbers-based).
-    Ensure total article length is around 5,000 characters.
+    
+    【TECHNICAL REQUIREMENT: FORMAT】
+    - ALWAYS USE PURE MARKDOWN for 'content_html' fields. 
+    - The building system will handle the conversion to HTML.
+    - DO NOT include raw HTML tags like <p> or <h3> inside the JSON strings.
+    - Use standard markdown headers (#, ##, ###), lists, and bolding.
+    
+    【CRITICAL REQUIREMENT: TOPIC EXCLUSIVITY】
+    - Target Topic: ${blueprintObj.target_keyword}
+    - You MUST write specifically about this topic and NOTHING ELSE. 
+    - Do NOT reuse structure or content from previous articles about different topics.
+    
+    【CRITICAL REQUIREMENT: LENGTH & DEPTH】
+    - Ensure EVERY section is extremely detailed.
+    - The TOTAL article content MUST BE NO LESS THAN 5,000 Japanese characters.
+    - Provide specific numbers, case studies, and deep insights.
 
-    ## Blueprint JSON
+    【CRITICAL REQUIREMENT: METADATA】
+    - You MUST also provide:
+      - "h1_title": A powerful, SEO-optimized title.
+      - "meta_title": For search results (60 chars max).
+      - "meta_description": Compelling summary for search (120-160 chars).
+      - "keywords": 3-5 comma-separated keywords.
+
+    ## Blueprint JSON (To Be Completed)
     ${blueprint}
 
     ## Important
@@ -100,36 +123,63 @@ async function builderArticle() {
         console.log(`✍️  Writing content for: ${slug} (Brand: ${siteId})`);
         let result;
 
-        // 1. Try Claude Sonnet 3.5 -> Gemini Flash -> Haiku
-        try {
-            console.log("🧠 Attempting Claude Sonnet...");
-            result = await callClaude(prompt, 'claude-3-5-sonnet-20240620');
-        } catch (e1) {
-            console.warn(`⚠️ Sonnet failed. Trying Gemini Flash...`);
-            try {
-                result = await callGemini(prompt, 'gemini-flash-latest');
-            } catch (e2) {
-                console.warn(`⚠️ Gemini Flash failed. Trying Haiku...`);
+        const callWithRetry = async (fn, name) => {
+            let attempts = 0;
+            const maxAttempts = 2;
+            while (attempts < maxAttempts) {
                 try {
-                    const haikuResponse = await fetch(ANTHROPIC_API_URL, {
-                        method: 'POST',
-                        headers: {
-                            'x-api-key': ANTHROPIC_API_KEY,
-                            'anthropic-version': '2023-06-01',
-                            'content-type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            model: 'claude-3-haiku-20240307',
-                            max_tokens: 4096,
-                            messages: [{ role: 'user', content: prompt }]
-                        })
-                    });
-                    if (!haikuResponse.ok) throw new Error(`Haiku failed: ${haikuResponse.status}`);
-                    const haikuData = await haikuResponse.json();
-                    result = haikuData.content[0].text;
-                } catch (e3) {
-                    console.error("❌ All models failed.");
-                    throw e3;
+                    return await fn();
+                } catch (e) {
+                    if (e.message.includes('429') && attempts < maxAttempts - 1) {
+                        console.warn(`⚠️ Rate limit (429) hit for ${name}. Sleeping for 30s before retry...`);
+                        await sleep(30000);
+                        attempts++;
+                        continue;
+                    }
+                    throw e;
+                }
+            }
+        };
+
+        // 1. Try Claude (Sonnet 3.5 fallback) -> Gemini Pro (1.5) -> Gemini 2.0 Flash -> Haiku
+        try {
+            const primaryModel = siteId === 'wealth' ? 'claude-3-opus-20240229' : 'claude-3-5-sonnet-20240620';
+            console.log(`🧠 Attempting ${primaryModel}...`);
+            result = await callWithRetry(() => callClaude(prompt, primaryModel), `Claude ${primaryModel}`);
+        } catch (e1) {
+            console.warn(`⚠️ Claude failed (${e1.message}). Trying Gemini Pro...`);
+            try {
+                // gemini-pro-latest in this environment points to 1.5 Pro
+                result = await callWithRetry(() => callGemini(prompt, 'gemini-pro-latest'), "Gemini Pro");
+            } catch (e1_5) {
+                console.warn(`⚠️ Gemini Pro failed (${e1_5.message}). Trying Gemini 2.0 Flash...`);
+                try {
+                    result = await callWithRetry(() => callGemini(prompt, 'gemini-2.0-flash'), "Gemini Flash");
+                } catch (e2) {
+                    console.warn(`⚠️ Gemini Flash failed (${e2.message}). Trying Haiku...`);
+                    try {
+                        result = await callWithRetry(async () => {
+                            const haikuResponse = await fetch(ANTHROPIC_API_URL, {
+                                method: 'POST',
+                                headers: {
+                                    'x-api-key': ANTHROPIC_API_KEY,
+                                    'anthropic-version': '2023-06-01',
+                                    'content-type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    model: 'claude-3-haiku-20240307',
+                                    max_tokens: 4096,
+                                    messages: [{ role: 'user', content: prompt }]
+                                })
+                            });
+                            if (!haikuResponse.ok) throw new Error(`Haiku failed: ${haikuResponse.status}`);
+                            const haikuData = await haikuResponse.json();
+                            return haikuData.content[0].text;
+                        }, "Claude Haiku");
+                    } catch (e3) {
+                        console.error("❌ All models failed.");
+                        throw e3;
+                    }
                 }
             }
         }
@@ -148,17 +198,18 @@ async function builderArticle() {
         try {
             contentJson = JSON.parse(cleanJson);
         } catch (e) {
-            console.warn("⚠️ JSON.parse failed. Attempting complex recovery...");
-            // Escape special chars in content but not in JSON structure
-            // This is a naive attempt, but often works for AI-generated strings
-            const repaired = cleanJson
+            console.warn("⚠️ Standard JSON.parse failed. Attempting complex recovery...");
+            let repaired = cleanJson
                 .replace(/\n/g, "\\n")
-                .replace(/\r/g, "\\r");
+                .replace(/\r/g, "\\r")
+                .replace(/\\(?!["\\\/bfnrtu])/g, "\\\\\\\\") // Fix malformed escapes
+                .replace(/,\s*([\}\]])/g, '$1'); // Trailing commas
+            
             try {
                 contentJson = JSON.parse(repaired);
             } catch (e2) {
                 console.error("❌ Recovery failed.");
-                console.log("DEBUG RAW PREVIEW:", cleanJson.substring(0, 500));
+                console.log("DEBUG RAW PREVIEW:", cleanJson.substring(0, 1000));
                 throw e2;
             }
         }
@@ -183,12 +234,20 @@ function convertToArtifacts(json, slug) {
     }
     htmlLines.push(`<h2>まとめ</h2>`, json.conclusion);
 
-    const fullHtml = htmlLines.join('\n\n');
     const today = new Date().toISOString().split('T')[0];
     const category = json.category || 'column';
     const siteId = json.site_id || 'wealth';
 
-    const articleMd = `---\ntitle: "${json.h1_title}"\npublishedAt: "${today}"\nsite_id: "${siteId}"\ncategory: "${category}"\ncoverImage: "/images/articles/${slug}/01.webp"\n---\n\n` + 
+    const articleMd = `---\n` +
+        `title: "${json.h1_title || json.meta_title}"\n` +
+        `meta_title: "${json.meta_title || json.h1_title}"\n` +
+        `meta_description: "${json.meta_description || ''}"\n` +
+        `keywords: "${json.keywords || ''}"\n` +
+        `publishedAt: "${today}"\n` +
+        `site_id: "${siteId}"\n` +
+        `category: "${category}"\n` +
+        `coverImage: "/images/articles/${slug}/01.webp"\n` +
+        `---\n\n` + 
         `# ${json.h1_title}\n\n${json.intro_hook}\n\n` + 
         (json.sections ? json.sections.map(sec => `## ${sec.h2_heading}\n\n${sec.content_html}`).join('\n\n') : '') + 
         `\n\n## まとめ\n\n${json.conclusion}`;

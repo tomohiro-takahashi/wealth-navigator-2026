@@ -35,10 +35,10 @@ async function importArticle() {
 
         // 2. Data Preparation
         const slug = args.slug || frontmatter.slug || path.basename(args.file, '.md');
-        let title = args.title || frontmatter.title || 'No Title';
+        let title = frontmatter.title || args.title || 'No Title';
 
         // Title Fallback
-        if (title === 'No Title' || title === 'undefined') {
+        if (title === 'No Title' || title === 'undefined' || title === 'Auto Generated') {
             const h1Match = content.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || content.match(/^# (.*)$/m);
             if (h1Match) {
                 title = h1Match[1].replace(/<[^>]+>/g, '').trim();
@@ -77,7 +77,7 @@ async function importArticle() {
 
         // 3. Assemble Payload
         const payload = {
-            title: title,
+            title: title || frontmatter.title,
             content: content,
             slug: slug,
             site_id: [siteId],
@@ -88,6 +88,9 @@ async function importArticle() {
             expert_tip: args.expert_tip || frontmatter.expert_tip || '',
         };
         
+        // NOTE: MicroCMS schema 'eyecatch' rejected. 
+        // Relying on frontend local image naming fallback for now.
+
         if (args.target_yield || frontmatter.target_yield) {
             payload.target_yield = parseFloat(args.target_yield || frontmatter.target_yield) || 0;
         }
@@ -142,6 +145,22 @@ async function importArticle() {
             });
             console.log(`✅ Creation successful! ID: ${newRes.id}`);
         }
+
+        // 6. Record to History
+        const historyPath = path.join(process.cwd(), 'content/published_history.json');
+        let history = [];
+        if (fs.existsSync(historyPath)) {
+            history = JSON.parse(fs.readFileSync(historyPath, 'utf8'));
+        }
+        history.push({
+            slug: slug,
+            title: title || frontmatter.title,
+            site_id: siteId,
+            category: categories[0],
+            date: payload.publishedAt
+        });
+        fs.writeFileSync(historyPath, JSON.stringify(history, null, 2));
+        console.log(`[HISTORY] Recorded: ${slug}`);
 
     } catch (error) {
         console.error('❌ Sync Failed:', error.message);

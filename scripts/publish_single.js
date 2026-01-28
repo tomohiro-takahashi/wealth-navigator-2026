@@ -19,6 +19,13 @@ async function selectTopicFromStrategy(brand, category) {
         const strategyPath = path.resolve(dna.strategy_path);
         const strategy = fs.readFileSync(strategyPath, 'utf-8');
 
+        // Load History
+        const historyPath = path.resolve('content/published_history.json');
+        let historyTitles = [];
+        if (fs.existsSync(historyPath)) {
+            historyTitles = JSON.parse(fs.readFileSync(historyPath, 'utf-8')).map(h => h.title);
+        }
+
         // カテゴリセクションを探す (例: ### learn (補助金を知る))
         const categoryRegex = new RegExp(`### ${category}[\\s\\S]*?###`, 'i');
         const match = strategy.match(categoryRegex) || strategy.match(new RegExp(`### ${category}[\\s\\S]*$`, 'i'));
@@ -27,9 +34,14 @@ async function selectTopicFromStrategy(brand, category) {
 
         const topics = match[0].split('\n')
             .filter(line => /^\d+\.\s+\*\*.*?\*\*/.test(line)) // "1. **Topic**" 形式を探す
-            .map(line => line.match(/\*\*(.*?)\*\*/)[1]);
+            .map(line => line.match(/\*\*(.*?)\*\*/)[1])
+            .filter(t => !historyTitles.some(ht => ht.includes(t))); // 重複除外
 
-        if (topics.length === 0) return null;
+        if (topics.length === 0) {
+            console.log(`  [INFO] All topics in "${category}" are already published. Picking a random one as fallback.`);
+            // Fallback to any if all used
+            return null;
+        }
         return topics[Math.floor(Math.random() * topics.length)];
     } catch (e) {
         console.warn(`  [WARN] Topic selection failed for ${brand}: ${e.message}`);
@@ -83,7 +95,7 @@ async function run() {
             if (meta.site_id) metaArgs += ` --site_id "${meta.site_id}"`;
         }
         
-        execSync(`node scripts/import_articles.js --file content_draft.html --title "Auto Generated" --category "${category}" --slug "${slug}" --expert_tip "$(cat expert_tip.txt)"${metaArgs}`, { stdio: 'inherit' });
+        execSync(`node scripts/import_articles.js --file "content/articles/${slug}.md" --title "Auto Generated" --category "${category}" --slug "${slug}"${metaArgs}`, { stdio: 'inherit' });
 
         // 4. Image Generation (画像生成)
         console.log(`\n[4/7] Generating Background Images...`);
