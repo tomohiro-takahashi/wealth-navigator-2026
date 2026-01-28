@@ -1,5 +1,6 @@
 import os
 import sys
+import argparse
 import google.generativeai as genai
 from dotenv import load_dotenv
 
@@ -18,67 +19,149 @@ if not api_key:
 
 genai.configure(api_key=api_key)
 
-def polish_content(input_file):
+def load_brand_context(site_id):
+    bible_path = f"libs/brain/bibles/{site_id}_bible.md"
+    editor_path = "libs/brain/article_editor.md"
+    
+    bible_content = ""
+    if os.path.exists(bible_path):
+        with open(bible_path, 'r', encoding='utf-8') as f:
+            bible_content = f.read()
+    else:
+        print(f"⚠️ Warning: Bible for {site_id} not found at {bible_path}")
+
+    editor_content = ""
+    if os.path.exists(editor_path):
+        with open(editor_path, 'r', encoding='utf-8') as f:
+            editor_content = f.read()
+            
+    return bible_content, editor_content
+
+def detect_site_id(file_path):
+    # Try to find site_id in frontmatter
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            if content.startswith('---'):
+                end = content.find('---', 3)
+                if end != -1:
+                    frontmatter = content[3:end]
+                    for line in frontmatter.split('\n'):
+                        if 'site_id:' in line:
+                            return line.split('site_id:')[1].strip().strip('"').strip("'")
+    except:
+        pass
+    return "wealth" # Default
+
+def call_claude(prompt, model_id="claude-3-5-sonnet-20241022"):
+    api_key = os.getenv("ANTHROPIC_API_KEY")
+    if not api_key:
+        raise Exception("ANTHROPIC_API_KEY not found.")
+    
+    url = "https://api.anthropic.com/v1/messages"
+    headers = {
+        "x-api-key": api_key,
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json"
+    }
+    data = {
+        "model": model_id,
+        "max_tokens": 4096,
+        "messages": [{"role": "user", "content": prompt}]
+    }
+    
+    import requests
+    response = requests.post(url, headers=headers, json=data)
+    if response.status_code != 200:
+        raise Exception(f"Claude API error: {response.text}")
+    
+    return response.json()["content"][0]["text"]
+
+def polish_content(input_file, site_id=None):
     if not os.path.exists(input_file):
         print(f"❌ Error: File {input_file} not found.")
         sys.exit(1)
 
+    if not site_id:
+        site_id = detect_site_id(input_file)
+    
+    print(f"🤖 Polishing article for brand: [{site_id}]")
+
     with open(input_file, 'r', encoding='utf-8') as f:
         raw_content = f.read()
 
-    # Read Titan's Knowledge
-    knowledge_path = "libs/brain/titans_knowledge.md"
-    knowledge_base = ""
-    if os.path.exists(knowledge_path):
-        with open(knowledge_path, 'r', encoding='utf-8') as kf:
-            knowledge_base = kf.read()
-    else:
-        print("⚠️ Warning: Titans Knowledge not found.")
-
-    print(f"🤖 Polishing content logic for: {input_file}")
+    brand_bible, editor_guide = load_brand_context(site_id)
 
     # Prompt for formatting
     prompt = f"""
-    You are an expert editor for "Wealth Navigator", a high-end real estate investment media.
-    Your task is to take the provided RAW CONTENT and restructure it into the platform's strict HTML format.
-
-    【Context: Titan's Knowledge】
-    The following is the strategic core of our media. Your editing MUST reflect these principles (e.g. "Vintage over New", "Debt as a tool", "Time limit").
-    {knowledge_base}
-
+    You are an expert editor specializing in the following brand:
+    
+    --- BRAND BIBLE ---
+    {brand_bible}
+    
+    --- WRITING STYLE GUIDE ---
+    {editor_guide}
+    
+    --- TASK ---
+    Take the provided RAW CONTENT and restructure it into high-quality HTML format exactly as defined in the WRITING STYLE GUIDE.
+    
     【Rules】
-    1. **Format**: Use STANDARD HTML tags (`h2`, `h3`, `p`, `ul`, `li`, `strong`, `table`). **NO Markdown**.
-    2. **Structure**:
-       - **Introduction**: Engaging opening.
-       - **Expert Tip**: Extract a conclusion/verdict and wrap it in: `<div class="expert-box">【30年のプロの眼】...</div>`
-       - **Body**: Organize into logical sections with `<h2>` and `<h3>`.
-       - **Comparison**: If there are comparisons, formatting them as `<table>`.
-       - **Conclusion**: Clear summary.
-    3. **Images**: Insert exactly 3 image placeholders where appropriate:
-       - `<div class="image-wrapper"><img src="IMAGE_ID_1" alt="[Scene Description]"></div>`
-       - `<div class="image-wrapper"><img src="IMAGE_ID_2" alt="[Scene Description]"></div>`
-       - `<div class="image-wrapper"><img src="IMAGE_ID_3" alt="[Scene Description]"></div>`
-    4. **Tone**: "Cold, Strategic, High-Net-Worth". Maintain the original meaning but polish the phrasing to align with the "Titan's Knowledge".
+    1. **Strict Tone**: Use the persona and tone defined in the BRAND BIBLE.
+    2. **HTML Only**: Use standard HTML tags (h2, h3, p, ul, li, strong, table). 
+    3. **Expert Box**: Extract the most critical insight/verdict and wrap it in: <div class="expert-box">【30年のプロの眼】...</div>
+    4. **Image Placeholders**: Check the markers [IMAGE_1], [IMAGE_2], [IMAGE_3] in the content. Replace them with:
+       - <div class="image-wrapper"><img src="IMAGE_ID_1" alt="[Scene Description]"></div> (after Lead)
+       - <div class="image-wrapper"><img src="IMAGE_ID_2" alt="[Scene Description]"></div> (middle)
+       - <div class="image-wrapper"><img src="IMAGE_ID_3" alt="[Scene Description]"></div> (before Conclusion)
+    5. **Frontmatter**: Preserve the original YAML frontmatter if present.
     
     【RAW CONTENT】
     {raw_content}
     
     【OUTPUT】
-    Output ONLY the HTML content. Do not include ```html blocks.
+    Output ONLY the polished content. 
     """
 
-    model = genai.GenerativeModel('gemini-2.0-flash')
-    response = model.generate_content(prompt)
-    
-    if response.text:
-        # Determine output path (overwrite or new?)
-        # For finalize workflow, we usually want to save it as the official draft
-        # input_file might be a temp file or the target file.
-        # Let's save it back to the input_file to finalize it.
+    # Model Fallback: Gemini -> Claude
+    try:
+        print("🧠 Attempting Gemini (2.0 Flash)...")
+        model = genai.GenerativeModel('gemini-2.0-flash')
+        response = model.generate_content(prompt)
+        polished_text = response.text
+    except Exception as e:
+        print(f"⚠️ Gemini failed: {e}. Trying Claude...")
+        try:
+            polished_text = call_claude(prompt, "claude-3-5-sonnet-20241022")
+        except Exception as e2:
+            print(f"⚠️ Sonnet failed: {e2}. Trying Haiku...")
+            try:
+                polished_text = call_claude(prompt, "claude-3-haiku-20240307")
+            except Exception as e3:
+                print(f"❌ All models failed: {e3}")
+                sys.exit(1)
+
+    if polished_text:
+        # Robust cleaning
+        clean_text = polished_text.strip()
         
-        # Strip ```html if present
-        clean_text = response.text.replace("```html", "").replace("```", "").strip()
+        # Remove common AI preambles
+        if "Here is" in clean_text[:100] and "\n" in clean_text:
+            clean_text = "\n".join(clean_text.split("\n")[1:]).strip()
+            
+        # Remove markdown code blocks
+        clean_text = clean_text.replace("```html", "").replace("```", "").strip()
         
+        # Ensure we don't double include frontmatter if AI added it
+        if clean_text.startswith('---') and raw_content.startswith('---'):
+            # Already has frontmatter, keep as is
+            pass
+        elif not clean_text.startswith('---') and raw_content.startswith('---'):
+            # Prepend original frontmatter
+            end = raw_content.find('---', 3)
+            if end != -1:
+                frontmatter = raw_content[:end+3]
+                clean_text = frontmatter + "\n\n" + clean_text
+
         with open(input_file, 'w', encoding='utf-8') as f:
             f.write(clean_text)
         
@@ -87,12 +170,12 @@ def polish_content(input_file):
         print("❌ Failed to polish content.")
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python3 polish_article.py <file_path>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description="Polish article content using AI.")
+    parser.add_argument("file_path", help="Path to the article file")
+    parser.add_argument("--site_id", help="Brand ID (wealth, subsidy, etc.)")
     
-    input_file = sys.argv[1]
-    polish_content(input_file)
+    args = parser.parse_args()
+    polish_content(args.file_path, args.site_id)
 
 if __name__ == "__main__":
     main()

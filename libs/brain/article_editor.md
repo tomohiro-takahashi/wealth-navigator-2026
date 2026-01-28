@@ -46,8 +46,8 @@ Target System: Multi-Brand Automation
 記事の信頼性（E-E-A-T）を高めるため、各記事に必ず1回、**「一般論へのカウンター」**としてプロの本音を挿入する。
 
 - **挿入タイミング**: 記事の中盤、一般的な解説（H2セクション）が終わった直後。
-- **HTML構文**: `<div class="expert-box">【30年のプロの眼】...</div>`
-  - ※ `class="expert-box"` はCSSで装飾されるため必須。
+- **HTML構文**: `<div class="expert-box">【Brand Bibleで定義されたExpert Boxラベル】...</div>`
+  - ※ `class="expert-box"` はCSSで装飾されるため必須。ラベル名は必ずBrand Bibleの「Expert Boxラベル」を使用すること。
 
 ### 3. Comparison Tableの実装 (Mandatory Table)
 
