@@ -189,22 +189,8 @@ async function run() {
             console.error(`❌ Drive Backup Failed: ${driveError.message}`);
         }
 
-        // 8. Git Sync (Release to Production)
-        console.log(`\n[8/7] Syncing Images to GitHub...`);
-        try {
-            execSync(`git add public/images/articles/${slug}`, { stdio: 'inherit' });
-            // Check if there are changes to commit
-            const status = execSync('git status --porcelain', { encoding: 'utf-8' });
-            if (status.includes(`public/images/articles/${slug}`)) {
-                execSync(`git commit -m "Deploy images for ${slug}"`, { stdio: 'inherit' });
-                execSync(`git push origin main`, { stdio: 'inherit' });
-                console.log(`✅ Images pushed to GitHub.`);
-            } else {
-                console.log(`ℹ️ No new images to push for ${slug}.`);
-            }
-        } catch (gitError) {
-            console.warn(`⚠️ Git Sync Failed: ${gitError.message}. You may need to push manually.`);
-        }
+        // 8. Git Sync (Removed - Handled by GitHub Actions or Manual push)
+        console.log(`\n[8/7] Skipping Image Sync (Handled by CI/Workflow)...`);
 
         console.log(`\n✅ Published and Backed up successfully: ${slug}`);
  

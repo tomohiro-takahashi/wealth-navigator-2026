@@ -92,6 +92,15 @@ def polish_content(input_file, site_id=None):
 
     brand_bible, editor_guide = load_brand_context(site_id)
 
+    # Extract Expert Box Label from bible if exists
+    expert_label = "【30年のプロの眼】"
+    for line in brand_bible.split('\n'):
+        if "Expert Boxラベル" in line or "Expert Box Label" in line:
+            label = line.split(':')[-1].strip().strip('*')
+            if label:
+                expert_label = label
+                break
+
     # Prompt for formatting
     prompt = f"""
     You are an expert editor specializing in the following brand:
@@ -108,7 +117,7 @@ def polish_content(input_file, site_id=None):
     【Rules】
     1. **Strict Tone**: Use the persona and tone defined in the BRAND BIBLE.
     2. **HTML Only**: Use standard HTML tags (h2, h3, p, ul, li, strong, table). 
-    3. **Expert Box**: Extract the most critical insight/verdict and wrap it in: <div class="expert-box">【30年のプロの眼】...</div>
+    3. **Expert Box**: Extract the most critical insight/verdict and wrap it in: <div class="expert-box">{expert_label}...</div>
     4. **Image Placeholders**: Check the markers [IMAGE_1], [IMAGE_2], [IMAGE_3] in the content. Replace them with:
        - <div class="image-wrapper"><img src="IMAGE_ID_1" alt="[Scene Description]"></div> (after Lead)
        - <div class="image-wrapper"><img src="IMAGE_ID_2" alt="[Scene Description]"></div> (middle)
