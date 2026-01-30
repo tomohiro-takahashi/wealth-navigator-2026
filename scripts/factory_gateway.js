@@ -74,8 +74,8 @@ async function run() {
                     console.error(`  [WARN] SNS Promotion failed: ${snsError.message}`);
                 }
 
-                // 5. Success Logging
-                await logExecution(context, 'gateway', 'success');
+                // 5. Success Notification
+                await notifySuccess(context, 'gateway');
 
                 // 6. Move to published
                 console.log(`✅ [GATEWAY] SUCCESS: ${slug} is now live.`);

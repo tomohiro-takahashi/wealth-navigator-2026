@@ -89,12 +89,35 @@ async function notifyFailure(context, step, error) {
 // ========== 成功通知（日次サマリー用） ==========
 
 /**
- * Records a successful execution (for history and summary).
+ * Records a successful execution and sends a notification.
  */
 async function notifySuccess(context, step) {
-  // 成功は即時通知しない（日次サマリーで確認）
-  // ただしログには記録
   await logExecution(context, step, 'success');
+
+  const embed = {
+    title: "✅ Content Factory 成功",
+    color: 0x00ff00, // Green
+    fields: [
+      { name: "Brand", value: context.brand, inline: true },
+      { name: "Step", value: step, inline: true },
+      { name: "Slug", value: context.slug },
+      { name: "Status", value: "🎉 Published successfully!" }
+    ],
+    timestamp: new Date().toISOString()
+  };
+
+  if (process.env.DISCORD_WEBHOOK_URL) {
+    try {
+      await fetch(process.env.DISCORD_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ embeds: [embed] }),
+      });
+      console.log('[NOTIFY] Discord success notification sent.');
+    } catch (e) {
+      console.warn(`[WARN] Discord notification failed: ${e.message}`);
+    }
+  }
 }
 
 // ========== 日次サマリー生成 ==========

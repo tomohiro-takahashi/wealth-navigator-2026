@@ -13,12 +13,12 @@
     "bible": "/Users/takahashitomohiro/Desktop/wealth-navigator/libs/brain/titans_knowledge.md",
     "strategy": "/Users/takahashitomohiro/Desktop/wealth-navigator/libs/brain/strategies/wealth_strategy.md",
     "dna": "/Users/takahashitomohiro/Desktop/wealth-navigator/src/dna.config.wealth.json",
-    "workDir": "/Users/takahashitomohiro/Desktop/wealth-navigator/content/01_drafts/2026-01-29-f17248bc",
+    "workDir": "/Users/takahashitomohiro/Desktop/wealth-navigator/content/02_imaged/2026-01-29-f17248bc",
     "draftsDir": "/Users/takahashitomohiro/Desktop/wealth-navigator/content/01_drafts/2026-01-29-f17248bc",
     "imagedDir": "/Users/takahashitomohiro/Desktop/wealth-navigator/content/02_imaged/2026-01-29-f17248bc",
     "directedDir": "/Users/takahashitomohiro/Desktop/wealth-navigator/content/03_directed/2026-01-29-f17248bc",
     "publishedDir": "/Users/takahashitomohiro/Desktop/wealth-navigator/content/05_published/2026-01-29-f17248bc",
-    "context": "/Users/takahashitomohiro/Desktop/wealth-navigator/content/01_drafts/2026-01-29-f17248bc/context.json"
+    "context": "/Users/takahashitomohiro/Desktop/wealth-navigator/content/02_imaged/2026-01-29-f17248bc/context.json"
   },
   "images": {
     "baseUrl": "/images/articles",
@@ -39,5 +39,5 @@
   },
   "errors": [],
   "createdAt": "2026-01-29T19:30:48.663Z",
-  "stage": "01_drafts"
+  "stage": "02_imaged"
 }
