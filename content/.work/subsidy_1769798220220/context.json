@@ -1,0 +1,42 @@
+{
+  "brand": "subsidy",
+  "siteId": "subsidy",
+  "siteName": "おうちの補助金相談室",
+  "validCategories": [
+    "learn",
+    "guide",
+    "howto",
+    "case"
+  ],
+  "category": "learn",
+  "slug": "subsidy_1769798220220",
+  "paths": {
+    "bible": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/libs/brain/bibles/subsidy_bible.md",
+    "strategy": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/libs/brain/strategies/subsidy_strategy.md",
+    "dna": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/src/dna.config.subsidy.json",
+    "workDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/.work/subsidy_1769798220220",
+    "draftsDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/01_drafts/subsidy_1769798220220",
+    "imagedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/02_imaged/subsidy_1769798220220",
+    "directedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/03_directed/subsidy_1769798220220",
+    "publishedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/05_published/subsidy_1769798220220"
+  },
+  "images": {
+    "baseUrl": "/images/articles",
+    "fallback": "/images/common/fallback.webp",
+    "generated": []
+  },
+  "meta": {
+    "title": "不動産投資の未来",
+    "description": null,
+    "author": "編集部",
+    "ogSiteName": "おうちの補助金相談室"
+  },
+  "status": {
+    "brain": null,
+    "vision": null,
+    "director": null,
+    "gateway": null
+  },
+  "errors": [],
+  "createdAt": "2026-01-30T18:37:00.220Z"
+}
