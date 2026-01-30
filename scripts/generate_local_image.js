@@ -119,14 +119,42 @@ async function run() {
         console.log(`  [SUCCESS] Image saved: ${outPath} (${stats.size} bytes)`);
 
     } catch (e) {
-        result.success = false;
-        result.error = e.message;
-        console.error(`❌ Image generation failed: ${e.message}`);
+        console.warn(`⚠️  Image API failed: ${e.message}. Falling back to placeholder.`);
+        try {
+            const sharp = require('sharp');
+            // Create a premium-feel dark placeholder
+            const svg = `
+                <svg width="1200" height="675" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#333333;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grad)" />
+                    <text x="50%" y="45%" font-family="Arial" font-size="40" fill="#f0d1a4" text-anchor="middle" dominant-baseline="middle" font-weight="bold">${brand.toUpperCase()}</text>
+                    <text x="50%" y="55%" font-family="Arial" font-size="24" fill="#666" text-anchor="middle" dominant-baseline="middle">Automated Insight Visualization Pending</text>
+                </svg>
+            `;
+            await sharp(Buffer.from(svg))
+                .webp({ quality: 80 })
+                .toFile(outPath);
+            
+            result.success = true;
+            result.isPlaceholder = true;
+            console.log(`  [PLACEHOLDER] Saved to ${outPath}`);
+        } catch (err) {
+            result.success = false;
+            result.error = `Placeholder failed: ${err.message}`;
+            console.error(`❌ Fatal: Both API and Placeholder failed: ${err.message}`);
+        }
     } finally {
         // Output result to file
         const resultFilePath = outPath.replace('.webp', '_result.json');
         fs.writeFileSync(resultFilePath, JSON.stringify(result, null, 2));
 
+        // Note: We DO NOT exit with 1 anymore IF the placeholder was successfully created.
+        // This allows the pipeline to proceed to Gateway.
         if (!result.success) {
             process.exit(1);
         }
