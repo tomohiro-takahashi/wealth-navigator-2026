@@ -97,6 +97,12 @@ async function run() {
                 }
             }
             if (fs.existsSync(argsPath)) fs.unlinkSync(argsPath); // Clean up
+
+            // To avoid per-minute quota limits (especially for Imagen Free Tier)
+            if (i < 3) {
+                console.log(`  [WAIT] Sleeping 30s before next image to respect quota...`);
+                await sleep(30000);
+            }
         }
 
         if (allSuccess) {
