@@ -2,7 +2,8 @@
   "date": "2026-01-30",
   "completed": [],
   "failed": {
-    "wealth": 3
+    "wealth": 3,
+    "flip": 1
   },
   "brand_categories": {}
 }
