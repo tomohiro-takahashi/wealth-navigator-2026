@@ -1,0 +1,919 @@
+[
+  {
+    "timestamp": "2026-01-29T11:14:17.995Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "START",
+    "step": "INIT",
+    "message": "Starting publication for wealth",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:14:18.235Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "START",
+    "step": "TOPIC_SELECTION",
+    "message": "Selecting topic from strategy...",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:14:18.239Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "INFO",
+    "step": "TOPIC_SELECTION",
+    "message": "No specific topic found, using fallback",
+    "details": {
+      "topic": "不動産投資の未来"
+    }
+  },
+  {
+    "timestamp": "2026-01-29T11:14:18.240Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "SUCCESS",
+    "step": "TOPIC_SELECTION",
+    "message": "Selected: 不動産投資の未来",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:14:18.241Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "START",
+    "step": "ARCHITECT",
+    "message": "Creating blueprint for: 不動産投資の未来",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:14:24.181Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "SUCCESS",
+    "step": "ARCHITECT",
+    "message": "Blueprint ready: 2026-01-29-5713b1fa",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:14:24.182Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "START",
+    "step": "BUILDER",
+    "message": "Writing article body for 2026-01-29-5713b1fa",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:15:28.568Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "SUCCESS",
+    "step": "BUILDER",
+    "message": "Content generated for 2026-01-29-5713b1fa",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:15:28.570Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "START",
+    "step": "INGESTION",
+    "message": "Uploading 2026-01-29-5713b1fa to MicroCMS",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:15:30.497Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "SUCCESS",
+    "step": "INGESTION",
+    "message": "Article 2026-01-29-5713b1fa live on MicroCMS",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:15:30.498Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "START",
+    "step": "IMAGES",
+    "message": "Generating WebP assets for 2026-01-29-5713b1fa",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:15:34.249Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "SUCCESS",
+    "step": "IMAGES",
+    "message": "Images generated and synced for 2026-01-29-5713b1fa",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:15:34.250Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "START",
+    "step": "VIDEO_ASSETS",
+    "message": "Creating video script and prompts for 2026-01-29-5713b1fa",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:15:55.436Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "SUCCESS",
+    "step": "VIDEO_ASSETS",
+    "message": "Video assets ready for 2026-01-29-5713b1fa",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:15:55.437Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "START",
+    "step": "VIDEO_SEEDS",
+    "message": "Generating scene seeds for 2026-01-29-5713b1fa",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:15:58.112Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "SUCCESS",
+    "step": "VIDEO_SEEDS",
+    "message": "Video seeds generated for 2026-01-29-5713b1fa",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:15:58.113Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "START",
+    "step": "BACKUP",
+    "message": "Uploading all assets for 2026-01-29-5713b1fa to Google Drive",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:16:08.973Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "SUCCESS",
+    "step": "BACKUP",
+    "message": "Drive backup complete for 2026-01-29-5713b1fa",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:16:08.974Z",
+    "brand": "wealth",
+    "category": "policy",
+    "status": "SUCCESS",
+    "step": "COMPLETE",
+    "message": "Full publication cycle finished for 2026-01-29-5713b1fa",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:16:15.019Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "INIT",
+    "message": "Starting publication for flip",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:16:15.256Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "TOPIC_SELECTION",
+    "message": "Selecting topic from strategy...",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:16:15.264Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "TOPIC_SELECTION",
+    "message": "Selected: 競売",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:16:15.266Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "ARCHITECT",
+    "message": "Creating blueprint for: 競売",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:16:23.671Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "ARCHITECT",
+    "message": "Blueprint ready: 2026-01-29-2d7617b8",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:16:23.672Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "BUILDER",
+    "message": "Writing article body for 2026-01-29-2d7617b8",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:17:25.710Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "FAILURE",
+    "step": "FATAL",
+    "message": "Command failed: node scripts/brain_builder.js \"2026-01-29-2d7617b8\"",
+    "details": {
+      "slug": "2026-01-29-2d7617b8",
+      "stack": "Error: Command failed: node scripts/brain_builder.js \"2026-01-29-2d7617b8\"     at genericNodeError (node:internal/errors:998:15)     at wrappedFn (node:internal/errors:543:14)"
+    }
+  },
+  {
+    "timestamp": "2026-01-29T11:17:34.188Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "INIT",
+    "message": "Starting publication for flip",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:17:34.442Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "TOPIC_SELECTION",
+    "message": "Selecting topic from strategy...",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:17:34.447Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "TOPIC_SELECTION",
+    "message": "Selected: 5秒判断",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:17:34.448Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "ARCHITECT",
+    "message": "Creating blueprint for: 5秒判断",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:18:15.567Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "FAILURE",
+    "step": "FATAL",
+    "message": "Command failed: node scripts/brain_architect.js \"5秒判断\" \"analyze\"",
+    "details": {
+      "slug": "unknown",
+      "stack": "Error: Command failed: node scripts/brain_architect.js \"5秒判断\" \"analyze\"     at genericNodeError (node:internal/errors:998:15)     at wrappedFn (node:internal/errors:543:14)"
+    }
+  },
+  {
+    "timestamp": "2026-01-29T11:18:33.980Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "INIT",
+    "message": "Starting publication for flip",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:18:34.180Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "TOPIC_SELECTION",
+    "message": "Selecting topic from strategy...",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:18:34.183Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "TOPIC_SELECTION",
+    "message": "Selected: 現地調査",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:18:34.184Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "ARCHITECT",
+    "message": "Creating blueprint for: 現地調査",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:18:47.267Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "ARCHITECT",
+    "message": "Blueprint ready: 2026-01-29-dd447b3a",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:18:47.268Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "BUILDER",
+    "message": "Writing article body for 2026-01-29-dd447b3a",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:19:48.573Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "BUILDER",
+    "message": "Content generated for 2026-01-29-dd447b3a",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:19:48.575Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "INGESTION",
+    "message": "Uploading 2026-01-29-dd447b3a to MicroCMS",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:19:50.501Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "INGESTION",
+    "message": "Article 2026-01-29-dd447b3a live on MicroCMS",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:19:50.502Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "IMAGES",
+    "message": "Generating WebP assets for 2026-01-29-dd447b3a",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:20:00.326Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "IMAGES",
+    "message": "Images generated and synced for 2026-01-29-dd447b3a",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:20:00.332Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "VIDEO_ASSETS",
+    "message": "Creating video script and prompts for 2026-01-29-dd447b3a",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:49:34.827Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "VIDEO_ASSETS",
+    "message": "Video assets ready for 2026-01-29-dd447b3a",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:49:34.828Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "VIDEO_SEEDS",
+    "message": "Generating scene seeds for 2026-01-29-dd447b3a",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:49:38.286Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "VIDEO_SEEDS",
+    "message": "Video seeds generated for 2026-01-29-dd447b3a",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:49:38.287Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "BACKUP",
+    "message": "Uploading all assets for 2026-01-29-dd447b3a to Google Drive",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:49:49.146Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "BACKUP",
+    "message": "Drive backup complete for 2026-01-29-dd447b3a",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:49:49.152Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "COMPLETE",
+    "message": "Full publication cycle finished for 2026-01-29-dd447b3a",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:49:50.482Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "INIT",
+    "message": "Starting publication for flip",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:49:52.614Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "TOPIC_SELECTION",
+    "message": "Selecting topic from strategy...",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:49:52.636Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "TOPIC_SELECTION",
+    "message": "Selected: 情報源",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:49:52.642Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "ARCHITECT",
+    "message": "Creating blueprint for: 情報源",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:50:07.022Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "ARCHITECT",
+    "message": "Blueprint ready: 2026-01-29-651aedb8",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T11:50:07.029Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "BUILDER",
+    "message": "Writing article body for 2026-01-29-651aedb8",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T12:25:25.400Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "FAILURE",
+    "step": "FATAL",
+    "message": "Command failed: node scripts/brain_builder.js \"2026-01-29-651aedb8\"",
+    "details": {
+      "slug": "2026-01-29-651aedb8",
+      "stack": "Error: Command failed: node scripts/brain_builder.js \"2026-01-29-651aedb8\"     at genericNodeError (node:internal/errors:998:15)     at wrappedFn (node:internal/errors:543:14)"
+    }
+  },
+  {
+    "timestamp": "2026-01-29T14:58:45.919Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "INIT",
+    "message": "Starting publication for flip",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T14:58:46.173Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "TOPIC_SELECTION",
+    "message": "Selecting topic from strategy...",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T14:58:46.178Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "TOPIC_SELECTION",
+    "message": "Selected: 人脈",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T14:58:46.180Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "ARCHITECT",
+    "message": "Creating blueprint for: 人脈",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T14:58:54.467Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "ARCHITECT",
+    "message": "Blueprint ready: 2026-01-29-b49b2cf5",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T14:58:54.469Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "BUILDER",
+    "message": "Writing article body for 2026-01-29-b49b2cf5",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T14:59:47.940Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "BUILDER",
+    "message": "Content generated for 2026-01-29-b49b2cf5",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T14:59:47.944Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "INGESTION",
+    "message": "Uploading 2026-01-29-b49b2cf5 to MicroCMS",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T14:59:49.397Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "INGESTION",
+    "message": "Article 2026-01-29-b49b2cf5 live on MicroCMS",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T14:59:49.399Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "IMAGES",
+    "message": "Generating WebP assets for 2026-01-29-b49b2cf5",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T14:59:53.189Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "IMAGES",
+    "message": "Images generated and synced for 2026-01-29-b49b2cf5",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T14:59:53.190Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "VIDEO_ASSETS",
+    "message": "Creating video script and prompts for 2026-01-29-b49b2cf5",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:26.571Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "VIDEO_ASSETS",
+    "message": "Video assets ready for 2026-01-29-b49b2cf5",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:26.572Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "VIDEO_SEEDS",
+    "message": "Generating scene seeds for 2026-01-29-b49b2cf5",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:30.506Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "VIDEO_SEEDS",
+    "message": "Video seeds generated for 2026-01-29-b49b2cf5",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:30.507Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "BACKUP",
+    "message": "Uploading all assets for 2026-01-29-b49b2cf5 to Google Drive",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:41.277Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "BACKUP",
+    "message": "Drive backup complete for 2026-01-29-b49b2cf5",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:41.278Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "COMPLETE",
+    "message": "Full publication cycle finished for 2026-01-29-b49b2cf5",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:41.482Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "INIT",
+    "message": "Starting publication for flip",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:41.708Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "TOPIC_SELECTION",
+    "message": "Selecting topic from strategy...",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:41.715Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "TOPIC_SELECTION",
+    "message": "Selected: 5秒判断",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:41.717Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "ARCHITECT",
+    "message": "Creating blueprint for: 5秒判断",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:48.616Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "ARCHITECT",
+    "message": "Blueprint ready: 2026-01-29-a590f222",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:00:48.618Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "BUILDER",
+    "message": "Writing article body for 2026-01-29-a590f222",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:11.680Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "INIT",
+    "message": "Starting publication for flip",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:12.065Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "TOPIC_SELECTION",
+    "message": "Selecting topic from strategy...",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:12.072Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "TOPIC_SELECTION",
+    "message": "Selected: 情報源",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:12.073Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "ARCHITECT",
+    "message": "Creating blueprint for: 情報源",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:19.342Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "ARCHITECT",
+    "message": "Blueprint ready: 2026-01-29-651aedb8",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:19.345Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "BUILDER",
+    "message": "Writing article body for 2026-01-29-651aedb8",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:45.957Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "BUILDER",
+    "message": "Content generated for 2026-01-29-a590f222",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:45.965Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "INGESTION",
+    "message": "Uploading 2026-01-29-a590f222 to MicroCMS",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:47.799Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "INGESTION",
+    "message": "Article 2026-01-29-a590f222 live on MicroCMS",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:47.801Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "IMAGES",
+    "message": "Generating WebP assets for 2026-01-29-a590f222",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:51.172Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "SUCCESS",
+    "step": "IMAGES",
+    "message": "Images generated and synced for 2026-01-29-a590f222",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:01:51.173Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "START",
+    "step": "VIDEO_ASSETS",
+    "message": "Creating video script and prompts for 2026-01-29-a590f222",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:02:28.033Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "BUILDER",
+    "message": "Content generated for 2026-01-29-651aedb8",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:02:28.037Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "INGESTION",
+    "message": "Uploading 2026-01-29-651aedb8 to MicroCMS",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:02:29.963Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "INGESTION",
+    "message": "Article 2026-01-29-651aedb8 live on MicroCMS",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:02:29.964Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "IMAGES",
+    "message": "Generating WebP assets for 2026-01-29-651aedb8",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:02:33.410Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "SUCCESS",
+    "step": "IMAGES",
+    "message": "Images generated and synced for 2026-01-29-651aedb8",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:02:33.411Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "START",
+    "step": "VIDEO_ASSETS",
+    "message": "Creating video script and prompts for 2026-01-29-651aedb8",
+    "details": {}
+  },
+  {
+    "timestamp": "2026-01-29T15:02:37.685Z",
+    "brand": "flip",
+    "category": "analyze",
+    "status": "FAILURE",
+    "step": "FATAL",
+    "message": "Command failed: node scripts/brain_architect.js \"2026-01-29-a590f222\" --type video",
+    "details": {
+      "slug": "2026-01-29-a590f222",
+      "stack": "Error: Command failed: node scripts/brain_architect.js \"2026-01-29-a590f222\" --type video     at genericNodeError (node:internal/errors:998:15)     at wrappedFn (node:internal/errors:543:14)"
+    }
+  },
+  {
+    "timestamp": "2026-01-29T15:03:29.961Z",
+    "brand": "flip",
+    "category": "source",
+    "status": "FAILURE",
+    "step": "FATAL",
+    "message": "Command failed: node scripts/brain_architect.js \"2026-01-29-651aedb8\" --type video",
+    "details": {
+      "slug": "2026-01-29-651aedb8",
+      "stack": "Error: Command failed: node scripts/brain_architect.js \"2026-01-29-651aedb8\" --type video     at genericNodeError (node:internal/errors:998:15)     at wrappedFn (node:internal/errors:543:14)"
+    }
+  }
+]

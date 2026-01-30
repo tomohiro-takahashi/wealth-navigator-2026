@@ -10,6 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Configuration
 const SERVICE_DOMAIN = process.env.MICROCMS_SERVICE_DOMAIN;
@@ -28,14 +29,20 @@ const client = createClient({
 async function main() {
     console.log('--- Starting Image Generation & Linkage Workflow (WebP Optimized + 2-Step Gen) ---');
 
+    const targetBrand = process.env.NEXT_PUBLIC_BRAND || 'wealth';
+    const slugArg = process.argv.find(arg => arg.startsWith('--slug='))?.split('=')[1];
+
     try {
-        // 1. Fetch all articles
+        // 1. Fetch articles
         const { contents: articles } = await client.getList({
             endpoint: 'articles',
-            queries: { limit: 100 }
+            queries: { 
+                limit: 100,
+                filters: `site_id[equals]${targetBrand}${slugArg ? `[and]slug[equals]${slugArg}` : ''}`
+            }
         });
 
-        console.log(`Fetched ${articles.length} articles.`);
+        console.log(`Fetched ${articles.length} articles for brand: ${targetBrand} ${slugArg ? `(Targeting: ${slugArg})` : ''}`);
 
         // Dynamic import for Sharp (ESM)
         const sharp = (await import('sharp')).default;
@@ -151,25 +158,39 @@ async function generateAndSaveImageWebP(title: string, context: string, savePath
         console.log(`  > [PROMPT GENERATED]: "${visualPrompt.substring(0, 60)}..."`);
 
         // Step 2: Generate Image using Imagen 4.0
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${process.env.GOOGLE_API_KEY}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                instances: [
-                    { prompt: visualPrompt }
-                ],
-                parameters: {
-                    sampleCount: 1,
-                    aspectRatio: "16:9"
-                }
-            })
-        });
+        let response;
+        let attempts = 0;
+        const maxAttempts = 2;
+        
+        while (attempts < maxAttempts) {
+            response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${process.env.GOOGLE_API_KEY}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    instances: [
+                        { prompt: visualPrompt }
+                    ],
+                    parameters: {
+                        sampleCount: 1,
+                        aspectRatio: "16:9"
+                    }
+                })
+            });
 
-        if (!response.ok) {
-            const errText = await response.text();
-            throw new Error(`Google API Error: ${response.status} - ${errText}`);
+            if (response.status === 429 && attempts < maxAttempts - 1) {
+                console.warn(`  [IMAGEN 429] Rate limit hit. Sleeping 30s before retry...`);
+                await sleep(30000);
+                attempts++;
+                continue;
+            }
+            break;
+        }
+
+        if (!response || !response.ok) {
+            const errText = response ? await response.text() : "No response";
+            throw new Error(`Google API Error: ${response?.status} - ${errText}`);
         }
 
         const data = await response.json();
@@ -246,15 +267,29 @@ async function generatePromptWithGemini(title: string, context: string): Promise
 
     const userMessage = `Title: ${title}\nContext: ${context.substring(0, 1000)}`;
 
-    const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            contents: [{ parts: [{ text: systemInstruction + "\n\n" + userMessage }] }]
-        })
-    });
+    let response;
+    let attempts = 0;
+    const maxAttempts = 2;
 
-    if (!response.ok) {
+    while (attempts < maxAttempts) {
+        response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: systemInstruction + "\n\n" + userMessage }] }]
+            })
+        });
+
+        if (response.status === 429 && attempts < maxAttempts - 1) {
+            console.warn(`  [GEMINI PROMPT 429] Rate limit hit. Sleeping 30s before retry...`);
+            await sleep(30000);
+            attempts++;
+            continue;
+        }
+        break;
+    }
+
+    if (!response || !response.ok) {
         console.warn(`  [Prompt Gen Warning] Failed to generate prompt using Gemini. Falling back to simple prompt.`);
         return `High quality photography of ${title}, luxury, cinematic, photorealistic, 8k --no text`;
     }

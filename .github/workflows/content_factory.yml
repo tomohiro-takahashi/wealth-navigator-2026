@@ -1,0 +1,59 @@
+name: Content Factory Pipeline
+
+on:
+  schedule:
+    - cron: "0 0,3,6,9,12,15,18,21 * * *" # Every 3 hours
+  workflow_dispatch: # Manual trigger
+
+jobs:
+  factory-run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npm install minimist sharp @google/generative-ai @anthropic-ai/sdk microcms-js-sdk gray-matter marked
+
+      - name: Run Pipeline Stages
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MICROCMS_SERVICE_DOMAIN: ${{ secrets.MICROCMS_SERVICE_DOMAIN }}
+          MICROCMS_API_KEY: ${{ secrets.MICROCMS_API_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          GAS_LOG_URL: ${{ secrets.GAS_LOG_URL }}
+        run: |
+          # 1. Brain Stage (Distributed mode: process one brand)
+          echo "🧠 Stage 0: Brain Factory"
+          node scripts/publish-all.js --distributed
+
+          # 2. Vision Stage (Generate images for any pending drafts)
+          echo "🖼️ Stage 1: Vision Factory"
+          node scripts/factory_vision.js
+
+          # 3. Gateway Stage (Sync to CMS and Publish)
+          echo "🚀 Stage 2: Gateway Factory"
+          node scripts/factory_gateway.js
+
+      - name: Commit and Push Changes
+        if: always()
+        run: |
+          git config --global user.name "GitHub Action [Bot]"
+          git config --global user.email "action@github.com"
+          git add content/ projects/ public/images/ scripts/last_run.json content/published_history.json logs/
+          git commit -m "chore: content factory automation sync [skip ci]" || echo "No changes to commit"
+          git push

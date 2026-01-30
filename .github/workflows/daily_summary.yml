@@ -1,0 +1,27 @@
+name: Daily Summary Notification
+
+on:
+  schedule:
+    - cron: "0 13 * * *" # JST 22:00 (UTC 13:00)
+  workflow_dispatch:
+
+jobs:
+  summary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Send Daily Summary
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: node scripts/send_daily_summary.js

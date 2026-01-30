@@ -1,0 +1,23 @@
+{
+  "project_id": "2026-01-28-b94fd11a",
+  "project_name": "中古マンションの「管理」格差",
+  "brand_id": "wealth",
+  "status": "draft",
+  "created_at": "2026-01-28T04:01:31.760Z",
+  "updated_at": "2026-01-28T04:01:31.761Z",
+  "video": {
+    "resolution": "1080x1920",
+    "fps": 30,
+    "aspect_ratio": "9:16"
+  },
+  "clips": [],
+  "captions": [],
+  "audio": {
+    "use_veo_audio": true,
+    "bgm": {
+      "enabled": true,
+      "file": "audio/bgm.mp3",
+      "volume": 0.2
+    }
+  }
+}

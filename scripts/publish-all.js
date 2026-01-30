@@ -11,39 +11,27 @@ function getJobState() {
     if (fs.existsSync(STATE_FILE)) {
         try {
             const state = JSON.parse(fs.readFileSync(STATE_FILE, 'utf-8'));
-            // 常に最新の状態を返しつつ、日付が違えば完成リストのみクリア
             if (state.date !== today) {
                 state.date = today;
                 state.completed = [];
+                state.failed = {}; // Clear daily fail counts
             }
+            if (!state.failed) state.failed = {};
             return state;
         } catch (e) {
             console.error('Error parsing STATE_FILE:', e.message);
         }
     }
-    return { date: today, completed: [], brand_categories: {} };
+    return { date: today, completed: [], failed: {}, brand_categories: {} };
 }
 
-function saveJobState(brand, category) {
-    const state = getJobState();
-    if (!state.completed.includes(brand)) {
-        state.completed.push(brand);
-    }
-    // 次回使うカテゴリを保存（ローテーション）
-    if (!state.brand_categories) state.brand_categories = {};
-    
-    const dna = JSON.parse(fs.readFileSync(path.join(__dirname, `../src/dna.config.${brand}.json`), 'utf-8'));
-    const categories = Object.keys(dna.categories);
-    const currentIndex = categories.indexOf(category);
-    const nextIndex = (currentIndex + 1) % categories.length;
-    state.brand_categories[brand] = categories[nextIndex];
-
+function saveJobState(state) {
     fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2));
 }
 
 async function runAll() {
     console.log('='.repeat(60));
-    console.log('Multi-Brand Master Scheduler (Sequential Category Rotation)');
+    console.log('Multi-Brand Master Scheduler (Zero-Debt & High-Resilience)');
     console.log('='.repeat(60));
 
     const isDistributed = process.argv.includes('--distributed');
@@ -54,52 +42,70 @@ async function runAll() {
         
         // 当日すでに完了しているブランドはスキップ
         if (state.completed.includes(brand)) {
-            console.log(`\n⏭️  Skipping ${brand.toUpperCase()} (Already published today: ${state.date})`);
+            console.log(`\n⏭️  Skipping ${brand.toUpperCase()} (Already published today)`);
+            continue;
+        }
+
+        // 失敗回数が多すぎる場合はスキップ（デッドロック回避）
+        const failCount = state.failed[brand] || 0;
+        if (failCount >= 3) {
+            console.log(`\n🚨 Skipping ${brand.toUpperCase()} (Failed 3 times today. Check run_log.json)`);
             continue;
         }
 
         // 次回実行すべきカテゴリを特定
         let category = state.brand_categories?.[brand];
-        
-        // 初回実行時のフォールバック
         if (!category) {
             const dna = JSON.parse(fs.readFileSync(path.join(__dirname, `../src/dna.config.${brand}.json`), 'utf-8'));
             category = Object.keys(dna.categories)[0];
         }
 
-        console.log(`\n🚀 Processing Brand: ${brand.toUpperCase()} | Category: ${category.toUpperCase()}`);
+        console.log(`\n🚀 Processing Brand: ${brand.toUpperCase()} | Category: ${category.toUpperCase()} (Attempt: ${failCount + 1}/3)`);
         console.log('-'.repeat(40));
 
         try {
             console.log(`Executing publication pipeline for ${brand}...`);
-            execSync(`node scripts/publish_single.js ${category} ${brand}`, { stdio: 'inherit' });
+            execSync(`node scripts/factory_brain.js "${brand}" "${category}"`, { stdio: 'inherit' });
             
-            console.log(`✅ ${brand} publication complete.`);
-            saveJobState(brand, category);
+            console.log(`✅ ${brand} brain extraction complete.`);
+            state.completed.push(brand);
+            state.failed[brand] = 0; // Reset fail count on success
 
-            // 分散実行モード（GitHub Actions等）の場合は1つ処理して終了
+            // Category Rotation
+            const dna = JSON.parse(fs.readFileSync(path.join(__dirname, `../src/dna.config.${brand}.json`), 'utf-8'));
+            const categories = Object.keys(dna.categories);
+            const nextIndex = (categories.indexOf(category) + 1) % categories.length;
+            if (!state.brand_categories) state.brand_categories = {};
+            state.brand_categories[brand] = categories[nextIndex];
+
+            saveJobState(state);
+
             if (isDistributed) {
-                console.log(`\n✅ Distributed mode: One brand processed. Exiting to avoid timeout.`);
+                console.log(`\n✅ Distributed mode: One brand processed. Exiting.`);
                 return;
             }
 
-            // 連続実行モード（ローカル等）の場合は待機して次へ
-            const remainingBrands = BRANDS.slice(i + 1).filter(b => !getJobState().completed.includes(b));
-            if (remainingBrands.length > 0) {
-                const nextRun = new Date(Date.now() + WAIT_MIN * 60000);
+            // Wait logic for local run
+            const remaining = BRANDS.slice(i + 1).filter(b => !getJobState().completed.includes(b));
+            if (remaining.length > 0) {
                 console.log(`\n⏳ Cooling down for ${WAIT_MIN} minutes...`);
-                console.log(`📅 Next brand (${remainingBrands[0]}) scheduled for: ${nextRun.toLocaleTimeString()}`);
-                
                 execSync(`sleep ${WAIT_MIN * 60}`);
             }
 
         } catch (error) {
             console.error(`❌ Error processing ${brand}:`, error.message);
+            state.failed[brand] = (state.failed[brand] || 0) + 1;
+            saveJobState(state);
+            
+            if (isDistributed) {
+                console.log(`\n⚠️ Failure in Distributed mode. State saved. Exiting.`);
+                process.exit(0); // Exit gracefully to allow CI to commit logs
+            }
         }
     }
 
     console.log('\n' + '='.repeat(60));
-    console.log('Daily Publishing Schedule Complete.');
+    console.log('Daily Publishing Cycle Complete.');
     console.log('='.repeat(60));
 }
 

@@ -49,9 +49,39 @@ async function selectTopicFromStrategy(brand, category) {
     }
 }
 
-async function run() {
+const LOG_PATH = path.resolve('content/run_log.json');
+
+function logRun(brand, category, status, step, message, details = {}) {
+    const logEntry = {
+        timestamp: new Date().toISOString(),
+        brand,
+        category,
+        status, // 'START', 'SUCCESS', 'FAILURE'
+        step,
+        message,
+        details
+    };
     try {
-        const targetBrand = brand || 'wealth';
+        let logs = [];
+        if (fs.existsSync(LOG_PATH)) {
+            logs = JSON.parse(fs.readFileSync(LOG_PATH, 'utf-8'));
+        }
+        logs.push(logEntry);
+        // Keep only last 100 logs to avoid file bloat
+        if (logs.length > 100) logs = logs.slice(-100);
+        fs.writeFileSync(LOG_PATH, JSON.stringify(logs, null, 2));
+    } catch (e) {
+        console.error('Failed to write to run_log.json:', e.message);
+    }
+}
+
+async function run() {
+    const targetBrand = brand || 'wealth';
+    let slug = 'unknown';
+
+    try {
+        logRun(targetBrand, category, 'START', 'INIT', `Starting publication for ${targetBrand}`);
+
         console.log(`\n--- Switching to Brand: ${targetBrand} ---`);
         execSync(`node scripts/switch_brand.js ${targetBrand}`, { stdio: 'inherit' });
 
@@ -59,17 +89,20 @@ async function run() {
         console.log(`\n--- Publishing for: ${dnaConfig.identity.name} (${category}) ---`);
 
         // Topic選定
+        logRun(targetBrand, category, 'START', 'TOPIC_SELECTION', 'Selecting topic from strategy...');
         let topic = await selectTopicFromStrategy(targetBrand, category);
         if (!topic) {
-            topic = "不動産投資の未来"; // 最終フォールバック
+            topic = "不動産投資の未来"; 
+            logRun(targetBrand, category, 'INFO', 'TOPIC_SELECTION', 'No specific topic found, using fallback', { topic });
         }
         console.log(`\n[0/5] Selected Topic: ${topic}`);
+        logRun(targetBrand, category, 'SUCCESS', 'TOPIC_SELECTION', `Selected: ${topic}`);
 
         // 1. Architect (Topic選定 & 構成)
         console.log(`\n[1/5] Architectural Design...`);
+        logRun(targetBrand, category, 'START', 'ARCHITECT', `Creating blueprint for: ${topic}`);
         execSync(`node scripts/brain_architect.js "${topic}" "${category}"`, { stdio: 'inherit' });
 
-        // architectが生成した最新のblueprintを探す（簡易実装）
         const blueprintsDir = './content/blueprints';
         const files = fs.readdirSync(blueprintsDir).filter(f => f.endsWith('_blueprint.json'));
         const latestBlueprint = files.sort((a, b) => 
@@ -77,15 +110,18 @@ async function run() {
         )[0];
 
         if (!latestBlueprint) throw new Error('No blueprint found.');
-        const slug = latestBlueprint.replace('_blueprint.json', '');
+        slug = latestBlueprint.replace('_blueprint.json', '');
+        logRun(targetBrand, category, 'SUCCESS', 'ARCHITECT', `Blueprint ready: ${slug}`);
 
         // 2. Builder (執筆)
         console.log(`\n[2/5] Building Content...`);
+        logRun(targetBrand, category, 'START', 'BUILDER', `Writing article body for ${slug}`);
         execSync(`node scripts/brain_builder.js "${slug}"`, { stdio: 'inherit' });
+        logRun(targetBrand, category, 'SUCCESS', 'BUILDER', `Content generated for ${slug}`);
 
         // 3. Ingestion (入稿)
         console.log(`\n[3/5] Importing to MicroCMS...`);
-        // builderが出力する一時ファイルを使用
+        logRun(targetBrand, category, 'START', 'INGESTION', `Uploading ${slug} to MicroCMS`);
         let metaArgs = '';
         if (fs.existsSync('metadata.json')) {
             const meta = JSON.parse(fs.readFileSync('metadata.json', 'utf-8'));
@@ -96,127 +132,41 @@ async function run() {
         }
         
         execSync(`node scripts/import_articles.js --file "content/articles/${slug}.md" --title "Auto Generated" --category "${category}" --slug "${slug}"${metaArgs}`, { stdio: 'inherit' });
+        logRun(targetBrand, category, 'SUCCESS', 'INGESTION', `Article ${slug} live on MicroCMS`);
 
         // 4. Image Generation (画像生成)
-        console.log(`\n[4/7] Generating Background Images...`);
-        execSync(`npm run generate:images`, { stdio: 'inherit' });
+        console.log(`\n[4/7] Generating Background Images for ${slug}...`);
+        logRun(targetBrand, category, 'START', 'IMAGES', `Generating WebP assets for ${slug}`);
+        execSync(`npm run generate:images -- --slug=${slug}`, { stdio: 'inherit' });
+        logRun(targetBrand, category, 'SUCCESS', 'IMAGES', `Images generated and synced for ${slug}`);
 
-        // 4.5 Rendering V3 Automated Video (Optional/Heavy)
-        if (process.env.SKIP_VIDEO_RENDER === 'true') {
-            console.log(`\n[4.5/7] Skipping Video Rendering (SKIP_VIDEO_RENDER=true)`);
-        } else {
-            console.log(`\n[4.5/7] Rendering V3 Automated Video...`);
-            try {
-                // Render directly using remotion to avoid nested npm/cd issues
-                execSync(`npx remotion render video-generator/src/index.tsx Main public/videos/${slug}.mp4 --props='{"slug": "${slug}"}'`, { stdio: 'inherit' });
-            } catch (renderError) {
-                console.warn(`⚠️ Video Rendering Failed: ${renderError.message}. Proceeding with script backup...`);
-            }
-        }
-
-        // 5. Video Director Assets (動画プロンプト生成 - 必須)
+        // 5. Video Director Assets (動画プロンプト生成)
         console.log(`\n[5/7] Generating Video Prompts & Markdown Assets...`);
+        logRun(targetBrand, category, 'START', 'VIDEO_ASSETS', `Creating video script and prompts for ${slug}`);
         execSync(`node scripts/brain_architect.js "${slug}" --type video`, { stdio: 'inherit' });
+        logRun(targetBrand, category, 'SUCCESS', 'VIDEO_ASSETS', `Video assets ready for ${slug}`);
 
-        // [HYBRID STRATEGY] 5.2 Initialize Local Project for Batch Processor (Phase 1)
-        console.log(`\n[5.2/7] Preparing Project Skeleton for Phase 3...`);
-        try {
-            const projectDir = path.join(process.cwd(), 'projects', slug);
-            if (!fs.existsSync(projectDir)) fs.mkdirSync(projectDir, { recursive: true });
-            
-            const configPath = path.join(projectDir, 'config.json');
-            if (!fs.existsSync(configPath)) {
-                const config = {
-                    project_id: slug,
-                    project_name: topic,
-                    brand_id: targetBrand,
-                    status: 'draft',
-                    created_at: new Date().toISOString(),
-                    updated_at: new Date().toISOString(),
-                    video: { resolution: '1080x1920', fps: 30, aspect_ratio: '9:16' },
-                    clips: [],
-                    captions: [],
-                    audio: { use_veo_audio: true, bgm: { enabled: true, file: 'audio/bgm.mp3', volume: 0.2 } }
-                };
-                fs.writeFileSync(configPath, JSON.stringify(config, null, 2));
-                console.log(`✅ Project Skeleton created: ${configPath}`);
-            } else {
-                console.log(`ℹ️ Project Skeleton already exists.`);
-            }
-            
-            // Ensure subdirs exist
-            ['clips', 'images', 'audio', 'captions', 'output'].forEach(d => {
-                const subDir = path.join(projectDir, d);
-                if (!fs.existsSync(subDir)) fs.mkdirSync(subDir, { recursive: true });
-            });
-        } catch (initError) {
-            console.warn(`⚠️ Project Initialization Failed: ${initError.message}`);
-        }
-
-        // 5.5 Video Seed Images (動画用シード画像生成)
+        // 5.5 Video Seed Images
         console.log(`\n[5.5/7] Generating Video Seed Images...`);
+        logRun(targetBrand, category, 'START', 'VIDEO_SEEDS', `Generating scene seeds for ${slug}`);
         execSync(`npx tsx scripts/generate-video-seeds.ts`, { stdio: 'inherit' });
-
-        // 6. X (Twitter) Automation [NEW 3+2 Strategy]
-        console.log(`\n[6/7] Generating & Syncing X Posts (3 Bible + 2 Article)...`);
-        try {
-            execSync(`node scripts/generate_x_posts.js ${targetBrand} ${slug}`, { stdio: 'inherit' });
-            if (process.env.GAS_X_WEBAPP_URL) {
-                execSync(`node scripts/sync_to_gas.js ${targetBrand}`, { stdio: 'inherit' });
-            } else {
-                console.log(`ℹ️ [SKIP] GAS_X_WEBAPP_URL not set. Skipping GAS sync.`);
-            }
-        } catch (snsError) {
-            console.warn(`⚠️ X Post Automation Failed: ${snsError.message}. Proceeding...`);
-        }
+        logRun(targetBrand, category, 'SUCCESS', 'VIDEO_SEEDS', `Video seeds generated for ${slug}`);
 
         // 7. Google Drive Backup
         console.log(`\n[7/7] Backing up to Google Drive...`);
-        try {
-            // Project dir and subdirs are already created in Step 5.2
-            const projectDir = path.join(process.cwd(), 'projects', slug);
-            
-            // Copy assets to project folder before upload (for local record)
-            const assetsToCopy = [
-                { from: `content/scripts/${slug}.md` },
-                { from: `content/prompts/${slug}_prompts.md` },
-                { from: `content/social/${slug}_posts.md` },
-                { from: `content/articles/${slug}.md` }
-            ];
-            
-            // Ensure images are copied as well
-            const imagesDir = path.join(process.cwd(), 'public/images/articles', slug);
-            const projectImagesDir = path.join(projectDir, 'images');
-            if (fs.existsSync(imagesDir)) {
-                if (!fs.existsSync(projectImagesDir)) fs.mkdirSync(projectImagesDir, { recursive: true });
-                fs.readdirSync(imagesDir).forEach(img => {
-                    fs.copyFileSync(path.join(imagesDir, img), path.join(projectImagesDir, img));
-                });
-            }
+        logRun(targetBrand, category, 'START', 'BACKUP', `Uploading all assets for ${slug} to Google Drive`);
+        execSync(`python3 scripts/upload_to_drive.py "${slug}"`, { stdio: 'inherit' });
+        logRun(targetBrand, category, 'SUCCESS', 'BACKUP', `Drive backup complete for ${slug}`);
 
-            // Run Drive Sync
-            console.log(`   -> Uploading to Drive (Slug: ${slug})...`);
-            execSync(`python3 scripts/upload_to_drive.py "${slug}"`, { stdio: 'inherit' });
-        } catch (driveError) {
-            console.error(`❌ Drive Backup Failed: ${driveError.message}`);
-        }
-
-        // 8. Git Sync (Removed - Handled by GitHub Actions or Manual push)
-        console.log(`\n[8/7] Skipping Image Sync (Handled by CI/Workflow)...`);
-
+        logRun(targetBrand, category, 'SUCCESS', 'COMPLETE', `Full publication cycle finished for ${slug}`);
         console.log(`\n✅ Published and Backed up successfully: ${slug}`);
- 
-        // 9. Batch Video Processing (Distributed Load)
-        console.log(`\n[9/7] Checking for pending video renders for ${targetBrand}...`);
-        try {
-            execSync(`node scripts/batch-processor.js --brand ${targetBrand}`, { stdio: 'inherit' });
-            console.log(`✅ Video Batch Processing for ${targetBrand} complete.`);
-        } catch (batchError) {
-            console.warn(`⚠️ Video Batch Processing partially failed or no projects found: ${batchError.message}`);
-        }
 
     } catch (error) {
         console.error(`\n❌ Publication Failed:`, error.message);
+        logRun(targetBrand, category, 'FAILURE', 'FATAL', error.message, { 
+            slug, 
+            stack: error.stack?.split('\n').slice(0, 3).join(' ') 
+        });
         process.exit(1);
     }
 }

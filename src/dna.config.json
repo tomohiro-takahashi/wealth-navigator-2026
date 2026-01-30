@@ -1,92 +1,106 @@
 {
-    "identity": {
-        "name": "親の家、どうする？",
-        "site_id": "legacy",
-        "description": "実家を'負担'から'資産'に変える、たったひとつの選択。"
+  "identity": {
+    "name": "Wealth Navigator",
+    "site_id": "wealth",
+    "description": "Global Investment Strategies for High Net Worth Individuals."
+  },
+  "persona": {
+    "tone": "Authoritative, Strategic, Premium",
+    "first_person": "私 (チーフストラテジスト)",
+    "audience_level": "High/Expert",
+    "keywords": [
+      "Opportunity Loss",
+      "Arbitrage",
+      "Global Macro",
+      "Tax Optimization"
+    ]
+  },
+  "target": {
+    "audience": "High Net Worth Individuals (HNWI), Business Owners",
+    "pain_points": [
+      "Taxation",
+      "Inflation",
+      "Legacy Preservation"
+    ]
+  },
+  "categories": {
+    "domestic": {
+      "id": "domestic",
+      "name": "国内不動産",
+      "description": "都心中古マンション、J-REIT、金利戦略。",
+      "context": "Focus on 'Deny New Build Premium', 'Vintage Superiority', and 'Selection/Replacement Period'."
     },
-    "persona": {
-        "tone": "Empathetic, Gentle, Consultant",
-        "first_person": "私 (相続不動産コンサルタント)",
-        "audience_level": "Beginner/Emotional",
-        "keywords": [
-            "寄り添う",
-            "家族会議",
-            "罪悪感",
-            "実家じまい"
-        ]
+    "overseas": {
+      "id": "overseas",
+      "name": "海外不動産",
+      "description": "成長国投資、通貨分散、タックスメリット。",
+      "context": "Focus on 'Yen Depreciation Risk', 'Ray Dalio Diversification', and 'Shelter for Assets'."
     },
-    "target": {
-        "audience": "45-65yo, Heirs, Empty House Owners",
-        "pain_points": [
-            "罪悪感",
-            "手続きが不明",
-            "税金への不安"
-        ]
-    },
-    "categories": {
-        "mindset": {
-            "id": "mindset",
-            "name": "心の準備について",
-            "description": "感情の整理・罪悪感の解消。",
-            "context": "Focus on 'Guilt Relief', 'Family Discussions', 'Mental Preparation'."
-        },
-        "options": {
-            "id": "options",
-            "name": "色々な選択肢",
-            "description": "売る・貸す・活かす、どれが正解か。",
-            "context": "Focus on 'Selling vs Renting', 'Utilization Options', 'Decision Framework'."
-        },
-        "procedure": {
-            "id": "procedure",
-            "name": "手続きの仕方",
-            "description": "具体的な手続き・税金を知りたい。",
-            "context": "Focus on 'Inheritance Tax', 'Registration', 'Legal Steps'."
-        },
-        "case": {
-            "id": "case",
-            "name": "活用事例",
-            "description": "実際にどうしたか事例を見たい。",
-            "context": "Focus on 'Success Stories', 'Real Life Examples', 'User Voices'."
-        }
-    },
-    "bible_path": "libs/brain/bibles/legacy_bible.md",
-    "strategy_path": "libs/brain/strategies/legacy_strategy.md",
-    "cta": {
-        "label": "Legacy Consultation",
-        "title": "実家の悩み、<br />ひとりで抱えていませんか？",
-        "description": "「親になんて切り出そう…」「兄弟と揉めたくない…」<br class=\"hidden md:block\" />相続のプロが、あなたの家族にぴったりの<br />「円満な実家じまい」の進め方をアドバイスします。",
-        "buttonText": "無料相談を予約する",
-        "url": "https://line.me/R/ti/p/@legacy_guard",
-        "image": "/images/legacy_cta_bg.jpg"
-    },
-    "hero": {
-        "title": "実家を、<br />負担から資産へ。",
-        "subTitle": "思い出はそのままに、<br />家族みんなが笑顔になれる選択を。",
-        "primaryButton": {
-            "text": "実家診断を始める (無料)",
-            "url": "/simulation"
-        },
-        "secondaryButton": {
-            "text": "About us 私たちについて",
-            "url": "/about"
-        }
-    },
-    "premium": {
-        "title": "実家活用の成功事例",
-        "btnText": "すべての事例を見る"
-    },
-    "philosophy": {
-        "title": "実家じまいは、<br />家族の新しい出発。",
-        "description": "実家をどうするか。それは単なる不動産の問題ではありません。<br />親の想い、子供の事情、それぞれの人生が交差する場所です。<br /><br />でも維持するのも大変。<br />そんな気持ち、よくわかります。<br />放置すれば、リスクが増える。<br />「いつか」は永遠に来ません。<br />ひとりで抱え込まなくて大丈夫。<br /><br />私たちは、不動産のプロである前に、<br />家族の想いに寄り添う、良き相談相手でありたい。"
-    },
-    "bridge": {
-        "title": "「罪悪感」から、<br />「前向きな解決」へ",
-        "description": "相続や空き家問題はデリケートです。<br class=\"hidden md:block\" />経験豊富な専門家と、<br class=\"text-[#B1A7A6] font-bold\">「家族の代理人」</span>として話し合う。<br />それが、後悔しない実家じまいの第一歩です。",
-        "buttonText": "相続・個別相談を予約する",
-        "url": "/inquiry"
-    },
-    "theme": {
-        "primaryColor": "#1a1a1a",
-        "accentColor": "#A68966"
+    "column": {
+      "id": "column",
+      "name": "ストラテジー",
+      "description": "投資家心理、市場サイクル、マクロ経済。",
+      "context": "Focus on 'Howard Marks Market Cycle', 'Contrarian Courage', and 'Investor Psychology'."
     }
+  },
+  "hero": {
+    "title": "一流を、<br />再定義する。",
+    "subTitle": "現代のビジョナリーへ贈る、<br />至高のインサイト。",
+    "primaryButton": {
+      "text": "「信用力」と「最適戦略」を診断する (無料)",
+      "url": "/simulation"
+    },
+    "secondaryButton": {
+      "text": "About us 私たちについて",
+      "url": "/about"
+    }
+  },
+  "premium": {
+    "title": "厳選された物件",
+    "btnText": "すべての物件を見る"
+  },
+  "philosophy": {
+    "title": "真の豊かさとは、<br />選択肢を持つこと。",
+    "description": "資産とは、数字の羅列ではない。それは、選択肢である。<br />望む場所に住み、望む時間を生き、望む人々と過ごす。<br />その自由を手にするための、静かなる力である。<br /><br />知識こそが、最強の防衛策。<br />そして、真の自由への最短距離である。"
+  },
+  "bridge": {
+    "title": "「孤独な決断」から、<br />「確信ある選択」へ",
+    "description": "資産運用は情報戦です。30年の実績を持つプロフェッショナルを、<br class=\"hidden md:block\" />あなた専属の<span class=\"text-[#c59f59] font-bold\">「プライベート・顧問」</span>に迎え入れる。<br />それが、資産を守る最強の防衛策です。",
+    "buttonText": "資産防衛・個別相談を予約する",
+    "url": "/inquiry"
+  },
+  "bible_path": "libs/brain/titans_knowledge.md",
+  "strategy_path": "libs/brain/strategies/wealth_strategy.md",
+  "cta": {
+    "label": "Members Only Intelligence",
+    "title": "Webでは書けない<br />「裏情報」がある。",
+    "description": "この記事で公開したのは、氷山の一角です。<br class=\"hidden md:block\" />具体的な金融機関名、市場に出ない非公開物件、税務の核心...<br />不特定多数には公開できない「資産防衛の真実」を、<br class=\"hidden md:block\" />LINEメンバー限定で配信します。",
+    "buttonText": "LINEで「極秘情報」を受け取る",
+    "url": "https://line.me/R/ti/p/@wealth-navigator",
+    "image": "/images/wealth_lounge.jpg"
+  },
+  "theme": {
+    "primaryColor": "#1A1A1A",
+    "accentColor": "#C9A962"
+  },
+  "brand": "json",
+  "valid_categories": [
+    "domestic",
+    "overseas",
+    "column"
+  ],
+  "default_category": "domestic",
+  "site_id": "wealth",
+  "paths": {
+    "bible": "libs/brain/titans_knowledge.md",
+    "strategy": "libs/brain/strategies/wealth_strategy.md"
+  },
+  "images": {
+    "base_url": "/images/articles",
+    "fallback": "/images/common/fallback.webp"
+  },
+  "meta": {
+    "default_author": "編集部",
+    "og_site_name": "Wealth Navigator"
+  }
 }

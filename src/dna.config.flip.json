@@ -1,87 +1,108 @@
 {
-    "identity": {
-        "name": "Flip Logic",
-        "site_id": "flip"
+  "identity": {
+    "name": "Flip Logic",
+    "site_id": "flip"
+  },
+  "persona": {
+    "tone": "Cold, Logical, Professional Trader",
+    "first_person": "私 (フリッパー)",
+    "audience_level": "Intermediate",
+    "keywords": [
+      "出口戦略",
+      "回転率",
+      "Velocity",
+      "数字は嘘をつかない"
+    ]
+  },
+  "target": {
+    "audience": "Real Estate Traders, 30-50s, Capital Gain Seekers",
+    "income_range": "1000-3000万円"
+  },
+  "categories": {
+    "source": {
+      "id": "source",
+      "name": "仕入れ",
+      "description": "物件の仕入れ方法を知りたい。",
+      "context": "Focus on 'Sourcing', 'Auction', 'Voluntary Sale', 'Finding Deals'."
     },
-    "persona": {
-        "tone": "Cold, Logical, Professional Trader",
-        "first_person": "私 (フリッパー)",
-        "audience_level": "Intermediate",
-        "keywords": [
-            "出口戦略",
-            "回転率",
-            "Velocity",
-            "数字は嘘をつかない"
-        ]
+    "analyze": {
+      "id": "analyze",
+      "name": "目利き",
+      "description": "買うべき物件の見極め方を知りたい。",
+      "context": "Focus on 'Analysis', '70% Rule', 'Checklist', 'Evaluation'."
     },
-    "target": {
-        "audience": "Real Estate Traders, 30-50s, Capital Gain Seekers",
-        "income_range": "1000-3000万円"
+    "flip": {
+      "id": "flip",
+      "name": "再生",
+      "description": "リノベ戦略・コスト管理を知りたい。",
+      "context": "Focus on 'Renovation Strategy', 'Cost Control', 'Value Add'."
     },
-    "categories": {
-        "source": {
-            "id": "source",
-            "name": "仕入れ",
-            "description": "物件の仕入れ方法を知りたい。",
-            "context": "Focus on 'Sourcing', 'Auction', 'Voluntary Sale', 'Finding Deals'."
-        },
-        "analyze": {
-            "id": "analyze",
-            "name": "目利き",
-            "description": "買うべき物件の見極め方を知りたい。",
-            "context": "Focus on 'Analysis', '70% Rule', 'Checklist', 'Evaluation'."
-        },
-        "flip": {
-            "id": "flip",
-            "name": "再生",
-            "description": "リノベ戦略・コスト管理を知りたい。",
-            "context": "Focus on 'Renovation Strategy', 'Cost Control', 'Value Add'."
-        },
-        "sell": {
-            "id": "sell",
-            "name": "売却",
-            "description": "高く・早く売る方法を知りたい。",
-            "context": "Focus on 'Exit Strategy', 'Fast Sale', 'Pricing', 'Yield Calculation'."
-        }
-    },
-    "bible_path": "libs/brain/bibles/flip_bible.md",
-    "strategy_path": "libs/brain/strategies/flip_strategy.md",
-    "cta": {
-        "label": "Traders Lounge",
-        "title": "1000万抜ける物件は<br />瞬殺される。",
-        "description": "レインズに出る前の「上流情報」を入手する方法を知っていますか？<br class=\"hidden md:block\" />プロだけが知る仕入れルートと、<br />再販利益を最大化する出口戦略を公開中。",
-        "buttonText": "未公開仕入れ情報を見る",
-        "url": "https://line.me/R/ti/p/@flip_logic",
-        "image": "/images/flip_lounge.jpg"
-    },
-    "hero": {
-        "title": "資産を、<br />高速回転させる。",
-        "subTitle": "買取再販のプロフェッショナルへ。<br />勝つためのロジックを。",
-        "primaryButton": {
-            "text": "フリップ適性診断を始める (無料)",
-            "url": "/simulation"
-        },
-        "secondaryButton": {
-            "text": "About us 私たちについて",
-            "url": "/about"
-        }
-    },
-    "premium": {
-        "title": "厳選された仕入れ案件",
-        "btnText": "すべての物件を見る"
-    },
-    "philosophy": {
-        "title": "数字は、<br />嘘をつかない。",
-        "description": "感情で不動産を買うな。買うべきは、利益だ。<br />出口戦略なき投資は、ただの浪費である。<br />安く買い、付加価値を乗せ、高く売る。<br /><br />このシンプルな原則を極めた者だけが、<br />市場を制する。"
-    },
-    "bridge": {
-        "title": "「感覚の投資」から、<br />「論理の勝利」へ",
-        "description": "不動産再販はスピード勝負です。<br class=\"hidden md:block\" />仕入れのプロと、<br class=\"text-[#0EA5E9] font-bold\">「戦略的パートナー」</span>として手を組む。<br />それが、確実な利益を生む最短ルートです。",
-        "buttonText": "再販事業・個別相談を予約する",
-        "url": "/inquiry"
-    },
-    "theme": {
-        "primaryColor": "#0B0E14",
-        "accentColor": "#00F0FF"
+    "sell": {
+      "id": "sell",
+      "name": "売却",
+      "description": "高く・早く売る方法を知りたい。",
+      "context": "Focus on 'Exit Strategy', 'Fast Sale', 'Pricing', 'Yield Calculation'."
     }
+  },
+  "bible_path": "libs/brain/bibles/flip_bible.md",
+  "strategy_path": "libs/brain/strategies/flip_strategy.md",
+  "cta": {
+    "label": "Traders Lounge",
+    "title": "1000万抜ける物件は<br />瞬殺される。",
+    "description": "レインズに出る前の「上流情報」を入手する方法を知っていますか？<br class=\"hidden md:block\" />プロだけが知る仕入れルートと、<br />再販利益を最大化する出口戦略を公開中。",
+    "buttonText": "未公開仕入れ情報を見る",
+    "url": "https://line.me/R/ti/p/@flip_logic",
+    "image": "/images/flip_lounge.jpg"
+  },
+  "hero": {
+    "title": "資産を、<br />高速回転させる。",
+    "subTitle": "買取再販のプロフェッショナルへ。<br />勝つためのロジックを。",
+    "primaryButton": {
+      "text": "フリップ適性診断を始める (無料)",
+      "url": "/simulation"
+    },
+    "secondaryButton": {
+      "text": "About us 私たちについて",
+      "url": "/about"
+    }
+  },
+  "premium": {
+    "title": "厳選された仕入れ案件",
+    "btnText": "すべての物件を見る"
+  },
+  "philosophy": {
+    "title": "数字は、<br />嘘をつかない。",
+    "description": "感情で不動産を買うな。買うべきは、利益だ。<br />出口戦略なき投資は、ただの浪費である。<br />安く買い、付加価値を乗せ、高く売る。<br /><br />このシンプルな原則を極めた者だけが、<br />市場を制する。"
+  },
+  "bridge": {
+    "title": "「感覚の投資」から、<br />「論理の勝利」へ",
+    "description": "不動産再販はスピード勝負です。<br class=\"hidden md:block\" />仕入れのプロと、<br class=\"text-[#0EA5E9] font-bold\">「戦略的パートナー」</span>として手を組む。<br />それが、確実な利益を生む最短ルートです。",
+    "buttonText": "再販事業・個別相談を予約する",
+    "url": "/inquiry"
+  },
+  "theme": {
+    "primaryColor": "#0B0E14",
+    "accentColor": "#00F0FF"
+  },
+  "brand": "flip",
+  "valid_categories": [
+    "source",
+    "analyze",
+    "flip",
+    "sell"
+  ],
+  "default_category": "source",
+  "site_id": "flip",
+  "paths": {
+    "bible": "libs/brain/bibles/flip_bible.md",
+    "strategy": "libs/brain/strategies/flip_strategy.md"
+  },
+  "images": {
+    "base_url": "/images/articles",
+    "fallback": "/images/common/fallback.webp"
+  },
+  "meta": {
+    "default_author": "編集部",
+    "og_site_name": "Flip Logic"
+  }
 }

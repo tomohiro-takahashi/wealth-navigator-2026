@@ -1,0 +1,5 @@
+{
+  "success": false,
+  "path": "/Users/takahashitomohiro/Desktop/wealth-navigator/content/01_drafts/2026-01-29-f17248bc/images/02.webp",
+  "error": "[GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent: [429 Too Many Requests] Resource exhausted. Please try again later. Please refer to https://cloud.google.com/vertex-ai/generative-ai/docs/error-code-429 for more details."
+}

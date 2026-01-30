@@ -1,93 +1,114 @@
 {
-    "identity": {
-        "name": "おうちの補助金相談室",
-        "site_id": "subsidy",
-        "description": "難しい制度を、日本一やさしく。補助金で賢く・快適なリフォームを。"
+  "identity": {
+    "name": "おうちの補助金相談室",
+    "site_id": "subsidy",
+    "description": "難しい制度を、日本一やさしく。補助金で賢く・快適なリフォームを。"
+  },
+  "persona": {
+    "role": "50代の補助金コンサルタント・暮らしの専門家",
+    "tone": "Empathetic, Knowledgeable, Gentle Expert",
+    "first_person": "私 (補助金コンサルタント/暮らしのアドバイザー)",
+    "audience_level": "Beginner (Seniors)",
+    "keywords": [
+      "簡単",
+      "お得",
+      "国のお金",
+      "ワンストップ"
+    ]
+  },
+  "target": {
+    "audience": "55-75yo Seniors, Reform Considerers",
+    "pain_points": [
+      "制度が複雑",
+      "申請が面倒",
+      "騙されたくない"
+    ]
+  },
+  "categories": {
+    "learn": {
+      "id": "learn",
+      "name": "補助金を知る",
+      "description": "どんな補助金があるか全体像を知りたい。",
+      "context": "Focus on 'Subsidy Overview', '2026 Updates', 'Government Policy'."
     },
-    "persona": {
-        "role": "50代の補助金コンサルタント・暮らしの専門家",
-        "tone": "Empathetic, Knowledgeable, Gentle Expert",
-        "first_person": "私 (補助金コンサルタント/暮らしのアドバイザー)",
-        "audience_level": "Beginner (Seniors)",
-        "keywords": [
-            "簡単",
-            "お得",
-            "国のお金",
-            "ワンストップ"
-        ]
+    "guide": {
+      "id": "guide",
+      "name": "目的別ガイド",
+      "description": "自分のリフォームに使える補助金を知りたい。",
+      "context": "Focus on 'Specific Reforms (Windows, Barrier-free)', 'Eligibility', 'Matching Needs'."
     },
-    "target": {
-        "audience": "55-75yo Seniors, Reform Considerers",
-        "pain_points": [
-            "制度が複雑",
-            "申請が面倒",
-            "騙されたくない"
-        ]
+    "howto": {
+      "id": "howto",
+      "name": "申請の流れ",
+      "description": "申請方法・手続きを知りたい。",
+      "context": "Focus on 'Application Steps', 'Required Documents', 'Choosing Contractors'."
     },
-    "categories": {
-        "learn": {
-            "id": "learn",
-            "name": "補助金を知る",
-            "description": "どんな補助金があるか全体像を知りたい。",
-            "context": "Focus on 'Subsidy Overview', '2026 Updates', 'Government Policy'."
-        },
-        "guide": {
-            "id": "guide",
-            "name": "目的別ガイド",
-            "description": "自分のリフォームに使える補助金を知りたい。",
-            "context": "Focus on 'Specific Reforms (Windows, Barrier-free)', 'Eligibility', 'Matching Needs'."
-        },
-        "howto": {
-            "id": "howto",
-            "name": "申請の流れ",
-            "description": "申請方法・手続きを知りたい。",
-            "context": "Focus on 'Application Steps', 'Required Documents', 'Choosing Contractors'."
-        },
-        "case": {
-            "id": "case",
-            "name": "事例・お得情報",
-            "description": "実際にいくら得したか知りたい。",
-            "context": "Focus on 'Success Stories', 'Amount Saved', 'Combination Techniques'."
-        }
-    },
-    "bible_path": "libs/brain/bibles/subsidy_bible.md",
-    "strategy_path": "libs/brain/strategies/subsidy_strategy.md",
-    "cta": {
-        "label": "Subsidy Checker",
-        "title": "あなたの家のリフォーム、<br />いくらもらえる？",
-        "description": "たった3分の診断で、あなたが使える補助金の<br class=\"hidden md:block\" />「最大金額」がわかります。<br />リフォーム会社に相談する前に、まずはチェック。",
-        "buttonText": "無料で補助金を診断する",
-        "url": "https://line.me/R/ti/p/@subsidy_nav",
-        "image": "/images/subsidy_lounge.jpg"
-    },
-    "hero": {
-        "title": "リフォームは、<br />国のお金で賢く。",
-        "subTitle": "知っている人だけが得をする。<br />補助金活用のプロにお任せください。",
-        "primaryButton": {
-            "text": "もらえる金額を診断する (無料)",
-            "url": "/simulation"
-        },
-        "secondaryButton": {
-            "text": "About us 私たちについて",
-            "url": "/about"
-        }
-    },
-    "premium": {
-        "title": "人気の補助金活用術",
-        "btnText": "すべての活用事例を見る"
-    },
-    "philosophy": {
-        "title": "快適な暮らしを、<br />負担なく。",
-        "description": "リフォームは高い、と諦めていませんか？<br />国は今、省エネや耐震リフォームを全力で応援しています。<br />制度を正しく使えば、自己負担はぐっと減らせます。<br /><br />面倒な申請はプロにお任せ。<br />あなたは、理想の暮らしを描くだけです。"
-    },
-    "bridge": {
-        "title": "「よくわからない」から、<br />「任せて安心」へ",
-        "description": "補助金制度は毎年変わります。<br class=\"hidden md:block\" />最新情報を熟知したプロと、<br class=\"text-[#FFD700] font-bold\">「相談できるパートナー」</span>として繋がる。<br />それが、一番お得にリフォームする近道です。",
-        "buttonText": "補助金・個別相談を予約する",
-        "url": "/inquiry"
-    },
-    "theme": {
-        "primaryColor": "#E67E22",
-        "accentColor": "#E67E22"
+    "case": {
+      "id": "case",
+      "name": "事例・お得情報",
+      "description": "実際にいくら得したか知りたい。",
+      "context": "Focus on 'Success Stories', 'Amount Saved', 'Combination Techniques'."
     }
+  },
+  "bible_path": "libs/brain/bibles/subsidy_bible.md",
+  "strategy_path": "libs/brain/strategies/subsidy_strategy.md",
+  "cta": {
+    "label": "Subsidy Checker",
+    "title": "あなたの家のリフォーム、<br />いくらもらえる？",
+    "description": "たった3分の診断で、あなたが使える補助金の<br class=\"hidden md:block\" />「最大金額」がわかります。<br />リフォーム会社に相談する前に、まずはチェック。",
+    "buttonText": "無料で補助金を診断する",
+    "url": "https://line.me/R/ti/p/@subsidy_nav",
+    "image": "/images/subsidy_lounge.jpg"
+  },
+  "hero": {
+    "title": "リフォームは、<br />国のお金で賢く。",
+    "subTitle": "知っている人だけが得をする。<br />補助金活用のプロにお任せください。",
+    "primaryButton": {
+      "text": "もらえる金額を診断する (無料)",
+      "url": "/simulation"
+    },
+    "secondaryButton": {
+      "text": "About us 私たちについて",
+      "url": "/about"
+    }
+  },
+  "premium": {
+    "title": "人気の補助金活用術",
+    "btnText": "すべての活用事例を見る"
+  },
+  "philosophy": {
+    "title": "快適な暮らしを、<br />負担なく。",
+    "description": "リフォームは高い、と諦めていませんか？<br />国は今、省エネや耐震リフォームを全力で応援しています。<br />制度を正しく使えば、自己負担はぐっと減らせます。<br /><br />面倒な申請はプロにお任せ。<br />あなたは、理想の暮らしを描くだけです。"
+  },
+  "bridge": {
+    "title": "「よくわからない」から、<br />「任せて安心」へ",
+    "description": "補助金制度は毎年変わります。<br class=\"hidden md:block\" />最新情報を熟知したプロと、<br class=\"text-[#FFD700] font-bold\">「相談できるパートナー」</span>として繋がる。<br />それが、一番お得にリフォームする近道です。",
+    "buttonText": "補助金・個別相談を予約する",
+    "url": "/inquiry"
+  },
+  "theme": {
+    "primaryColor": "#E67E22",
+    "accentColor": "#E67E22"
+  },
+  "brand": "subsidy",
+  "valid_categories": [
+    "learn",
+    "guide",
+    "howto",
+    "case"
+  ],
+  "default_category": "learn",
+  "site_id": "subsidy",
+  "paths": {
+    "bible": "libs/brain/bibles/subsidy_bible.md",
+    "strategy": "libs/brain/strategies/subsidy_strategy.md"
+  },
+  "images": {
+    "base_url": "/images/articles",
+    "fallback": "/images/common/fallback.webp"
+  },
+  "meta": {
+    "default_author": "編集部",
+    "og_site_name": "おうちの補助金相談室"
+  }
 }

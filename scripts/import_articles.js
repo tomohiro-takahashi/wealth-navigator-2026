@@ -15,16 +15,55 @@ const client = createClient({
 const args = require('minimist')(process.argv.slice(2));
 
 async function importArticle() {
+    const resultPath = args.result;
+    const result = { success: false, error: null, id: null };
+
     try {
-        if (!args.file) throw new Error('Usage: node import_articles.js --file <md_file_path> [--force-reset]');
+        if (!args.file && !args.context) {
+            throw new Error('Usage: node import_articles.js --file <md_file_path> [--context <path/to/context.json>] [--result <path/to/result.json>]');
+        }
 
-        console.log(`[IMPORT] Starting for: ${args.file}`);
+        let siteId, categories, validCategoryKeys, slug, title, content, frontmatter;
 
-        const fileAbsPath = path.resolve(args.file);
-        const rawFileContent = fs.readFileSync(fileAbsPath, 'utf8');
-        let { data: frontmatter, content } = matter(rawFileContent);
+        // 1. Load Data from Context or File
+        if (args.context && fs.existsSync(args.context)) {
+            const context = JSON.parse(fs.readFileSync(args.context, 'utf8'));
+            siteId = context.siteId;
+            categories = [context.category];
+            validCategoryKeys = context.validCategories;
+            slug = context.slug;
+            
+            const articlePath = args.file || path.join(context.paths.workDir, 'article.md');
+            if (!fs.existsSync(articlePath)) throw new Error(`Article file not found: ${articlePath}`);
+            const rawFileContent = fs.readFileSync(articlePath, 'utf8');
+            const matterResult = matter(rawFileContent);
+            frontmatter = matterResult.data;
+            content = matterResult.content;
+            title = context.meta.title || frontmatter.title;
+        } else {
+            // Legacy/Direct File Load
+            const fileAbsPath = path.resolve(args.file);
+            const rawFileContent = fs.readFileSync(fileAbsPath, 'utf8');
+            const matterResult = matter(rawFileContent);
+            frontmatter = matterResult.data;
+            content = matterResult.content;
+            
+            siteId = args.site_id || frontmatter.site_id || 'wealth';
+            categories = args.category ? (args.category.includes('[') ? JSON.parse(args.category.replace(/'/g, '"')) : [args.category]) : (frontmatter.category ? (Array.isArray(frontmatter.category) ? frontmatter.category : [frontmatter.category]) : ['column']);
+            slug = args.slug || frontmatter.slug || path.basename(args.file, '.md');
+            title = frontmatter.title || args.title || 'No Title';
 
-        // 1. Content Normalization (Markdown -> HTML)
+            // Load valid categories for validation
+            const dnaPath = path.join(process.cwd(), `src/dna.config.${siteId}.json`);
+            if (fs.existsSync(dnaPath)) {
+                const dna = JSON.parse(fs.readFileSync(dnaPath, 'utf8'));
+                validCategoryKeys = dna.valid_categories || Object.keys(dna.categories || {});
+            }
+        }
+
+        console.log(`[IMPORT] Starting for: ${slug} (Site: ${siteId})`);
+
+        // 2. Content Normalization (Markdown -> HTML)
         const isAlreadyHtml = /<[a-z][\s\S]*>/i.test(content.substring(0, 500));
         const hasMarkdownPatterns = /^#|[\n\r]#|^- |^\* |^\d+\. |!\[.*\]\(.*\)/m.test(content);
         
@@ -33,12 +72,8 @@ async function importArticle() {
             content = marked.parse(content);
         }
 
-        // 2. Data Preparation
-        const slug = args.slug || frontmatter.slug || path.basename(args.file, '.md');
-        let title = frontmatter.title || args.title || 'No Title';
-
-        // Title Fallback
-        if (title === 'No Title' || title === 'undefined' || title === 'Auto Generated') {
+        // Title Extraction if still missing
+        if (!title || title === 'No Title' || title === 'undefined') {
             const h1Match = content.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i) || content.match(/^# (.*)$/m);
             if (h1Match) {
                 title = h1Match[1].replace(/<[^>]+>/g, '').trim();
@@ -46,38 +81,21 @@ async function importArticle() {
             }
         }
 
-        // DNA Mapping (Site ID & Category)
-        let siteId = args.site_id || frontmatter.site_id || 'wealth';
-        let categories = args.category ? (args.category.includes('[') ? JSON.parse(args.category.replace(/'/g, '"')) : [args.category]) : (frontmatter.category ? (Array.isArray(frontmatter.category) ? frontmatter.category : [frontmatter.category]) : ['column']);
-
         // --- Brand Integrity: Category Validation ---
-        try {
-            const dnaPath = path.join(process.cwd(), `src/dna.config.${siteId}.json`);
-            if (fs.existsSync(dnaPath)) {
-                const dna = JSON.parse(fs.readFileSync(dnaPath, 'utf8'));
-                const validCategoryKeys = Object.keys(dna.categories || {});
-                
-                if (validCategoryKeys.length > 0) {
-                    const filteredCategories = categories.filter(c => validCategoryKeys.includes(c));
-                    if (filteredCategories.length === 0) {
-                        const defaultCat = validCategoryKeys[0];
-                        console.warn(`⚠️ [BRAND PROTECT] Category "${categories.join(',')}" is invalid for brand "${siteId}". Falling back to: "${defaultCat}"`);
-                        categories = [defaultCat];
-                    } else if (filteredCategories.length < categories.length) {
-                        console.warn(`⚠️ [BRAND PROTECT] Removed invalid categories for ${siteId}. Keeping: ${filteredCategories.join(',')}`);
-                        categories = filteredCategories;
-                    }
-                }
-            } else {
-                console.warn(`⚠️ [BRAND PROTECT] DNA config for "${siteId}" not found. Skipping validation.`);
+        if (validCategoryKeys && validCategoryKeys.length > 0) {
+            const filteredCategories = categories.filter(c => validCategoryKeys.includes(c));
+            if (filteredCategories.length === 0) {
+                throw new Error(
+                    `FATAL: Category "${categories.join(',')}" is invalid for site "${siteId}". ` +
+                    `Valid: ${validCategoryKeys.join(', ')}`
+                );
             }
-        } catch (catError) {
-            console.warn(`⚠️ [BRAND PROTECT] Category validation failed: ${catError.message}`);
+            categories = filteredCategories;
         }
 
         // 3. Assemble Payload
         const payload = {
-            title: title || frontmatter.title,
+            title: title,
             content: content,
             slug: slug,
             site_id: [siteId],
@@ -88,46 +106,20 @@ async function importArticle() {
             expert_tip: args.expert_tip || frontmatter.expert_tip || '',
         };
         
-        // NOTE: MicroCMS schema 'eyecatch' rejected. 
-        // Relying on frontend local image naming fallback for now.
-
         if (args.target_yield || frontmatter.target_yield) {
             payload.target_yield = parseFloat(args.target_yield || frontmatter.target_yield) || 0;
         }
         payload.publishedAt = args.date || frontmatter.publishedAt || new Date().toISOString();
 
-        // Extract Expert Tip if present in HTML
-        if (!payload.expert_tip) {
-            const expertMatch = content.match(/<div class="expert-box">([\s\S]*?)<\/div>/);
-            if (expertMatch) {
-                payload.expert_tip = expertMatch[1].replace(/【.*?】/, '').trim();
-                console.log('[INFO] Extracted Expert Tip from HTML content.');
-            }
-        }
-
-        // 4. Special Field: Eyecatch
-        // [REMOVED] 'eyecatch' field is not configured in MicroCMS. 
-        // We rely on frontend fallback: /images/articles/${slug}/01.webp
-
-        // 5. Sync to MicroCMS
+        // 4. Sync to MicroCMS
         console.log(`[CMS] Checking for existing article: "${title}" (Slug: ${slug})`);
         
-        // Find by Slug first (safer than title)
         const { contents: existingBySlug } = await client.getList({
             endpoint: 'articles',
             queries: { filters: `slug[equals]${slug}` }
         });
 
         let existingId = existingBySlug.length > 0 ? existingBySlug[0].id : null;
-
-        if (!existingId) {
-            // Backup search by title
-            const { contents: existingByTitle } = await client.getList({
-                endpoint: 'articles',
-                queries: { filters: `title[equals]${title}` }
-            });
-            if (existingByTitle.length > 0) existingId = existingByTitle[0].id;
-        }
 
         if (existingId) {
             console.log(`[UPDATE] Found article ID: ${existingId}. Syncing...`);
@@ -143,10 +135,14 @@ async function importArticle() {
                 endpoint: 'articles',
                 content: payload,
             });
-            console.log(`✅ Creation successful! ID: ${newRes.id}`);
+            existingId = newRes.id;
+            console.log(`✅ Creation successful! ID: ${existingId}`);
         }
 
-        // 6. Record to History
+        result.success = true;
+        result.id = existingId;
+
+        // 5. Record to History
         const historyPath = path.join(process.cwd(), 'content/published_history.json');
         let history = [];
         if (fs.existsSync(historyPath)) {
@@ -154,17 +150,25 @@ async function importArticle() {
         }
         history.push({
             slug: slug,
-            title: title || frontmatter.title,
+            title: title,
             site_id: siteId,
             category: categories[0],
             date: payload.publishedAt
         });
         fs.writeFileSync(historyPath, JSON.stringify(history, null, 2));
-        console.log(`[HISTORY] Recorded: ${slug}`);
 
     } catch (error) {
         console.error('❌ Sync Failed:', error.message);
-        process.exit(1);
+        result.success = false;
+        result.error = error.message;
+    } finally {
+        if (resultPath) {
+            fs.writeFileSync(resultPath, JSON.stringify(result, null, 2));
+            console.log(`[RESULT] Written to: ${resultPath}`);
+        }
+        if (!result.success && !args.context) {
+            process.exit(1);
+        }
     }
 }
 

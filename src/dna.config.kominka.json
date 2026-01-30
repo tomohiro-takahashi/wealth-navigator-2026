@@ -1,94 +1,115 @@
 {
-    "identity": {
-        "name": "空き家錬金術",
-        "description": "放置された空き家を、年間利回り15%の資産に変える。",
-        "domain": "kominka-frontier.vercel.app",
-        "email": "info@kominka-frontier.com",
-        "site_id": "kominka",
-        "author": "Kominka Frontier Team",
-        "social": {
-            "line": "https://lin.ee/xxxxxx"
-        }
-    },
-    "persona": {
-        "role": "夢を語れる建築家 × 数字に厳しい投資家",
-        "tone": "熱量高めだが、数字の話などの重要な判断においては冷静でシャープ。「〜だ・である」調を交えつつ、夢と実利の両方を語る。",
-        "mission": "読者に古民家投資のロマンと経済的メリットを伝え、実際に行動（物件探し・購入）へ移させること。"
-    },
-    "target": {
-        "audience": "35〜55歳のサラリーマン投資家、中小企業経営者、医師・士業",
-        "pain_points": [
-            "次の投資先がない（都心・RCの利回り低下）",
-            "キャッシュフローが出ない",
-            "差別化できない",
-            "相続した実家の処分",
-            "リフォーム費用の不透明さ"
-        ]
-    },
-    "categories": {
-        "find": {
-            "id": "find",
-            "name": "物件を探す",
-            "description": "投資対象の物件を見つけたい。",
-            "context": "Focus on 'Finding Properties', 'Empty House Bank', 'Under 1 Million Yen' deals."
-        },
-        "renovate": {
-            "id": "renovate",
-            "name": "再生する",
-            "description": "リノベーションの方法・費用を知りたい。",
-            "context": "Focus on 'Renovation Costs', 'Subsidies', 'DIY vs Pro', 'Architectural Value'."
-        },
-        "operate": {
-            "id": "operate",
-            "name": "民泊で稼ぐ",
-            "description": "民泊運営のノウハウを知りたい。",
-            "context": "Focus on 'Airbnb Operation', 'Occupancy Rate', 'Pricing Strategy', 'Guest Experience'."
-        },
-        "exit": {
-            "id": "exit",
-            "name": "出口戦略",
-            "description": "売却・事業承継を考えたい。",
-            "context": "Focus on 'Selling Higher', 'Exit Timing', 'Business Succession', 'Real Estate Capital Gains'."
-        }
-    },
-    "bible_path": "libs/brain/bibles/kominka_bible.md",
-    "strategy_path": "libs/brain/strategies/kominka_strategy.md",
-    "cta": {
-        "label": "Kominka Investor Community",
-        "title": "利回り15%物件は<br />市場には出ない。",
-        "description": "本当に儲かる古民家情報は、水面下で取引されます。<br class=\"hidden md:block\" />空き家バンクに出る前の「川上情報」、<br />リフォーム費を半額にする職人リストを、<br class=\"hidden md:block\" />LINEメンバー限定で公開します。",
-        "buttonText": "非公開物件リストを受け取る",
-        "url": "https://line.me/R/ti/p/@kominka",
-        "image": "/images/kominka_lounge.jpg"
-    },
-    "hero": {
-        "title": "放置された資産を、<br />蘇らせる。",
-        "subTitle": "眠れる古民家に、<br />新たな命と価値を。",
-        "primaryButton": {
-            "text": "古民家投資診断を始める (無料)",
-            "url": "/simulation"
-        },
-        "secondaryButton": {
-            "text": "About us 私たちについて",
-            "url": "/about"
-        }
-    },
-    "premium": {
-        "title": "厳選された古民家",
-        "btnText": "すべての物件を見る"
-    },
-    "philosophy": {
-        "title": "古き良きものに、<br />新しい価値を。",
-        "description": "ただの古い家ではない。それは、地域の歴史であり、文化である。<br />適切なリノベーションと戦略があれば、<br />それは高い利回りを生む最強の資産に変わる。<br /><br />空き家問題の解決と、投資家の利益。<br />その両立こそが、私たちの使命である。"
-    },
-    "bridge": {
-        "title": "「不安な投資」から、<br />「堅実な再生」へ",
-        "description": "古民家投資は知識と経験が全てです。<br class=\"hidden md:block\" />リノベーションのプロと、<br class=\"text-[#c59f59] font-bold\">「再生のパートナー」</span>として手を組む。<br />それが、失敗しない古民家投資の条件です。",
-        "buttonText": "古民家再生・個別相談を予約する",
-        "url": "/inquiry"
-    },
-    "theme": {
-        "primaryColor": "#1a1a1a",
-        "accentColor": "#A68A56"
+  "identity": {
+    "name": "空き家錬金術",
+    "description": "放置された空き家を、年間利回り15%の資産に変える。",
+    "domain": "kominka-frontier.vercel.app",
+    "email": "info@kominka-frontier.com",
+    "site_id": "kominka",
+    "author": "Kominka Frontier Team",
+    "social": {
+      "line": "https://lin.ee/xxxxxx"
     }
+  },
+  "persona": {
+    "role": "夢を語れる建築家 × 数字に厳しい投資家",
+    "tone": "熱量高めだが、数字の話などの重要な判断においては冷静でシャープ。「〜だ・である」調を交えつつ、夢と実利の両方を語る。",
+    "mission": "読者に古民家投資のロマンと経済的メリットを伝え、実際に行動（物件探し・購入）へ移させること。"
+  },
+  "target": {
+    "audience": "35〜55歳のサラリーマン投資家、中小企業経営者、医師・士業",
+    "pain_points": [
+      "次の投資先がない（都心・RCの利回り低下）",
+      "キャッシュフローが出ない",
+      "差別化できない",
+      "相続した実家の処分",
+      "リフォーム費用の不透明さ"
+    ]
+  },
+  "categories": {
+    "find": {
+      "id": "find",
+      "name": "物件を探す",
+      "description": "投資対象の物件を見つけたい。",
+      "context": "Focus on 'Finding Properties', 'Empty House Bank', 'Under 1 Million Yen' deals."
+    },
+    "renovate": {
+      "id": "renovate",
+      "name": "再生する",
+      "description": "リノベーションの方法・費用を知りたい。",
+      "context": "Focus on 'Renovation Costs', 'Subsidies', 'DIY vs Pro', 'Architectural Value'."
+    },
+    "operate": {
+      "id": "operate",
+      "name": "民泊で稼ぐ",
+      "description": "民泊運営のノウハウを知りたい。",
+      "context": "Focus on 'Airbnb Operation', 'Occupancy Rate', 'Pricing Strategy', 'Guest Experience'."
+    },
+    "exit": {
+      "id": "exit",
+      "name": "出口戦略",
+      "description": "売却・事業承継を考えたい。",
+      "context": "Focus on 'Selling Higher', 'Exit Timing', 'Business Succession', 'Real Estate Capital Gains'."
+    }
+  },
+  "bible_path": "libs/brain/bibles/kominka_bible.md",
+  "strategy_path": "libs/brain/strategies/kominka_strategy.md",
+  "cta": {
+    "label": "Kominka Investor Community",
+    "title": "利回り15%物件は<br />市場には出ない。",
+    "description": "本当に儲かる古民家情報は、水面下で取引されます。<br class=\"hidden md:block\" />空き家バンクに出る前の「川上情報」、<br />リフォーム費を半額にする職人リストを、<br class=\"hidden md:block\" />LINEメンバー限定で公開します。",
+    "buttonText": "非公開物件リストを受け取る",
+    "url": "https://line.me/R/ti/p/@kominka",
+    "image": "/images/kominka_lounge.jpg"
+  },
+  "hero": {
+    "title": "放置された資産を、<br />蘇らせる。",
+    "subTitle": "眠れる古民家に、<br />新たな命と価値を。",
+    "primaryButton": {
+      "text": "古民家投資診断を始める (無料)",
+      "url": "/simulation"
+    },
+    "secondaryButton": {
+      "text": "About us 私たちについて",
+      "url": "/about"
+    }
+  },
+  "premium": {
+    "title": "厳選された古民家",
+    "btnText": "すべての物件を見る"
+  },
+  "philosophy": {
+    "title": "古き良きものに、<br />新しい価値を。",
+    "description": "ただの古い家ではない。それは、地域の歴史であり、文化である。<br />適切なリノベーションと戦略があれば、<br />それは高い利回りを生む最強の資産に変わる。<br /><br />空き家問題の解決と、投資家の利益。<br />その両立こそが、私たちの使命である。"
+  },
+  "bridge": {
+    "title": "「不安な投資」から、<br />「堅実な再生」へ",
+    "description": "古民家投資は知識と経験が全てです。<br class=\"hidden md:block\" />リノベーションのプロと、<br class=\"text-[#c59f59] font-bold\">「再生のパートナー」</span>として手を組む。<br />それが、失敗しない古民家投資の条件です。",
+    "buttonText": "古民家再生・個別相談を予約する",
+    "url": "/inquiry"
+  },
+  "theme": {
+    "primaryColor": "#1a1a1a",
+    "accentColor": "#A68A56"
+  },
+  "brand": "kominka",
+  "valid_categories": [
+    "find",
+    "renovate",
+    "operate",
+    "exit"
+  ],
+  "default_category": "find",
+  "site_id": "kominka",
+  "paths": {
+    "bible": "libs/brain/bibles/kominka_bible.md",
+    "strategy": "libs/brain/strategies/kominka_strategy.md"
+  },
+  "images": {
+    "base_url": "/images/articles",
+    "fallback": "/images/common/fallback.webp"
+  },
+  "meta": {
+    "default_author": "編集部",
+    "og_site_name": "空き家錬金術"
+  }
 }

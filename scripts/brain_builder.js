@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { loadContext, saveContext } = require('./lib/create_context');
 require('dotenv').config({ path: '.env.local' });
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -46,15 +47,21 @@ async function callGemini(prompt, modelId = "gemini-2.0-flash") {
 async function builderArticle() {
     console.log("🔨 Starting Brain Builder (Writer)...");
 
-    const slug = process.argv[2];
-    if (!slug) {
-        console.error("Usage: node scripts/brain_builder.js <slug>");
+    const args = require('minimist')(process.argv.slice(2));
+    const contextPath = args.context;
+    
+    if (!contextPath || !fs.existsSync(contextPath)) {
+        console.error("Usage: node scripts/brain_builder.js --context <path/to/context.json>");
         process.exit(1);
     }
 
-    const blueprintPath = path.join(process.cwd(), 'content/blueprints', `${slug}_blueprint.json`);
+    const context = loadContext(contextPath);
+    const slug = context.slug;
+
+    // Load blueprint from workDir
+    const blueprintPath = path.join(context.paths.workDir, 'blueprint.json');
     if (!fs.existsSync(blueprintPath)) {
-        console.error(`Blueprint not found: ${blueprintPath}`);
+        console.error(`Blueprint not found in work directory: ${blueprintPath}`);
         process.exit(1);
     }
 
@@ -62,14 +69,18 @@ async function builderArticle() {
     const blueprintObj = JSON.parse(blueprint);
     const editorBible = fs.readFileSync(EDITOR_BRAIN_PATH, 'utf8');
     
-    const siteId = blueprintObj.site_id || "wealth";
-    const dnaPath = path.join(process.cwd(), `src/dna.config.${siteId}.json`);
+    // ★ OVERWRITE blueprint values with context values (Single Source of Truth)
+    blueprintObj.site_id = context.siteId;
+    blueprintObj.category = context.category;
+    
+    const siteId = context.siteId;
+    const dnaPath = context.paths.dna;
     let dna = {};
     if (fs.existsSync(dnaPath)) {
         dna = JSON.parse(fs.readFileSync(dnaPath, 'utf8'));
     }
 
-    const brandBiblePath = path.join(process.cwd(), 'libs/brain/bibles', `${siteId}_bible.md`);
+    const brandBiblePath = context.paths.bible;
     let brandBible = "";
     if (fs.existsSync(brandBiblePath)) {
         brandBible = fs.readFileSync(brandBiblePath, 'utf8');
@@ -111,9 +122,13 @@ async function builderArticle() {
       - "meta_title": For search results (60 chars max).
       - "meta_description": Compelling summary for search (120-160 chars).
       - "keywords": 3-5 comma-separated keywords.
+      - "sns_posts": An array of 3 SNS post ideas (X/Twitter style) in Japanese.
+        1. Pattern A: Professional/News style
+        2. Pattern B: Engagement/Question style
+        3. Pattern C: Counter-intuitive/Shock style
 
     ## Blueprint JSON (To Be Completed)
-    ${blueprint}
+    ${JSON.stringify(blueprintObj, null, 2)}
 
     ## Important
     Output ONLY THE COMPLETED JSON. No markdown blocks.
@@ -199,61 +214,76 @@ async function builderArticle() {
             contentJson = JSON.parse(cleanJson);
         } catch (e) {
             console.warn("⚠️ Standard JSON.parse failed. Attempting complex recovery...");
+            
+            // 1. Basic Cleaning
             let repaired = cleanJson
                 .replace(/\n/g, "\\n")
                 .replace(/\r/g, "\\r")
-                .replace(/\\(?!["\\\/bfnrtu])/g, "\\\\\\\\") // Fix malformed escapes
-                .replace(/,\s*([\}\]])/g, '$1'); // Trailing commas
-            
+                .replace(/\\(?!["\\\/bfnrtu])/g, "\\\\\\\\")
+                .replace(/,\s*([\}\]])/g, '$1');
+
+            // 2. Truncation Repair (Close open brackets)
+            function repairTruncatedJson(str) {
+                let json = str.trim();
+                const stack = [];
+                for (let i = 0; i < json.length; i++) {
+                    const char = json[i];
+                    if (char === '{' || char === '[') stack.push(char === '{' ? '}' : ']');
+                    else if (char === '}' || char === ']') {
+                        if (stack.length > 0 && stack[stack.length - 1] === char) stack.pop();
+                    }
+                }
+                while (stack.length > 0) json += stack.pop();
+                return json;
+            }
+
             try {
-                contentJson = JSON.parse(repaired);
+                contentJson = JSON.parse(repairTruncatedJson(repaired));
             } catch (e2) {
                 console.error("❌ Recovery failed.");
-                console.log("DEBUG RAW PREVIEW:", cleanJson.substring(0, 1000));
+                console.log("DEBUG RAW PREVIEW:", cleanJson.substring(cleanJson.length - 100)); // Show the end of the string
                 throw e2;
             }
         }
-        const outputPath = path.join(process.cwd(), 'content/blueprints', `${slug}_complete.json`);
+        
+        // Output path for complete JSON
+        const outputPath = path.join(context.paths.workDir, 'article_complete.json');
         fs.writeFileSync(outputPath, JSON.stringify(contentJson, null, 2));
         
         console.log("🧩 Assembling Final Artifacts...");
-        convertToArtifacts(contentJson, slug);
+        convertToArtifacts(contentJson, slug, context);
 
+        // Contextを更新して保存
+        context.meta.title = contentJson.h1_title || contentJson.meta_title;
+        context.meta.description = contentJson.meta_description;
+        saveContext(context);
+        
     } catch (error) {
         console.error("❌ Build Failed:", error);
         process.exit(1);
     }
 }
 
-function convertToArtifacts(json, slug) {
-    let htmlLines = [`<h1>${json.h1_title}</h1>`, json.intro_hook];
-    if (json.sections) {
-        json.sections.forEach(sec => {
-            htmlLines.push(`<h2>${sec.h2_heading}</h2>`, sec.content_html);
-        });
-    }
-    htmlLines.push(`<h2>まとめ</h2>`, json.conclusion);
-
-    const today = new Date().toISOString().split('T')[0];
-    const category = json.category || 'column';
-    const siteId = json.site_id || 'wealth';
+function convertToArtifacts(json, slug, context) {
+    const siteId = context.siteId;
+    const category = context.category;
 
     const articleMd = `---\n` +
         `title: "${json.h1_title || json.meta_title}"\n` +
         `meta_title: "${json.meta_title || json.h1_title}"\n` +
         `meta_description: "${json.meta_description || ''}"\n` +
         `keywords: "${json.keywords || ''}"\n` +
-        `publishedAt: "${today}"\n` +
+        `publishedAt: "${new Date().toISOString().split('T')[0]}"\n` +
         `site_id: "${siteId}"\n` +
         `category: "${category}"\n` +
         `coverImage: "/images/articles/${slug}/01.webp"\n` +
+        `sns_posts: ${JSON.stringify(json.sns_posts || [])}\n` +
         `---\n\n` + 
         `# ${json.h1_title}\n\n${json.intro_hook}\n\n` + 
         (json.sections ? json.sections.map(sec => `## ${sec.h2_heading}\n\n${sec.content_html}`).join('\n\n') : '') + 
         `\n\n## まとめ\n\n${json.conclusion}`;
     
-    const articlePath = path.join(process.cwd(), 'content/articles', `${slug}.md`);
-    if (!fs.existsSync(path.dirname(articlePath))) fs.mkdirSync(path.dirname(articlePath), { recursive: true });
+    const articlePath = path.join(context.paths.workDir, `article.md`);
     fs.writeFileSync(articlePath, articleMd);
     console.log(`✅ Saved: ${articlePath}`);
 }

@@ -120,5 +120,5 @@ h2 {
 
 /* Ensure expert-box within prose looks consistent */
 .prose .expert-box {
-  @apply not-prose;
+  /* @apply not-prose; (Tailwind v4 build fix) */
 }

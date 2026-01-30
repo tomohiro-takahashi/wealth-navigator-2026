@@ -2,7 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { processAudio } = require('./process_audio');
+const { createContext, loadContext, saveContext } = require('./lib/create_context');
 require('dotenv').config({ path: '.env.local' });
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 const ANTHROPIC_API_URL = 'https://api.anthropic.com/v1/messages';
@@ -62,15 +64,19 @@ async function main() {
     const brandIndex = args.indexOf('--brand');
     const brandIdOverride = (brandIndex !== -1 && args[brandIndex + 1]) ? args[brandIndex + 1] : null;
 
+    const contextIndex = args.indexOf('--context');
+    const contextPath = (contextIndex !== -1 && args[contextIndex + 1]) ? args[contextIndex + 1] : null;
+
     const cleanArgs = args.filter((arg, i) => 
         arg !== '--type' && args[i - 1] !== '--type' &&
-        arg !== '--brand' && args[i - 1] !== '--brand'
+        arg !== '--brand' && args[i - 1] !== '--brand' &&
+        arg !== '--context' && args[i - 1] !== '--context'
     );
     const identifier = cleanArgs[0];
     const category = cleanArgs[1] || 'domestic';
 
-    if (!identifier) {
-        console.error("Usage: node scripts/brain_architect.js <topic/slug> [--type article|video] [--brand wealth|flip|...] [category]");
+    if (!identifier && !contextPath) {
+        console.error("Usage: node scripts/brain_architect.js <topic/slug> [--type article|video] [--brand wealth|flip|...] [--context path/to/context.json] [category]");
         process.exit(1);
     }
 
@@ -79,8 +85,74 @@ async function main() {
     if (mode === 'video') {
         await architectVideo(identifier);
     } else {
-        await architectArticle(identifier, category, brandIdOverride);
+        await architectArticle(identifier, category, brandIdOverride, contextPath);
     }
+}
+
+async function architectWithFallback(prompt, responseMimeType = "text/plain") {
+    const cleanAndParse = (text) => {
+        let jsonString = text.trim();
+        const start = jsonString.indexOf('{');
+        const end = jsonString.lastIndexOf('}');
+        if (start === -1 || end === -1) {
+            console.error("❌ No JSON found in text.");
+            throw new Error("Invalid output format from AI.");
+        }
+        jsonString = jsonString.slice(start, end + 1);
+        jsonString = jsonString.replace(/[\x00-\x1F\x7F-\x9F]/g, " ");
+
+        try {
+            return JSON.parse(jsonString);
+        } catch (e) {
+            console.warn("⚠️ Standard JSON.parse failed. Attempting complex recovery...");
+            let repaired = jsonString
+                .replace(/\n/g, "\\n")
+                .replace(/\r/g, "\\r")
+                .replace(/\\(?!["\\\/bfnrtu])/g, "\\\\\\\\")
+                .replace(/,\s*([\}\\]])/g, '$1');
+            try {
+                return JSON.parse(repaired);
+            } catch (e2) {
+                console.error("❌ Recovery failed.");
+                throw e2;
+            }
+        }
+    };
+
+    const models = ["gemini-1.5-pro", "claude-3-5-sonnet-latest", "claude-3-haiku-20240307", "gemini-2.0-flash", "gemini-1.5-flash"];
+    for (const modelId of models) {
+        let attempts = 0;
+        const maxAttempts = 2;
+        
+        while (attempts < maxAttempts) {
+            try {
+                console.log(`🧠 Attempting model: ${modelId} (Attempt ${attempts + 1})...`);
+                let resultText;
+                if (modelId.startsWith('claude')) {
+                    resultText = await callClaude(prompt, modelId);
+                } else {
+                    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+                    const model = genAI.getGenerativeModel({
+                        model: modelId,
+                        generationConfig: responseMimeType === "application/json" ? { responseMimeType } : {}
+                    });
+                    const result = await model.generateContent(prompt);
+                    resultText = result.response.text();
+                }
+                return cleanAndParse(resultText);
+            } catch (e) {
+                if (e.message.includes('429') && attempts < maxAttempts - 1) {
+                    console.warn(`⚠️ Rate limit (429) hit for ${modelId}. Sleeping for 30s before retry...`);
+                    await sleep(30000);
+                    attempts++;
+                    continue;
+                }
+                console.warn(`⚠️ Model ${modelId} failed: ${e.message}`);
+                break; // Move to next model
+            }
+        }
+    }
+    throw new Error("All AI models failed.");
 }
 
 // --- Video Architect ---
@@ -102,12 +174,6 @@ async function architectVideo(slugKeyword) {
         console.warn("⚠️ DNA config not found in architectVideo.");
     }
 
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-    const model = genAI.getGenerativeModel({
-        model: "gemini-2.0-flash",
-        generationConfig: { responseMimeType: "application/json" }
-    });
-
     const prompt = `
     ${videoBrain}
     ---
@@ -116,8 +182,7 @@ async function architectVideo(slugKeyword) {
     `;
 
     try {
-        const result = await model.generateContent(prompt);
-        const scriptJson = JSON.parse(result.response.text());
+        const scriptJson = await architectWithFallback(prompt, "application/json");
         fs.writeFileSync(VIDEO_SCRIPT_PATH, JSON.stringify(scriptJson, null, 2));
         await processAudio();
     } catch (error) {
@@ -127,87 +192,38 @@ async function architectVideo(slugKeyword) {
 }
 
 // --- Article Architect ---
-async function architectArticle(topic, category, brandId = null) {
-    console.log(`🏗️  Architecting Article Blueprint: ${topic} (Brand: ${brandId || 'default'})`);
-
-    async function architectWithFallback(prompt) {
-        const cleanAndParse = (text) => {
-            let jsonString = text.trim();
-            const start = jsonString.indexOf('{');
-            const end = jsonString.lastIndexOf('}');
-            if (start === -1 || end === -1) {
-                console.error("❌ No JSON found in text.");
-                throw new Error("Invalid output format from AI.");
-            }
-            jsonString = jsonString.slice(start, end + 1);
-
-            // Robust cleaning for control characters
-            jsonString = jsonString.replace(/[\x00-\x1F\x7F-\x9F]/g, " ");
-
-            try {
-                return JSON.parse(jsonString);
-            } catch (e) {
-                console.warn("⚠️ Standard JSON.parse failed. Attempting complex recovery...");
-                
-                // Attempt to fix common AI mistakes (unescaped quotes inside strings, newlines)
-                let repaired = jsonString
-                    .replace(/\n/g, "\\n")
-                    .replace(/\r/g, "\\r")
-                    .replace(/\\(?!["\\\/bfnrtu])/g, "\\\\") // Fix malformed escapes
-                    .replace(/,\s*([\}\]])/g, '$1'); // Trailing commas
-                
-                try {
-                    return JSON.parse(repaired);
-                } catch (e2) {
-                    console.error("❌ Recovery failed.");
-                    console.log("DEBUG RAW PREVIEW:", jsonString.substring(0, 1000));
-                    throw e2;
-                }
-            }
-        };
-
-        // 1. Primary: Stronger models for better JSON reliability
-        const models = ["gemini-1.5-pro", "claude-3-5-sonnet-latest", "claude-3-haiku-20240307", "gemini-2.0-flash"];
-        for (const modelId of models) {
-            try {
-                console.log(`🧠 Attempting model: ${modelId}...`);
-                let resultText;
-                if (modelId.startsWith('claude')) {
-                    resultText = await callClaude(prompt, modelId);
-                } else {
-                    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-                    const model = genAI.getGenerativeModel({
-                        model: modelId
-                    });
-                    const result = await model.generateContent(prompt);
-                    resultText = result.response.text();
-                }
-                return cleanAndParse(resultText);
-            } catch (e) {
-                console.warn(`⚠️ Model ${modelId} failed: ${e.message}`);
-            }
-        }
-        throw new Error("All AI models failed.");
-    }
-
-    const dnaPath = brandId ? path.join(process.cwd(), `src/dna.config.${brandId}.json`) : path.join(process.cwd(), 'src/dna.config.json');
-    let dna = {};
-    try {
-        dna = JSON.parse(fs.readFileSync(dnaPath, 'utf8'));
-    } catch (e) {
-        console.warn(`⚠️ DNA config not found at ${dnaPath}.`);
-    }
+async function architectArticle(topic, category, brandId = null, contextPath = null) {
+    let context;
     
-    const siteId = brandId || dna.identity?.siteId || dna.identity?.site_id || 'wealth';
-    const biblePath = dna.bible_path ? path.join(process.cwd(), dna.bible_path) : STRATEGIST_BRAIN_PATH;
+    // Context経由で呼ばれた場合
+    if (contextPath && fs.existsSync(contextPath)) {
+        console.log(`📂 Loading existing context from: ${contextPath}`);
+        context = loadContext(contextPath);
+    } else {
+        // 直接呼び出しの場合（後方互換用）
+        if (!brandId) {
+            console.warn('⚠️ No brand specified. Falling back to "wealth".');
+            brandId = 'wealth';
+        }
+        console.log(`🆕 Creating new context for brand: ${brandId}, category: ${category}`);
+        context = createContext(brandId, category);
+    }
+
+    // Contextから設定を取得
+    const siteId = context.siteId;
+    const currentCategory = context.category;
+    const biblePath = context.paths.bible;
+    
+    console.log(`🏗️  Architecting Article Blueprint: ${topic || context.meta.title} (Site: ${siteId}, Category: ${currentCategory})`);
+
     const strategistKnowledge = fs.readFileSync(biblePath, 'utf8');
     const editorBible = fs.readFileSync(EDITOR_BRAIN_PATH, 'utf8');
 
     const prompt = `
     ## TASK: Create the Article Blueprint (MANIFESTO MODE)
     **Brand Context**: ${siteId}
-    **Category**: ${category}
-    **Topic**: ${topic}
+    **Category**: ${currentCategory}
+    **Topic**: ${topic || context.meta.title}
     
     ## BRAND BIBLE (The Manifesto)
     ${strategistKnowledge.substring(0, 15000)}
@@ -215,7 +231,7 @@ async function architectArticle(topic, category, brandId = null) {
     ## MANDATORY JSON SCHEMA (Output strictly matching this):
     {
       "site_id": "${siteId}",
-      "category": "${category}",
+      "category": "${currentCategory}",
       "target_keyword": "string",
       "h1_title": "string (no HTML)",
       "intro_hook": "instruction string with [IMAGE_1] (max 300 chars, no HTML)",
@@ -242,21 +258,20 @@ async function architectArticle(topic, category, brandId = null) {
 
     try {
         const blueprint = await architectWithFallback(prompt);
-        const today = new Date().toISOString().split('T')[0];
-        let slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-        if (!slug || slug === '-' || /[^\x00-\x7F]/.test(topic)) {
-            const crypto = require('crypto');
-            const hash = crypto.createHash('md5').update(topic).digest('hex').substring(0, 8);
-            slug = `${today}-${hash}`;
-        } else if (!slug.startsWith(today)) {
-            slug = `${today}-${slug}`;
-        }
         
-        const outputPath = path.join(ARTIFACTS_DIR, `${slug}_blueprint.json`);
+        // Output path: Use context.paths.workDir if available
+        const outputPath = path.join(context.paths.workDir, 'blueprint.json');
+        
         blueprint.site_id = siteId;
-        blueprint.category = category;
+        blueprint.category = currentCategory;
         fs.writeFileSync(outputPath, JSON.stringify(blueprint, null, 2));
         console.log(`✅ Blueprint saved: ${outputPath}`);
+
+        // Contextを更新して保存
+        context.meta.title = blueprint.h1_title;
+        context.meta.description = blueprint.meta_description;
+        saveContext(context);
+        
     } catch (error) {
         console.error("❌ Architecture Failed:", error);
         process.exit(1);
