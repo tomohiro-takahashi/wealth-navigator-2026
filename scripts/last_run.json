@@ -3,7 +3,8 @@
   "completed": [],
   "failed": {
     "wealth": 3,
-    "flip": 3
+    "flip": 3,
+    "kominka": 1
   },
   "brand_categories": {}
 }
