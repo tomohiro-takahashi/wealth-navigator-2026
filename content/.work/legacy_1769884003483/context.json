@@ -1,0 +1,42 @@
+{
+  "brand": "legacy",
+  "siteId": "legacy",
+  "siteName": "親の家、どうする？",
+  "validCategories": [
+    "mindset",
+    "options",
+    "procedure",
+    "case"
+  ],
+  "category": "mindset",
+  "slug": "legacy_1769884003483",
+  "paths": {
+    "bible": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/libs/brain/bibles/legacy_bible.md",
+    "strategy": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/libs/brain/strategies/legacy_strategy.md",
+    "dna": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/src/dna.config.legacy.json",
+    "workDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/.work/legacy_1769884003483",
+    "draftsDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/01_drafts/legacy_1769884003483",
+    "imagedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/02_imaged/legacy_1769884003483",
+    "directedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/03_directed/legacy_1769884003483",
+    "publishedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/05_published/legacy_1769884003483"
+  },
+  "images": {
+    "baseUrl": "/images/articles",
+    "fallback": "/images/common/fallback.webp",
+    "generated": []
+  },
+  "meta": {
+    "title": "不動産投資の未来",
+    "description": null,
+    "author": "編集部",
+    "ogSiteName": "親の家、どうする？"
+  },
+  "status": {
+    "brain": null,
+    "vision": null,
+    "director": null,
+    "gateway": null
+  },
+  "errors": [],
+  "createdAt": "2026-01-31T18:26:43.483Z"
+}
