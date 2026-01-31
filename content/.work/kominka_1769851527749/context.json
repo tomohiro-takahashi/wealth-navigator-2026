@@ -1,0 +1,42 @@
+{
+  "brand": "kominka",
+  "siteId": "kominka",
+  "siteName": "空き家錬金術",
+  "validCategories": [
+    "find",
+    "renovate",
+    "operate",
+    "exit"
+  ],
+  "category": "find",
+  "slug": "kominka_1769851527749",
+  "paths": {
+    "bible": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/libs/brain/bibles/kominka_bible.md",
+    "strategy": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/libs/brain/strategies/kominka_strategy.md",
+    "dna": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/src/dna.config.kominka.json",
+    "workDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/.work/kominka_1769851527749",
+    "draftsDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/01_drafts/kominka_1769851527749",
+    "imagedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/02_imaged/kominka_1769851527749",
+    "directedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/03_directed/kominka_1769851527749",
+    "publishedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/05_published/kominka_1769851527749"
+  },
+  "images": {
+    "baseUrl": "/images/articles",
+    "fallback": "/images/common/fallback.webp",
+    "generated": []
+  },
+  "meta": {
+    "title": "不動産投資の未来",
+    "description": null,
+    "author": "編集部",
+    "ogSiteName": "空き家錬金術"
+  },
+  "status": {
+    "brain": null,
+    "vision": null,
+    "director": null,
+    "gateway": null
+  },
+  "errors": [],
+  "createdAt": "2026-01-31T09:25:27.749Z"
+}
