@@ -5,7 +5,8 @@
     "wealth": 3,
     "flip": 3,
     "kominka": 3,
-    "subsidy": 3
+    "subsidy": 3,
+    "legacy": 1
   },
   "brand_categories": {}
 }
