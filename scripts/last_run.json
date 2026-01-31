@@ -1,11 +1,8 @@
 {
-  "date": "2026-01-30",
+  "date": "2026-01-31",
   "completed": [],
   "failed": {
-    "wealth": 3,
-    "flip": 3,
-    "kominka": 3,
-    "subsidy": 3
+    "wealth": 1
   },
   "brand_categories": {}
 }
