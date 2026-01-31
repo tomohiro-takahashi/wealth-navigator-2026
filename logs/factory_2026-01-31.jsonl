@@ -5,3 +5,4 @@
 {"timestamp":"2026-01-31T12:20:36.002Z","brand":"kominka","slug":"kominka_1769862036000","step":"brain","status":"failed","message":"execSync is not defined"}
 {"timestamp":"2026-01-31T15:11:41.844Z","brand":"subsidy","slug":"subsidy_1769872301843","step":"brain","status":"failed","message":"execSync is not defined"}
 {"timestamp":"2026-01-31T18:16:03.804Z","brand":"legacy","slug":"legacy_1769883363803","step":"brain","status":"failed","message":"execSync is not defined"}
+{"timestamp":"2026-01-31T21:11:01.028Z","brand":"legacy","slug":"legacy_1769893861026","step":"brain","status":"failed","message":"execSync is not defined"}
