@@ -1,0 +1,41 @@
+{
+  "brand": "wealth",
+  "siteId": "wealth",
+  "siteName": "Wealth Navigator",
+  "validCategories": [
+    "domestic",
+    "overseas",
+    "column"
+  ],
+  "category": "domestic",
+  "slug": "wealth_1769908148466",
+  "paths": {
+    "bible": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/libs/brain/titans_knowledge.md",
+    "strategy": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/libs/brain/strategies/wealth_strategy.md",
+    "dna": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/src/dna.config.wealth.json",
+    "workDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/.work/wealth_1769908148466",
+    "draftsDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/01_drafts/wealth_1769908148466",
+    "imagedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/02_imaged/wealth_1769908148466",
+    "directedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/03_directed/wealth_1769908148466",
+    "publishedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/05_published/wealth_1769908148466"
+  },
+  "images": {
+    "baseUrl": "/images/articles",
+    "fallback": "/images/common/fallback.webp",
+    "generated": []
+  },
+  "meta": {
+    "title": "不動産投資の未来",
+    "description": null,
+    "author": "編集部",
+    "ogSiteName": "Wealth Navigator"
+  },
+  "status": {
+    "brain": null,
+    "vision": null,
+    "director": null,
+    "gateway": null
+  },
+  "errors": [],
+  "createdAt": "2026-02-01T01:09:08.466Z"
+}
