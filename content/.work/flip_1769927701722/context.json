@@ -1,0 +1,42 @@
+{
+  "brand": "flip",
+  "siteId": "flip",
+  "siteName": "Flip Logic",
+  "validCategories": [
+    "source",
+    "analyze",
+    "flip",
+    "sell"
+  ],
+  "category": "source",
+  "slug": "flip_1769927701722",
+  "paths": {
+    "bible": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/libs/brain/bibles/flip_bible.md",
+    "strategy": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/libs/brain/strategies/flip_strategy.md",
+    "dna": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/src/dna.config.flip.json",
+    "workDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/.work/flip_1769927701722",
+    "draftsDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/01_drafts/flip_1769927701722",
+    "imagedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/02_imaged/flip_1769927701722",
+    "directedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/03_directed/flip_1769927701722",
+    "publishedDir": "/home/runner/work/wealth-navigator-2026/wealth-navigator-2026/content/05_published/flip_1769927701722"
+  },
+  "images": {
+    "baseUrl": "/images/articles",
+    "fallback": "/images/common/fallback.webp",
+    "generated": []
+  },
+  "meta": {
+    "title": "不動産投資の未来",
+    "description": null,
+    "author": "編集部",
+    "ogSiteName": "Flip Logic"
+  },
+  "status": {
+    "brain": null,
+    "vision": null,
+    "director": null,
+    "gateway": null
+  },
+  "errors": [],
+  "createdAt": "2026-02-01T06:35:01.723Z"
+}
